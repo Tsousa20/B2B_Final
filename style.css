@@ -99,7 +99,7 @@ h4{
 }
 
 /*-------------------
-* REUSABLE SELECTOR
+* REUSABLE SELECTOR, estruturas base
 *--------------------*/
 
 .container{
@@ -156,7 +156,7 @@ h4{
 
 .icon-small{
     font-size: 1.25em;
-    margin: auto;
+    margin-left: auto;
 }
 
 .icon-large{
@@ -225,6 +225,11 @@ h4{
     display: flex;
     gap: 1em;
     transition: var(--trans-color);
+}
+
+.mini-text{
+    font-size: var(--font-smaller);
+    color: var(--light-text-color);
 }
 
 
@@ -331,7 +336,7 @@ header li > a{
 }
 
 /* 01. HEADER-------------------
-*   a. Header Nav
+*   b. Header Nav
 *-----------------------------*/
 
 .header-nav{
@@ -428,6 +433,97 @@ nav .fly-item{
     z-index: 1;
 }
 
+/* 01. HEADER-------------------
+*   c. Header Main, Departments Category
+*-----------------------------*/
+
+.header-main{
+    background-color: var(--secondary-dark-color);
+    padding: 1.5em 0;
+    margin-bottom: 2em;
+}
+
+.dpt-cat{
+    position: relative;
+    z-index: 10;
+}
+
+.dpt-cat .dpt-head{
+    position: relative;
+    width: 300px;
+    padding: 0.75em 1.5em;
+    background-color: var(--primary-color);
+    border-radius: 7px 7px 0 0;
+    color: var(--white-color);
+    margin-bottom: -2.15em;
+}
+
+.dpt-cat .dpt-head .mini-text{
+    color: var(--light-bg-color);
+}
+
+.dpt-cat .dpt-trigger{
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 1.3em;
+    height: 60px;
+    width: 60px;
+}
+
+.dpt-menu > ul > li > a{
+    font-size: var(--font-small);
+    height: 46px;
+    align-items: center;
+}
+
+/* 01. HEADER-------------------
+*   d. Search Form
+*-----------------------------*/
+ .header-main .right{
+    flex: 1;
+ }
+
+ form{
+    position: relative;
+ }
+
+ form.search input{
+    line-height: 3.25em;
+    padding: 0 7em 0 4.5em;
+    border: 0;
+    outline: 0;
+    width: var(--percent100);
+    border-radius: 7px;
+    font-size: 0.9em;
+    font-weight: var(--fw3);
+ }
+
+ form.search :where(span,button){
+    position: absolute;
+    top: 0;
+    padding: 0.55em 1.5em;
+    font-size: 1em;
+    color: var(--light-text-color);
+    height: var(--percent100);
+ }
+
+ form.search button{
+    right: 0;
+    border: 0;
+    outline: 0;
+    font-size: 0.875em;
+    font-weight: var(--fw6);
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    border-radius: 0 7px 7px 0;
+    cursor: pointer;
+    transition: var(--trans-background);
+ }
+
+ form.search button:hover{
+    background-color: var(--dark-color);
+ }
 
 
 
@@ -437,6 +533,7 @@ nav .fly-item{
 *---------------------*/
 
 @media screen and (min-width: 992px){
+    /* header-top, navbar*/
     .container{
         padding: 0 2em;
     }
@@ -538,5 +635,55 @@ nav .fly-item{
         font-weight: var(--fw8);
         text-align: center;
         color: var(--secondary-dark-color);
+    }
+
+    /*Search Form*/
+    .header-main .right{
+        max-width: 600px;
+        margin-left: auto;
+    }
+
+    /*Departments Menu*/
+    .dpt-menu{
+        position: absolute;
+        top: var(--percent100);
+        width: 300px;
+        background-color: var(--white-color);
+        border: 1px solid var(--border-color);
+        border-top: 0;
+        border-bottom: 0;
+    }
+
+    .dpt-menu > ul > li > a{
+        font-weight: var(--fw5);
+        padding: 0 1.5em;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .dpt-menu .has-child > ul, .dpt-menu .mega{
+        position: absolute;
+        top: 0;
+        left: var(--percent100);
+        width: var(--percent100);
+        height: auto;
+        min-height: var(--percent100);
+        padding: 1.5em;
+        font-size: var(--font-small);
+        line-height: 2.5em;
+        border: 1px solid var(--border-color);
+        border-top: 0;
+        display: none;
+        background-position: right bottom;
+        background-repeat: no-repeat;
+        background-size: auto;
+    }
+
+    /*showing the first sub-menu*/
+    .dpt-menu .has-child:nth-child(1) > ul{
+        display: block;
+    }
+
+    .dpt-menu .beauty ul{
+        background-image: url(assets/menu/menu_bg1.jpg);
     }
 }
