@@ -951,6 +951,17 @@ nav .fly-item{
     position: relative;
 }
 
+.products .stock-danger{
+    color: var(--primary-color);
+}
+
+.flexwrap .row{
+    flex: 0 0 100%;
+    width: 100%;
+    margin-bottom: 2em;
+}
+
+
 /* 04. PRODUCT----------
 *   b. Big product
 *---------------------*/
@@ -994,7 +1005,12 @@ nav .fly-item{
     .products .price .current{
         font-size: 1.25em;
     }
+
+    .products.mini{
+        flex: 0 0 50%;
+    }
 }
+
 
 @media screen and (min-width: 992px){
     /* header-top, navbar*/
