@@ -40,7 +40,7 @@ function toggle(e){
     this.closest('.has-child').classList.toggle('expand')
 }
 
-//slide-swipper
+//slide-swipper (não mexer)
 const swiper = new Swiper('.swiper', {
     loop: true,
   
@@ -49,3 +49,16 @@ const swiper = new Swiper('.swiper', {
     },
 
 });
+
+//show search
+const searchButton = document.querySelector('.t-search'),
+      tClose = document.querySelector('.search-close'),
+      showClass = document.querySelector('.site');
+
+searchButton.addEventListener('click', function(){
+    showClass.classList.toggle('showsearch')
+})
+
+tClose.addEventListener('click', function(){
+    showClass.classList.remove('showsearch')
+})
