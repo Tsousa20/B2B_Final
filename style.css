@@ -1285,10 +1285,122 @@ nav .fly-item{
     background-color: rgba(0, 0, 0, 0.4);
     visibility: hidden;
     opacity: 0;
+    will-change: visibility, opacity;
 }
 
+.showmenu .overlay{
+    opacity: 1;
+    visibility: inherit;
+}
 
+/*--------------------
+* 09. PAGE SINGLE
+*---------------------*/
 
+/* 09. PAGE SINGLE -----
+* a. Department Menu
+*---------------------*/
+.page-home .dpt-cat .dpt-trigger,
+.dpt-trigger .ri-close-line,
+.showdpt .dpt-trigger .ri-menu-3-line{
+    display: none;
+}
+
+.showdpt .dpt-trigger .ri-close-line{
+    display: block;
+}
+
+/* 09. PAGE SINGLE -----
+* b. Breadcrumb
+*---------------------*/
+.breadcrumb{
+    font-size: var(--font-small);
+    margin-bottom: 2em;
+}
+
+.breadcrumb li:not(:last-child)::after{
+    content: '/';
+    padding: 0 0.35em;
+}
+
+.breadcrumb li:last-child{
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--light-text-color);
+}
+
+/* 09. PAGE SINGLE -----
+* c. Product details
+*---------------------*/
+
+.products.one .item{
+    flex-direction: column;
+}
+
+.products.one .price .discount{
+    font-size: 1em;
+    font-weight: var(--fw7);
+    line-height: 1;
+    position: absolute;
+    top: 0;
+    bottom: auto;
+    padding: 1em;
+    z-index: 2;
+    background-color: var(--dark-color);
+    color: var(--white-color);
+    border-radius: var(--percent50);
+    margin: 0.5em;
+}
+
+.products.one :where(.big-image, .small-image){
+    overflow: hidden;
+}
+
+.products.one .big-image{
+    position: relative;
+    margin-bottom: 1em;
+}
+
+.products.one :where(.big-image, .small-image) img{
+    object-fit: cover;
+    width: var(--percent100);
+    height: var(--percent100);
+    display: block;
+}
+
+.products.one .thumbnail-show{
+    position: relative;
+    width: 130px;
+    height: 110px;
+    overflow: hidden;
+    margin: 0 2em 2em 0;
+}
+
+.products :is(.swiper-button-next, .swiper-button-prev){
+    outline: 0;
+    color: var(--secondary-dark-color);
+    transition: var(--trans-background), transform .3s;
+}
+
+.products .big-image:hover .swiper-button-next{
+    transform: translateX(10px);
+}
+
+.products .big-image:hover .swiper-button-prev{
+    transform: translateX(-10px);
+}
+
+.products :is(.swiper-button-next, .swiper-button-prev)::after{
+    font-size: 1.5em;
+}
+
+.products .big-image:hover :is(.swiper-button-next, .swiper-button-prev){
+    background-color: var(--light-bg-color);
+}
+
+/* lightbox: go to fslightbox.com*/
 
 
 /*--------------------
@@ -1298,6 +1410,19 @@ nav .fly-item{
 @media screen and (min-width: 481px){
     .products.main .item{
         flex: 0 0 50%;
+    }
+
+    /*page single*/
+    .products.one .big-image{
+        margin-bottom: 2em;
+    }
+
+    .products.one .image-show{
+        height: 680px;
+    }
+
+    .products.one .thumbnail-show{
+        height: 160px;
     }
 }
 
@@ -1314,6 +1439,11 @@ nav .fly-item{
 
     .products.main .item{
         flex: 0 0 33.3333%;
+    }
+
+    .products.one .row{
+        flex: 0 0 50%;
+        width: 50%;
     }
 }
 
@@ -1520,7 +1650,8 @@ nav .fly-item{
         max-height: 373px;
     }
 
-    .products.main .item{
+    .products.main .item,
+    .widgets .row{
         flex: 0 0 25%;
     }
 
@@ -1529,5 +1660,15 @@ nav .fly-item{
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    /*Page Single*/
+
+    #page:not(.page-home) .dpt-menu{
+        display: none;
+    }
+
+    #page.showdpt .dpt-menu{
+        display: block;
     }
 }
