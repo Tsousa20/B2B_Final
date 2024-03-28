@@ -85,6 +85,7 @@ var productThumb = new Swiper ('.small-image', {
     }
 });
 
+//slide-swipper (não mexer)
 var productBig = new Swiper ('.big-image', {
     loop: true,
     autoHeight: true,
