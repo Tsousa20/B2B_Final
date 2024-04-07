@@ -1,13 +1,18 @@
 @import url('https://fonts.gooleapis.com/css2?family=Poppins:wght@300;600;700;800&family=Rubik:wght@300;400;500;600&display=swap');
 
 :root{
-    --primary-color: #ff6b6b;
+    /* --primary-color: #ff6b6b;
     --secondary-color: #794afa;
-    --secondary-dark-color: #453c5c;
+    --secondary-dark-color: #453c5c; */
 
-    /* --primary-color: #B08401;
-    --secondary-color: #DED1BD;
-    --secondary-dark-color: #4A6163; */
+    /* --primary-color: #0F989C;
+    --secondary-color: #6DA5C0;
+    --secondary-dark-color: #072E33; */
+
+    --primary-color: #3BBA9C;
+    --secondary-color: #294D61;
+    --secondary-dark-color: #2b6777;
+
 
     --white-color: #ffffff;
     --light-bg-color: #f2f3f5;
@@ -901,11 +906,8 @@ nav .fly-item,
 }
 
 .products .rating .stars{
-    width: 80px;
+    width: 100px;
     height: 20px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='rgba(240,187,64,1)'%3E%3Cpath d='M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61493 7.84006L12.0006 0.5L15.3862 7.84006L23.4132 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26Z'%3E%3C/path%3E%3C/svg%3E");
-    background-position-y: top;
-    /* background-repeat-y: no-repeat; */
 }
 
 /*to set the width of the stars*/
@@ -1194,6 +1196,12 @@ nav .fly-item,
     margin-top: 2em;
     text-align: center;
 }
+
+.footer .row{
+    display: flex;
+    flex-wrap: wrap;
+}
+
 
 /*--------------------
 * 07. BOTTOM MENU

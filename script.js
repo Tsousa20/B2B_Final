@@ -131,9 +131,9 @@ document.addEventListener('click', (e) => {
 })
 
 //show modal on load
-window.onload = function (){
-    document.querySelector('.site').classList.toggle('showmodal')
-}
-document.querySelector('.modalclose').addEventListener('click', function(){
-    document.querySelector('.site').classList.remove('showmodal')
-})
+// window.onload = function (){
+//     document.querySelector('.site').classList.toggle('showmodal')
+// }
+// document.querySelector('.modalclose').addEventListener('click', function(){
+//     document.querySelector('.site').classList.remove('showmodal')
+// })
