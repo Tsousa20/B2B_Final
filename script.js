@@ -23,10 +23,10 @@ const menuButton = document.querySelector('.trigger'),
       addclass = document.querySelector('.site');
 menuButton.addEventListener('click', function(){
     addclass.classList.toggle('showmenu')
-})
+});
 closeButton.addEventListener('click', function(){
     addclass.classList.remove('showmenu')
-})
+});
 
 
 //show sub-menu on mobile devices
@@ -38,7 +38,7 @@ function toggle(e){
     submenu.forEach((item) => item != this ? item.closest('.has-child').classList.remove('expand') : null);
     if (this.closest('.has-child').classList != 'expand');
     this.closest('.has-child').classList.toggle('expand')
-}
+};
 
 //slide-swipper (não mexer)
 const swiper = new Swiper('.swiper', {
@@ -57,7 +57,7 @@ const searchButton = document.querySelector('.t-search'),
 
 searchButton.addEventListener('click', function(){
     showClass.classList.toggle('showsearch')
-})
+});
 
 tClose.addEventListener('click', function(){
     showClass.classList.remove('showsearch')
