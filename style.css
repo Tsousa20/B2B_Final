@@ -2682,39 +2682,41 @@ input[type="range"]::-webkit-slider-thumb{
     /*showing the first sub-menu na navbar lateral*/
 
     .dpt-menu .beauty ul{
-        background-image: url(assets/menu/menu_bg1.jpg);
+        background-image: url(assets/menu/menu_beauty.jpg);
     }
     
     .dpt-menu .eletric ul{
-        background-image: url(assets/menu/menu_bg2.jpg);
+        background-image: url(assets/menu/menu_eletronic.jpg);
     }
 
-    .dpt-menu .fashion ul{
-        background-image: url(assets/menu/menu_bg3.jpg);
+    .dpt-menu .aparel ul{
+        background-image: url(assets/menu/menu_apparel.jpg);
     }
 
-    .dpt-menu .homekit .mega{
-        background-image: url(assets/menu/menu_bg4.jpg);
+    .dpt-menu .food .ul{
+        background-image: url(assets/menu/menu_food.jpg);
     }
 
-    .dpt-menu .has-child > :where(ul,.mega)::before{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(90deg, rgba(225,225,225,1) 0%, rgba(225,225,225, 0));
+    .dpt-menu .homekit .ul{
+        background-image: url(assets/menu/menu_homeinterior.jpg);
     }
 
-    .dpt-menu .mega{
-        width: auto;
-        min-width: var(--percent100);
+    .dpt-menu .agriculture .ul{
+        background-image: url(assets/menu/menu_agro.jpg);
     }
 
-    .dpt-menu .has-child:hover .mega{
-        display: flex;
+    .dpt-menu .pet .ul{
+        background-image: url(assets/menu/menu_pet.jpg);
     }
+
+    .dpt-menu .sports .ul{
+        background-image: url(assets/menu/menu_sports.jpg);
+    }
+
+    .dpt-menu .shipping .ul{
+        background-image: url(assets/menu/menu_shipping.jpg);
+    }
+
 
     /*slider*/
     .slider > div > .wrapper{
