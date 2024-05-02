@@ -967,6 +967,10 @@ form.search button:hover{
     color: var(--primary-color);
 }
 
+.products .brand-info{
+    color: var(--primary-color);
+}
+
 .flexwrap .row{
     flex: 0 0 100%;
     width: 100%;
@@ -1064,6 +1068,7 @@ form.search button:hover{
 
 .banner .image{
     text-align: right;
+    overflow: hidden;
 }
 
 .banner .get-gray{
@@ -2693,27 +2698,28 @@ input[type="range"]::-webkit-slider-thumb{
         background-image: url(assets/menu/menu_apparel.jpg);
     }
 
-    .dpt-menu .food .ul{
-        background-image: url(assets/menu/menu_food.jpg);
+    .dpt-menu .food ul{
+        background-image: url(assets/menu/menu_food_resized.jpg);
     }
 
-    .dpt-menu .homekit .ul{
+
+    .dpt-menu .homekit ul{
         background-image: url(assets/menu/menu_homeinterior.jpg);
     }
 
-    .dpt-menu .agriculture .ul{
-        background-image: url(assets/menu/menu_agro.jpg);
+    .dpt-menu .agriculture ul{
+        background-image: url(assets/menu/menu_agro_resized.jpg);
     }
 
-    .dpt-menu .pet .ul{
+    .dpt-menu .pet ul{
         background-image: url(assets/menu/menu_pet.jpg);
     }
 
-    .dpt-menu .sports .ul{
-        background-image: url(assets/menu/menu_sports.jpg);
+    .dpt-menu .sports ul{
+        background-image: url(assets/menu/menu_sports_resized.jpg);
     }
 
-    .dpt-menu .shipping .ul{
+    .dpt-menu .shipping ul{
         background-image: url(assets/menu/menu_shipping.jpg);
     }
 
