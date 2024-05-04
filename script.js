@@ -130,10 +130,19 @@ document.addEventListener('click', (e) => {
     }
 })
 
-//show modal on load
-// window.onload = function (){
-//     document.querySelector('.site').classList.toggle('showmodal')
-// }
-// document.querySelector('.modalclose').addEventListener('click', function(){
-//     document.querySelector('.site').classList.remove('showmodal')
-// })
+// aumentar a quantidade no cart page-offer
+function decreaseQuantity() {
+    event.preventDefault();
+    var quantityInput = document.querySelector('.input_quantity');
+    var currentQuantity = parseInt(quantityInput.value);
+    if (currentQuantity > 1) {
+        quantityInput.value = currentQuantity - 1;
+    }
+}
+
+function increaseQuantity() {
+    event.preventDefault();
+    var quantityInput = document.querySelector('.input_quantity');
+    var currentQuantity = parseInt(quantityInput.value);
+    quantityInput.value = currentQuantity + 1;
+}
