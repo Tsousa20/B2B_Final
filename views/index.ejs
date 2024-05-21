@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce Website</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+</head>
+<body>
+    <div id="page" class="site page-home">
+
+        <aside class="site-off desktop-hide">
+            <div class="off-canvas">
+                <div class="canvas-head flexitem">
+                    <div class="logo"><a href="/"><span class="circle"></span>.D11Store</a></div>
+                    <a href="#" class="t-close flexcenter"><i class="ri-close-line"></i></a>
+                </div>
+                <div class="departments"></div>
+                <nav></nav>
+                <div class="thetop-nav"></div>
+            </div>
+        </aside>
+
+        <header>
+
+            <!--Responsive div, não mexer-->
+            <div class="header-top mobile-hide">
+                <div class="container">
+                    <div class="wrapper flexitem">   
+                    </div>
+                </div>
+            </div>
+
+            <!-- header-top -->
+            <div class="header-nav">
+                <div class="container">
+                    <div class="wrapper flexitem">
+                        <a href="#" class="trigger desktop-hide"><span class="i ri-menu-2-line"></span></a>
+                        <div class="left flexitem">
+                            <div class="logo"><a href="/"><span class="circle"></span>.D11Store</a></div>
+                            <nav class="mobile-hide">
+                                <ul class="flexitem second-links">
+                                    <li><a href="#">Home</a></li>
+                                    <li><a href="#">About</a></li>
+
+                                   
+                                    <li class="has-child">
+                                        <a href="#">Categories
+                                            <div class="icon-small"><i class="ri-arrow-down-s-line"></i></div>
+                                        </a>
+                                        <div class="mega">
+                                            <div class="container">
+                                                <div class="wrapper">
+                                                    <div class="flexcol">
+                                                        <div class="row">
+                                                            <h4>Departments</h4>
+                                                            <ul>
+                                                                <% results1.forEach(result => { %>
+                                                                    <li><a href="#"><%= result.name_depart%></a></li>
+                                                                <% }); %>
+                                                                
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flexcol">
+                                                        <div class="row">
+                                                            <h4>Services</h4>
+                                                            <ul>
+                                                                <li><a href="#">Clothing Production</a></li>
+                                                                <li><a href="#">Network Optimization</a></li>
+                                                                <li><a href="#">3D Priting</a></li>
+                                                                <li><a href="#">Interior Design</a></li>
+                                                                <li><a href="#">Crops Optimization</a></li>
+                                                                <li><a href="#">Pet Grooming</a></li>
+                                                                <li><a href="#">Sport Management Software</a></li>
+                                                                <li><a href="#">Transportation</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flexcol">
+                                                        <div class="row">
+                                                            <h4>Business</h4>
+                                                            <ul>
+                                                                <li><a href="#">Fashion</a></li>
+                                                                <li><a href="#">Makeup & Cosmetics</a></li>
+                                                                <li><a href="#">Technology</a></li>
+                                                                <li><a href="#">Restaurants & Hotels</a></li>
+                                                                <li><a href="#">Agriculture</a></li>
+                                                                <li><a href="#">Veterinarian & Pet Store</a></li>
+                                                                <li><a href="#">Sports Club</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flexcol">
+                                                        <div class="row">
+                                                            <h4>Top Brands</h4>
+                                                            <ul class="row">
+                                                                <% results2.forEach(result => { %>
+                                                                    <li><a href="#"><%= result.company_name%></a></li>
+                                                                <% }); %>
+                                                                
+                                                            </ul>
+                                                            <a href="#" class="view-all">View all companies<i class="ri-arrow-right-line"></i></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flexcol products">
+                                                        <div class="row">
+                                                            <div class="media">
+                                                                <div class="thumbnail object-cover">
+                                                                    <a href="#">
+                                                                        <img src="assets/menu/menu_homeinterior.jpg" alt="">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="text-content">
+                                                                <h4>B2B Solutions!</h4>
+                                                                <a href="#" class="primary-button">Check Now</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="right">
+                            <ul class="flexitem second-links">
+                                <li class="mobile-hide"><a href="#">
+                                    <li>My account </li>
+                                    <div class="icon-large"><i class="ri-user-line"></i></div>
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIM do header-top -->
+
+            <!-- header-main -->
+            <!-- parte principal do site -->
+            <div class="header-main mobile-hide">
+                <div class="container">
+                    <div class="wrapper flexitem">
+                        <div class="left">
+                            <div class="dpt-cat">
+                                <div class="dpt-head">
+                                    <div class="main-text">All Departments</div>
+                                    <div class="mini-text mobile-hide">Total <%= totalProducts %> Products</div>
+                                    <a href="#" class="dpt-trigger mobile-hide"><i class="ri-menu-3-line ri-xl"></i></a>
+                                </div>
+
+                                <div class="dpt-menu">
+                                    <ul class="second-links">
+                                        <li class="has-child aparel">
+                                            <a href="#">
+                                                <div class="icon-large"><i class="ri-shirt-line"></i></div>
+                                                Aparel
+                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                            </a>
+                                            <ul>
+                                                <li><a href="#">Textiles</a></li>
+                                                <li><a href="#">Sustainable Fibers</a></li>
+                                                <li><a href="#">Clothing & Acessories</a></li>
+                                                <li><a href="#">Clothing Production Services</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="has-child beauty">
+                                            <a href="#">
+                                                <div class="icon-large"><i class="ri-heart-pulse-line"></i></div>
+                                                Health & Beauty
+                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                            </a>
+                                            <ul>
+                                                <li><a href="#">Makeup & Skincare</a></li>
+                                                <li><a href="#">Men's Grooming</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="has-child eletric">
+                                            <a href="#">
+                                                <div class="icon-large"><i class="ri-macbook-line"></i></div>
+                                                Eletronics & Technology
+                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                            </a>
+                                            <ul>
+                                                <li><a href="#">Eletronic Components</a></li>
+                                                <li><a href="#">Cables</a></li>
+                                                <li><a href="#">3D Printing</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="has-child food">
+                                            <a href="#">
+                                                <div class="icon-large"><i class="ri-restaurant-line"></i></div>
+                                                Food & Beverages
+                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                            </a>
+                                            <ul>
+                                                <li><a href="#">Fruits & Vegetables</a></li>
+                                                <li><a href="#">Cheese & Dairy</a></li>
+                                                <li><a href="#">Meat & Seafood</a></li>
+                                                <li><a href="#">Beverages</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="has-child homekit">
+                                            <a href="#">
+                                                <div class="icon-large"><i class="ri-home-8-line"></i></div>
+                                                Home Interior
+                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                            </a>
+                                            <ul>
+                                                <li><a href="#">Interior Decoration Services</a></li>
+                                                <li><a href="#">Office Furniture</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="has-child agriculture">
+                                            <a href="#">
+                                                <div class="icon-large"><i class="ri-seedling-line"></i></div>
+                                                Agriculture
+                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                            </a>
+                                            <ul>
+                                                <li><a href="#">Seeds</a></li>
+                                                <li><a href="#">Food Production</a></li>
+                                                <li><a href="#">Agro-Technology & Services</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="has-child pet">
+                                            <a href="#">
+                                                <div class="icon-large"><i class="ri-bear-smile-line"></i></div>
+                                                Pet Suplies
+                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                            </a>
+                                            <ul>
+                                                <li><a href="#">Cattle Feed</a></li>
+                                                <li><a href="#">Pet Medication</a></li>
+                                                <li><a href="#">Products & Equipment</a></li>
+                                                <li><a href="#">Pet Grooming</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="has-child sports">
+                                            <a href="#">
+                                                <div class="icon-large"><i class="ri-basketball-line"></i></div>
+                                                Sports
+                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                            </a>
+                                            <ul>
+                                                <li><a href="#">Training Equipment</a></li>
+                                                <li><a href="#">Management Software Sevices</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="has-child shipping">
+                                            <a>
+                                                <div class="icon-large"><i class="ri-box-3-line"></i></div>
+                                                Shipping & Packaging
+                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                            </a>
+                                            <ul>
+                                                <li><a href="#">Styrofoam</a></li>
+                                                <li><a href="#">Packaging Materials</a></li>
+                                                <li><a href="#">Custom Packaging </a></li>
+                                                <li><a href="#">Transportation Services</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="search-box">
+                                <form action="" class="search">
+                                    <span class="icon-large"><i class="ri-search-line"></i></span>
+                                    <input type="search" placeholder="Search for products">
+                                    <button type="submit">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- FIM do header -->
+
+        <main>
+            <!-- slider -->
+            <div class="slider">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="myslider swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <div class="item">
+                                        <div class="image object-cover">
+                                            <img src="assets/slider/slider0.jpg" alt="">
+                                        </div>
+                                        <div class="text-content flexcol">
+                                            <h4>Shoes Fashion</h4>
+                                            <h2><span>Come and Get it</span><br><span>Brand New Shoes</span></h2>
+                                            <a href="#" class="primary-button">Shop Now</a>
+                                        </div>   
+                                    </div>
+                                </div>
+
+                                <div class="swiper-slide">
+                                    <div class="item">
+                                        <div class="image object-cover">
+                                            <img src="assets/slider/slider1.jpg" alt="">
+                                        </div>
+                                        <div class="text-content flexcol">
+                                            <h4>Quick Fashion</h4>
+                                            <h2><span>Fit Your Wardrobe</span><br><span>With Luxury Items</span></h2>
+                                            <a href="#" class="primary-button">Shop Now</a>
+                                        </div>   
+                                    </div>
+                                </div>
+
+                                <div class="swiper-slide">
+                                    <div class="item">
+                                        <div class="image object-cover">
+                                            <img src="assets/slider/slider2.jpg" alt="">
+                                        </div>
+                                        <div class="text-content flexcol">
+                                            <h4>Quick Offer</h4>
+                                            <h2><span>Wooden Minimal Sofa</span><br><span>Extra 50% Off</span></h2>
+                                            <a href="#" class="primary-button">Shop Now</a>
+                                        </div>   
+                                    </div>
+                                </div>
+
+                                <div class="swiper-slide">
+                                    <div class="item">
+                                        <div class="image object-cover">
+                                            <img src="assets/comp_img/GymEquip Pro/Adjustable Weith Bench/1.jpg" alt="">
+                                        </div>
+                                        <div class="text-content flexcol">
+                                            <h4>Best Deals</h4>
+                                            <h2><span>Fitness Equipment</span><br><span>Push The Limit</span></h2>
+                                            <a href="#" class="primary-button">Shop Now</a>
+                                        </div>   
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIM do slider -->
+
+            <!-- brands -->
+            <div class="brands">
+                <div class="container">
+                    <div class="wrapper flexitem">
+                        <div class="item">
+                            <a href="#">
+                                <img src="assets/brands/zara.png" alt="">
+                            </a>
+                        </div>
+
+                        <div class="item">
+                            <a href="#">
+                                <img src="assets/brands/samsung.png" alt="">
+                            </a>
+                        </div>
+
+                        <div class="item">
+                            <a href="#">
+                                <img src="assets/brands/oppo.png" alt="">
+                            </a>
+                        </div>
+
+                        <div class="item">
+                            <a href="#">
+                                <img src="assets/brands/asus.png" alt="">
+                            </a>
+                        </div>
+
+                        <div class="item">
+                            <a href="#">
+                                <img src="assets/brands/hurley.png" alt="">
+                            </a>
+                        </div>
+
+                        <div class="item">
+                            <a href="#">
+                                <img src="assets/brands/dng.png" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIM das brands -->
+
+            <div class="trending">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="sectop flexitem">
+                            <h2><span class="circle"></span><span>Trending Products</span></h2>
+                        </div>
+                        <div class="column">
+                            <div class="flexwrap">
+                                <div class="row products big">
+                                    <div class="item">
+                                        <div class="offer">
+                                            <p>Offer ends at</p>
+                                            <ul class="flexcenter">
+                                                <li>1</li>
+                                                <li>15</li>
+                                                <li>27</li>
+                                                <li>60</li>
+                                            </ul>
+                                        </div>
+                                        <div class="media">
+                                            <div class="image">
+                                                <a href="#">
+                                                    <img src="assets/comp_img/Gentle Groom/Beard Oil/1.jpg" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="hoverable">
+                                                <ul>
+                                                    <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                                                    <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="discount circle flexcenter"><span>34%</span></div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="rating">
+                                                <div class="stars">
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                </div>
+                                                <span class="mini-text">(2,548)</span>
+                                            </div>
+                                            <h3 class="main-links"><a href="#">Beard Oil 125ml</a></h3>
+                                            <div class="price">
+                                                <span class="current">19.99€</span>
+                                                <span class="normal mini-text">30.00€</span>
+                                            </div>
+
+                                            <div class="mini-text">
+                                                <p>Min. Order: 15 un</p>
+                                                <p>Free Shipping</p>
+                                                <p class="brand-info">By: GentleGroom</p>
+                                            </div>
+
+                                            <div class="stock mini-text">
+                                                <div class="qty">
+                                                    <span>Stock: <strong class="qty-available">107</strong></span>
+                                                    <span>Sold: <strong class="qty-sold">3,459</strong></span>
+                                                </div>
+                                                <div class="bar">
+                                                    <div class="available"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row products mini">
+
+                                    <% productsGroup1.forEach(product => { %>
+                                        <div class="item">
+                                            <div class="media">
+                                                <div class="thumbnail object-cover">
+                                                    <a href="#">
+                                                        <img src="<%= product.main_img %>" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="hoverable">
+                                                    <ul>
+                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                                <% if (product.is_promotion) { %>
+                                                    <div class="discount circle flexcenter"><span><%= product.discount_percentage %>%</span></div>
+                                                <% } %>
+                                            </div>
+                                            <div class="content">
+                                                <h3 class="main-links"><a href="#"><%= product.product_name %></a></h3>
+                                                <div class="rating">
+                                                    <div class="stars">
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                    </div>
+                                                    <span class="mini-text">(2,548)</span>
+                                                </div>
+                                                <div class="price">
+                                                    <span class="current"><%= product.is_promotion ? product.formatted_promotion_price : product.formatted_price %><%= product.price_symbol %></span>
+                                                    <% if (product.is_promotion) { %>
+                                                        <span class="normal mini-text"><%= product.formatted_price %><%= product.price_symbol %></span>
+                                                    <% } %>
+                                                </div>
+                                                <div class="mini-text">
+                                                    <p>Min. Order: <%= product.min_order %> un</p>
+                                                    <p>Ready to Ship</p>
+                                                    <p class="brand-info">By: <%= product.company_name %></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                </div>
+
+                                <div class="row products mini">
+                                    <% productsGroup2.forEach(product => { %>
+                                        <div class="item">
+                                            <div class="media">
+                                                <div class="thumbnail object-cover">
+                                                    <a href="#">
+                                                        <img src="<%= product.main_img %>" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="hoverable">
+                                                    <ul>
+                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                                <% if (product.is_promotion) { %>
+                                                    <div class="discount circle flexcenter"><span><%= product.discount_percentage %>%</span></div>
+                                                <% } %>
+                                            </div>
+                                            <div class="content">
+                                                <h3 class="main-links"><a href="#"><%= product.product_name %></a></h3>
+                                                <div class="rating">
+                                                    <div class="stars">
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                    </div>
+                                                    <span class="mini-text">(2,548)</span>
+                                                </div>
+                                                <div class="price">
+                                                    <span class="current"><%= product.is_promotion ? product.formatted_promotion_price : product.formatted_price %><%= product.price_symbol %></span>
+                                                    <% if (product.is_promotion) { %>
+                                                        <span class="normal mini-text"><%= product.formatted_price %><%= product.price_symbol %></span>
+                                                    <% } %>
+                                                </div>
+                                                <div class="mini-text">
+                                                    <p>Min. Order: <%= product.min_order %> un</p>
+                                                    <% if (product.stock > product.min_order) { %>
+                                                        <p>Ready to Ship</p>
+                                                    <% } else { %>
+                                                        <p>Out of Stock</p>
+                                                    <% } %>
+                                                    <p class="brand-info">By: <%= product.company_name %></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIM do trending -->
+
+            <!-- Features -->
+            <div class="features">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="column">
+                            <div class="sectop flexitem">
+                                <h2><span class="circle"></span><span>Featured Products</span></h2>
+                                <div class="second-links">
+                                    <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="products main flexwrap">
+                                <% productsGroup3.forEach(product => { %>
+                                    <div class="item">
+                                        <div class="media">
+                                            <div class="thumbnail object-cover">
+                                                <a href="#">
+                                                    <img src="<%= product.main_img %>" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="hoverable">
+                                                <ul>
+                                                    <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                                                    <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="rating">
+                                                <div class="stars">
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                </div>
+                                                <span class="mini-text">(1,955)</span>
+                                            </div>
+
+                                            <h3><a href="#"><%= product.product_name %></a></h3>
+                                            <div class="price">
+                                                <span class="current"><%= product.is_promotion ? product.formatted_promotion_price: product.formatted_price %><%= product.price_symbol %></span>
+                                                <% if (product.is_promotion) { %>
+                                                    <span class="normal mini-text"><%= product.formatted_price %><%= product.price_symbol %></span>
+                                                <% } %>
+                                            </div>
+
+                                            <div class="mini-text">
+                                                <p>By: <%= product.company_name %></p>
+                                            </div>
+                                            
+                                            <div class="footer">
+                                                <ul class="mini-text">
+                                                    <li>Min. Order: <%= product.min_order %> un</li>
+                                                    <% if (product.stock > product.min_order) { %>
+                                                        <li>Ready to Ship</li>
+                                                    <% } else { %>
+                                                        <li>Out of Stock</li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIM das features -->
+
+            <!-- Banners -->
+            <div class="banners">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="column">
+                            <div class="banner flexwrap">
+                                <div class="row">
+                                    <div class="item">
+                                        <div class="image">
+                                            <img src="assets/banner/banner1.jpg" alt="">
+                                        </div>
+                                        <div class="text-content flexcol">
+                                            <h4>Service!</h4>
+                                            <h3><span>Design your business</span><br>Interior design</h3>
+                                            <a href="#" class="primary-button">Discover Now</a>
+                                        </div>
+                                        <a href="#" class="over-link"></a>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="item">
+                                        <div class="image">
+                                            <img src="assets/banner/banner3.1.jpg" alt="">
+                                        </div>
+                                        <div class="text-content flexcol">
+                                            <h4>Service!</h4>
+                                            <h3><span>Ship your products anywhere</span><br>Transportation Services</h3>
+                                            <a href="#" class="primary-button">Discover Now</a>
+                                        </div>
+                                        <a href="#" class="over-link"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--banners-->
+
+                            <div class="product-categories flexwrap">
+                                <div class="row">
+                                    <div class="item">
+                                        <div class="image">
+                                            <img src="assets/banner/procat1.jpg" alt="">
+                                        </div>
+                                        <div class="content mini-links">
+                                            <h4>Health & Beauty</h4>
+                                            <ul class="flexcol">
+                                                <li><a href="#">Makeup</a></li>
+                                                <li><a href="#">Skin Care</a></li>
+                                                <li><a href="#">Hair Care</a></li>
+                                                <li><a href="#">Fragance</a></li>
+                                                <li><a href="#">Foot & Hand Care</a></li>
+                                            </ul>
+                                            <div class="second-links">
+                                                <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="item">
+                                        <div class="image">
+                                            <img src="assets/banner/procat2.jpg" alt="">
+                                        </div>
+                                        <div class="content mini-links">
+                                            <h4>Eletronics & Technology</h4>
+                                            <ul class="flexcol">
+                                                <li><a href="#">Ethernet Cable</a></li>
+                                                <li><a href="#">Fiber Optic Cable</a></li>
+                                                <li><a href="#">Coaxial Cable</a></li>
+                                                <li><a href="#">Led</a></li>
+                                                <li><a href="#">Circuit LM741</a></li>
+                                            </ul>
+                                            <div class="second-links">
+                                                <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="item">
+                                        <div class="image">
+                                            <img src="assets/banner/procat3.jpg" alt="">
+                                        </div>
+                                        <div class="content mini-links">
+                                            <h4>Agriculture</h4>
+                                            <ul class="flexcol">
+                                                <li><a href="#">Soybean Seeds</a></li>
+                                                <li><a href="#">Wheat Seeds</a></li>
+                                                <li><a href="#">Organic Carrots</a></li>
+                                                <li><a href="#">Cattle Feed Pellets</a></li>
+                                                <li><a href="#">Layer Poultry Feed</a></li>
+                                            </ul>
+                                            <div class="second-links">
+                                                <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FIM dos banners -->
+
+        </main>
+        <!-- Fim do main -->
+
+        <!-- Footer -->
+        <footer>
+            <!-- newsletter -->
+            <div class="newsletter">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="box">
+                            <div class="content">
+                                <h3>Join Our Newsletter</h3>
+                                <p>Get an E-mail about our latest online platform and <strong>special offers</strong></p>
+                            </div>
+                            <form action="" class="search">
+                                <span class="icon-large"><i class="ri-mai-line"></i></span>
+                                <input type="email" placeholder="Your email address" required>
+                                <button type="submit">Sign up</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fim da newsletter -->
+
+            <!-- widgets -->
+            <div class="widgets">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="flexwrap">
+                            <div class="row">
+                                <div class="item mini-links">
+                                    <h4>Help & Contact</h4>
+                                    <ul class="flexcol">
+                                        <li><a href="#">Your Account</a></li>
+                                        <li><a href="#">Your Orders</a></li>
+                                        <li><a href="#">Shipping Rates</a></li>
+                                        <li><a href="#">Returns</a></li>
+                                        <li><a href="#">Assistant</a></li>
+                                        <li><a href="#">Help</a></li>
+                                        <li><a href="#">Contact us</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="item mini-links">
+                                    <h4>Product Categories</h4>
+                                    <ul class="flexcol">
+                                        <li><a href="#">Beauty</a></li>
+                                        <li><a href="#">Eletronic</a></li>
+                                        <li><a href="#">Women's Fashion</a></li>
+                                        <li><a href="#">Men's Fashion</a></li>
+                                        <li><a href="#">Girl's Fashion</a></li>
+                                        <li><a href="#">Boy's Fashion</a></li>
+                                        <li><a href="#">Health & Household</a></li>
+                                        <li><a href="#">Home & Kitchen</a></li>
+                                        <li><a href="#">Pet Supplies</a></li>
+                                        <li><a href="#">Sports</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="item mini-links">
+                                    <h4>Payment Info</h4>
+                                    <ul class="flexcol">
+                                        <li><a href="#">Business Card</a></li>
+                                        <li><a href="#">Shop with Points</a></li>
+                                        <li><a href="#">Reload You Balance</a></li>
+                                        <li><a href="#">Paypal</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="item mini-links">
+                                    <h4>About Us</h4>
+                                    <ul class="flexcol">
+                                        <li><a href="#">Company Info</a></li>
+                                        <li><a href="#">News</a></li>
+                                        <li><a href="#">Investors</a></li>
+                                        <li><a href="#">Careers</a></li>
+                                        <li><a href="#">Policies</a></li>
+                                        <li><a href="#">Customer reviews</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fim dos widgets -->
+
+            
+            <!-- footer info -->
+            <div class="footer-info">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="flexcol">
+                            <div class="logo">
+                                <a href="#"><span class="circle"></span>.D11Store</a>
+                            </div>
+                            <div class="socials">
+                                <ul class="flexitem">
+                                    <li><a href="#"><i class="ri-twitter-line"></i></a></li>
+                                    <li><a href="#"><i class="ri-facebook-line"></i></a></li>
+                                    <li><a href="#"><i class="ri-instagram-line"></i></a></li>
+                                    <li><a href="#"><i class="ri-tiktok-line"></i></a></li>
+                                    <li><a href="#"><i class="ri-linkedin-line"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="mini-text">&copy; Copyright 2024 .D11Store. All right reserved.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Fim do footer info -->
+        </footer>
+        <!-- Fim do footer -->
+
+        <!-- menu bottom fixed -->
+        <div class="menu-bottom desktop-hide">
+            <div class="container">
+                <div class="wrapper">
+                    <nav>
+                        <ul class="flexitem">
+                            <li>
+                                <a href="#">
+                                    <i class="ri-bar-chart-line"></i>
+                                    <span>Trending</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <i class="ri-user-6-line"></i>
+                                    <span>Account</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <i class="ri-heart-line"></i>
+                                    <span>Wishlist</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#0" class="t-search">
+                                    <i class="ri-search-line"></i>
+                                    <span>Search</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#0">
+                                    <i class="ri-shopping-cart-line"></i>
+                                    <span>Cart</span>
+                                    <div class="fly-item">
+                                        <span class="item-number">0</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Fim do mwnu bottom fixed -->
+
+        <!-- search bottom -->
+        <div class="search-bottom desktop-hide">
+            <div class="container">
+                <div class="wrapper">
+
+                    <form action="" class="search">
+                        <a href="#" class="t-close search-close flexcenter"><i class="ri-close-line"></i></a>
+                        <span class="icon-large"><i class="ri-search-line"></i></span>
+                        <input type="search" placeholder="Your email address" required>
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Fim do search bottom -->
+
+        <div class="overlay"></div>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
