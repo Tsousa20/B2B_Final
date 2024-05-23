@@ -45,8 +45,7 @@
                                     <li><a href="#">Home</a></li>
                                     <li><a href="#">About</a></li>
 
-                                    
-
+                                   
                                     <li class="has-child">
                                         <a href="#">Categories
                                             <div class="icon-small"><i class="ri-arrow-down-s-line"></i></div>
@@ -58,15 +57,10 @@
                                                         <div class="row">
                                                             <h4>Departments</h4>
                                                             <ul>
-                                                                <li><a href="#">Aparel</a></li>
-                                                                <li><a href="#">Health & Beauty</a></li>
-                                                                <li><a href="#">Eletronics & Technology</a></li>
-                                                                <li><a href="#">Food & Beverages</a></li>
-                                                                <li><a href="#">Home Interior</a></li>
-                                                                <li><a href="#">Agriculture</a></li>
-                                                                <li><a href="#">Pet Suplies</a></li>
-                                                                <li><a href="#">Sports</a></li>
-                                                                <li><a href="#">Shipping & Packaging</a></li>
+                                                                <% results1.forEach(result => { %>
+                                                                    <li><a href="#"><%= result.name_depart%></a></li>
+                                                                <% }); %>
+                                                                
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -102,17 +96,11 @@
                                                     <div class="flexcol">
                                                         <div class="row">
                                                             <h4>Top Brands</h4>
-                                                            <ul class="women-brands">
-                                                                <li><a href="#">StyleWeave</a></li>
-                                                                <li><a href="#">PureGlow</a></li>
-                                                                <li><a href="#">GentleCut</a></li>
-                                                                <li><a href="#">EliteSpirits</a></li>
-                                                                <li><a href="#">Maykro</a></li>
-                                                                <li><a href="#">InterSpace</a></li>
-                                                                <li><a href="#">AgriSeeds</a></li>
-                                                                <li><a href="#">AgroFeed</a></li>
-                                                                <li><a href="#">Fitzone</a></li>
-                                                                <li><a href="#">StyroCrafters</a></li>
+                                                            <ul class="row">
+                                                                <% results2.forEach(result => { %>
+                                                                    <li><a href="#"><%= result.company_name%></a></li>
+                                                                <% }); %>
+                                                                
                                                             </ul>
                                                             <a href="#" class="view-all">View all companies<i class="ri-arrow-right-line"></i></a>
                                                         </div>
@@ -257,7 +245,7 @@
                             <div class="dpt-cat">
                                 <div class="dpt-head">
                                     <div class="main-text">All Departments</div>
-                                    <div class="mini-text mobile-hide">Total 1059 Products</div>
+                                    <div class="mini-text mobile-hide">Total <%= totalProducts %> Products</div>
                                     <a href="#" class="dpt-trigger mobile-hide">
                                         <i class="ri-menu-3-line ri-xl"></i>
                                         <i class="ri-close-line ri-xl"></i>
@@ -383,14 +371,6 @@
                                                 <li><a href="#">Transportation Services</a></li>
                                             </ul>
                                         </li>
-
-                                        <li>
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-shield-star-line"></i></div>
-                                                Best Seller
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                        </li>
                                     </ul>
                                 </div>
 
@@ -423,68 +403,16 @@
                                         <div class="filter-block">
                                             <h4>Products</h4>
                                             <ul>
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="bags">
-                                                    <label for="bags">
-                                                        <span class="checked"></span>
-                                                        <span>Fruit & Vegetables</span>
-                                                    </label>
-                                                    <span class="count">15</span>
-                                                </li>
-
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="clothing">
-                                                    <label for="clothing">
-                                                        <span class="checked"></span>
-                                                        <span>Meet</span>
-                                                    </label>
-                                                    <span class="count">3</span>
-                                                </li>
-
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="jewelry">
-                                                    <label for="jewelry">
-                                                        <span class="checked"></span>
-                                                        <span>Fish & Seafood</span>
-                                                    </label>
-                                                    <span class="count">1</span>
-                                                </li>
-
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="shoes">
-                                                    <label for="shoes">
-                                                        <span class="checked"></span>
-                                                        <span>Dairy Products</span>
-                                                    </label>
-                                                    <span class="count">7</span>
-                                                </li>
-
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="shoes">
-                                                    <label for="shoes">
-                                                        <span class="checked"></span>
-                                                        <span>Wine</span>
-                                                    </label>
-                                                    <span class="count">7</span>
-                                                </li>
-
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="shoes">
-                                                    <label for="shoes">
-                                                        <span class="checked"></span>
-                                                        <span>Spirits</span>
-                                                    </label>
-                                                    <span class="count">7</span>
-                                                </li>
-
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="shoes">
-                                                    <label for="shoes">
-                                                        <span class="checked"></span>
-                                                        <span>Soft Drinks & Water</span>
-                                                    </label>
-                                                    <span class="count">7</span>
-                                                </li>
+                                                <% results7.forEach(function(result) { %>
+                                                    <li>
+                                                        <input type="checkbox" name="checkbox" id="<%= result.sub_departamento_nome %>">
+                                                        <label for="<%= result.sub_departamento_nome %>">
+                                                            <span class="checked"></span>
+                                                            <span><%= result.sub_departamento_nome %></span>
+                                                        </label>
+                                                        <span class="count"><%= result.total_produtos %></span>
+                                                    </li>
+                                                <% }); %>
                                             </ul>
                                         </div>
 
@@ -505,73 +433,65 @@
                                         <div class="filter-block">
                                             <h4>Brands</h4>
                                             <ul>
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="nike">
-                                                    <label for="nike">
-                                                        <span class="checked"></span>
-                                                        <span>FrescoSupply</span>
-                                                    </label>
-                                                    <span class="count">9</span>
-                                                </li>
-
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="louisvuitton">
-                                                    <label for="louisvuitton">
-                                                        <span class="checked"></span>
-                                                        <span>Maykro</span>
-                                                    </label>
-                                                    <span class="count">7</span>
-                                                </li>
-
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="hermes">
-                                                    <label for="hermes">
-                                                        <span class="checked"></span>
-                                                        <span>EliteSpirits</span>
-                                                    </label>
-                                                    <span class="count">2</span>
-                                                </li>
+                                                <% results8.forEach(function(result) { %>
+                                                    <li>
+                                                        <input type="checkbox" name="checkbox" id="<%= result.company_name %>">
+                                                        <label for="<%= result.company_name %>">
+                                                            <span class="checked"></span>
+                                                            <span><%= result.company_name %></span>
+                                                        </label>
+                                                        <span class="count"><%= result.total_produtos %></span>
+                                                    </li>
+                                                <% }); %>
                                             </ul>
                                         </div>
 
                                         <div class="filter-block">
                                             <h4>Price</h4>
                                             <ul>
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="price_0_50">
-                                                    <label for="price_0_50">
-                                                        <span class="checked"></span>
-                                                        <span>0€ - 50€</span>
-                                                    </label>
-                                                    <span class="count">11</span>
-                                                </li>
+                                                <% results9.forEach(function(result) { %>
+                                                    <li>
+                                                        <input type="checkbox" name="checkbox" id="price_0_50">
+                                                        <label for="price_0_50">
+                                                            <span class="checked"></span>
+                                                            <span>0€ - 50€</span>
+                                                        </label>
+                                                        <span class="count"><%= result.total_produtos %></span>
+                                                    </li>
+                                                <% }); %>
 
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="price_50_100">
-                                                    <label for="price_50_100">
-                                                        <span class="checked"></span>
-                                                        <span>50€ - 100€</span>
-                                                    </label>
-                                                    <span class="count">11</span>
-                                                </li>
+                                                <% results10.forEach(function(result) { %>
+                                                    <li>
+                                                        <input type="checkbox" name="checkbox" id="price_50_100">
+                                                        <label for="price_50_100">
+                                                            <span class="checked"></span>
+                                                            <span>50€ - 100€</span>
+                                                        </label>
+                                                        <span class="count"><%= result.total_produtos %></span>
+                                                    </li>
+                                                <% }); %>
 
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="price_100_150">
-                                                    <label for="price_100_150">
-                                                        <span class="checked"></span>
-                                                        <span>100€ - 150€</span>
-                                                    </label>
-                                                    <span class="count">11</span>
-                                                </li>
+                                                <% results11.forEach(function(result) { %>
+                                                    <li>
+                                                        <input type="checkbox" name="checkbox" id="price_100_150">
+                                                        <label for="price_100_150">
+                                                            <span class="checked"></span>
+                                                            <span>100€ - 150€</span>
+                                                        </label>
+                                                        <span class="count"><%= result.total_produtos %></span>
+                                                    </li>
+                                                <% }); %>
 
-                                                <li>
-                                                    <input type="checkbox" name="checkbox" id="price_0_50">
-                                                    <label for="price_0_50">
-                                                        <span class="checked"></span>
-                                                        <span>150€ - Max</span>
-                                                    </label>
-                                                    <span class="count">11</span>
-                                                </li>
+                                                <% results12.forEach(function(result) { %>
+                                                    <li>
+                                                        <input type="checkbox" name="checkbox" id="price_0_50">
+                                                        <label for="price_0_50">
+                                                            <span class="checked"></span>
+                                                            <span>150€ - Max</span>
+                                                        </label>
+                                                        <span class="count"><%= result.total_produtos %></span>
+                                                    </li>
+                                                <% }); %>
                                             </ul>
                                         </div>
                                     </div>
@@ -998,14 +918,14 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="item get-gray">
+                                    <div class="item">
                                         <div class="image">
-                                            <img src="assets/banner/banner2.jpg" alt="">
+                                            <img src="assets/banner/banner3.1.jpg" alt="">
                                         </div>
                                         <div class="text-content flexcol">
-                                            <h4>Brutal Sale!</h4>
-                                            <h3><span>Discount everyday</span><br>Office Outfit</h3>
-                                            <a href="#" class="primary-button">Shop Now</a>
+                                            <h4>Service!</h4>
+                                            <h3><span>Ship your products anywhere</span><br>Transportation Services</h3>
+                                            <a href="#" class="primary-button">Discover Now</a>
                                         </div>
                                         <a href="#" class="over-link"></a>
                                     </div>
@@ -1020,13 +940,11 @@
                                             <img src="assets/banner/procat1.jpg" alt="">
                                         </div>
                                         <div class="content mini-links">
-                                            <h4>Beauty</h4>
+                                            <h4>Health & Beauty</h4>
                                             <ul class="flexcol">
-                                                <li><a href="#">Makeup</a></li>
-                                                <li><a href="#">Skin Care</a></li>
-                                                <li><a href="#">Hair Care</a></li>
-                                                <li><a href="#">Fragance</a></li>
-                                                <li><a href="#">Foot & Hand Care</a></li>
+                                                <% results4.forEach(result => { %>
+                                                    <li><a href="#"><%= result.product_name %></a></li>
+                                                <% }); %>
                                             </ul>
                                             <div class="second-links">
                                                 <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
@@ -1034,7 +952,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="item">
                                         <div class="image">
@@ -1043,11 +960,9 @@
                                         <div class="content mini-links">
                                             <h4>Eletronics & Technology</h4>
                                             <ul class="flexcol">
-                                                <li><a href="#">Ethernet Cable</a></li>
-                                                <li><a href="#">Fiber Optic Cable</a></li>
-                                                <li><a href="#">Coaxial Cable</a></li>
-                                                <li><a href="#">Led</a></li>
-                                                <li><a href="#">Circuit LM741</a></li>
+                                                <% results5.forEach(result => { %>
+                                                    <li><a href="#"><%= result.product_name %></a></li>
+                                                <% }); %>
                                             </ul>
                                             <div class="second-links">
                                                 <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
@@ -1064,14 +979,12 @@
                                         <div class="content mini-links">
                                             <h4>Agriculture</h4>
                                             <ul class="flexcol">
-                                                <li><a href="#">Soybean Seeds</a></li>
-                                                <li><a href="#">Wheat Seeds</a></li>
-                                                <li><a href="#">Organic Carrots</a></li>
-                                                <li><a href="#">Cattle Feed Pellets</a></li>
-                                                <li><a href="#">Layer Poultry Feed</a></li>
+                                                <% results6.forEach(result => { %>
+                                                    <li><a href="#"><%= result.product_name %></a></li>
+                                                <% }); %>
                                             </ul>
                                             <div class="second-links">
-                                                <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
+                                                <a href="#" id="loadMoreButton" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -1293,6 +1206,82 @@
                 Fpopup.classList.remove('show')
             }
         })
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            let offset = 18; // Começa depois dos primeiros 18 produtos
+            const loadMoreButton = document.getElementById('loadMoreButton');
+            const productsContainer = document.querySelector('.flexwrap');
+    
+            loadMoreButton.addEventListener('click', async () => {
+                try {
+                    const response = await fetch(`/load-more-products?offset=${offset}`);
+                    const products = await response.json();
+    
+                    // Criar três divs para as linhas de produtos
+                    for (let i = 0; i < 3; i++) {
+                        const rowDiv = document.createElement('div');
+                        rowDiv.classList.add('row', 'products', 'mini');
+    
+                        // Adicionar produtos à linha atual
+                        for (let j = 0; j < 6 && (i * 6 + j) < products.length; j++) {
+                            const product = products[i * 6 + j];
+                            const productHtml = `
+                                
+                                <div class="media">
+                                    <div class="thumbnail object-cover">
+                                        <a href="#">
+                                            <img src="${product.main_img}" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="hoverable">
+                                        <ul>
+                                            <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    ${product.is_promotion ? `<div class="discount circle flexcenter"><span>${product.discount_percentage}%</span></div>` : ''}
+                                </div>
+                                <div class="content">
+                                    <h3 class="main-links"><a href="#">${product.product_name}</a></h3>
+                                    <div class="rating">
+                                        <div class="stars">
+                                            <i class="ri-star-fill" style="color:orange"></i>
+                                            <i class="ri-star-fill" style="color:orange"></i>
+                                            <i class="ri-star-fill" style="color:orange"></i>
+                                            <i class="ri-star-fill" style="color:orange"></i>
+                                            <i class="ri-star-fill" style="color:orange"></i>
+                                        </div>
+                                        <span class="mini-text">(2,548)</span>
+                                    </div>
+                                    <div class="price">
+                                        <span class="current">${product.is_promotion ? product.formatted_promotion_price : product.formatted_price}${product.price_symbol}</span>
+                                        ${product.is_promotion ? `<span class="normal mini-text">${product.formatted_price}${product.price_symbol}</span>` : ''}
+                                    </div>
+                                    <div class="mini-text">
+                                        <p>Min. Order: ${product.min_order} un</p>
+                                        <p>${product.stock > product.min_order ? 'Ready to Ship' : 'Out of Stock'}</p>
+                                        <p class="brand-info">By: ${product.company_name}</p>
+                                    </div>
+                                </div>  
+                            `;
+    
+                            const productDiv = document.createElement('div');
+                            productDiv.classList.add('item');
+                            productDiv.innerHTML = productHtml;
+                            rowDiv.appendChild(productDiv);
+                        }
+    
+                        // Adicionar a linha ao contêiner de produtos
+                        productsContainer.appendChild(rowDiv);
+                    }
+    
+                    offset += 18; // Incrementa o offset para a próxima requisição
+                } catch (error) {
+                    console.error('Erro ao carregar mais produtos:', error);
+                }
+            });
+        });
     </script>
 </body>
 </html>

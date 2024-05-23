@@ -146,3 +146,5 @@ function increaseQuantity() {
     var currentQuantity = parseInt(quantityInput.value);
     quantityInput.value = currentQuantity + 1;
 }
+
+
