@@ -10,7 +10,7 @@
 
 </head>
 <body>
-    <div id="page" class="site page-home">
+    <div id="page" class="site page-category">
 
         <aside class="site-off desktop-hide">
             <div class="off-canvas">
@@ -25,7 +25,6 @@
         </aside>
 
         <header>
-
             <!--Responsive div, não mexer-->
             <div class="header-top mobile-hide">
                 <div class="container">
@@ -33,7 +32,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <!-- header-top -->
             <div class="header-nav">
                 <div class="container">
@@ -129,12 +128,107 @@
                                 </ul>
                             </nav>
                         </div>
+
                         <div class="right">
                             <ul class="flexitem second-links">
                                 <li class="mobile-hide"><a href="#">
-                                    <li>My account </li>
                                     <div class="icon-large"><i class="ri-user-line"></i></div>
                                 </a></li>
+                                
+                                <li class="mobile-hide"><a href="#">
+                                    <div class="icon-large"><i class="ri-heart-line"></i></div>
+                                    <div class="fly-item"><span class="item-number">0</span></div>
+                                </a></li>
+
+                                <li class="iscart"><a href="#">
+                                    <div class="icon-large">
+                                        <i class="ri-shopping-cart-line"></i>
+                                        <div class="fly-item"><span class="item-number">0</span></div>
+                                    </div>
+                                    
+                                    <div class="icon-text">
+                                        <div class="mini-text">Total</div>
+                                        <div class="cart-total">$1.622</div>
+                                    </div>
+                                </a>
+
+                                <div class="mini-cart">
+                                    <div class="content">
+                                        <div class="cart-head">
+                                            5 items in cart
+                                        </div>
+                                        <div class="cart-body">
+                                            <ul class="products mini">
+                                                <li class="item">
+                                                    <div class="thumbnail object-cover">
+                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                    </div>
+                                                    <div class="item-content">
+                                                        <p><a href="#">Dimmable Ceiling Light Modern</a></p>
+                                                        <span class="price">
+                                                            <span>$279.99</span>
+                                                            <span class="fly-item"><span>2x</span>
+                                                        </span>
+                                                    </div>
+                                                    <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
+                                                </li>
+
+                                                <li class="item">
+                                                    <div class="thumbnail object-cover">
+                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                    </div>
+                                                    <div class="item-content">
+                                                        <p><a href="#">Modern Storage Cabinet with Door & 3 drwaers</a></p>
+                                                        <span class="price">
+                                                            <span>$129.99</span>
+                                                            <span class="fly-item"><span>1x</span>
+                                                        </span>
+                                                    </div>
+                                                    <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
+                                                </li>
+
+                                                <li class="item">
+                                                    <div class="thumbnail object-cover">
+                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                    </div>
+                                                    <div class="item-content">
+                                                        <p><a href="#">Dimmable Ceiling Light Modern</a></p>
+                                                        <span class="price">
+                                                            <span>$279.99</span>
+                                                            <span class="fly-item"><span>2x</span>
+                                                        </span>
+                                                    </div>
+                                                    <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
+                                                </li>
+
+                                                <li class="item">
+                                                    <div class="thumbnail object-cover">
+                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                    </div>
+                                                    <div class="item-content">
+                                                        <p><a href="#">Dimmable Ceiling Light Modern</a></p>
+                                                        <span class="price">
+                                                            <span>$279.99</span>
+                                                            <span class="fly-item"><span>2x</span>
+                                                        </span>
+                                                    </div>
+                                                    <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="cart-footer">
+                                            <div class="subtotal">
+                                                <p>Subtotal</p>
+                                                <p><strong>$1,622,95</strong></p>
+                                            </div>
+                                            <div class="actions">
+                                                <a href="/cart.html" class="primary-button">Checkout</a>
+                                                <a href="/checkout.html" class="secondary-button">View Cart</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -152,7 +246,10 @@
                                 <div class="dpt-head">
                                     <div class="main-text">All Departments</div>
                                     <div class="mini-text mobile-hide">Total <%= totalProducts %> Products</div>
-                                    <a href="#" class="dpt-trigger mobile-hide"><i class="ri-menu-3-line ri-xl"></i></a>
+                                    <a href="#" class="dpt-trigger mobile-hide">
+                                        <i class="ri-menu-3-line ri-xl"></i>
+                                        <i class="ri-close-line ri-xl"></i>
+                                    </a>
                                 </div>
 
                                 <div class="dpt-menu">
@@ -160,7 +257,7 @@
                                         <li class="has-child aparel">
                                             <a href="#">
                                                 <div class="icon-large"><i class="ri-shirt-line"></i></div>
-                                                Aparel
+                                                Apparel
                                                 <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
                                             </a>
                                             <ul>
@@ -213,7 +310,7 @@
                                         <li class="has-child homekit">
                                             <a href="#">
                                                 <div class="icon-large"><i class="ri-home-8-line"></i></div>
-                                                Home Interior
+                                                Interior Decor
                                                 <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
                                             </a>
                                             <ul>
@@ -295,183 +392,35 @@
         <!-- FIM do header -->
 
         <main>
-            <!-- slider -->
-            <div class="slider">
-                <div class="container">
-                    <div class="wrapper">
-                        <div class="myslider swiper">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <div class="item">
-                                        <div class="image object-cover">
-                                            <img src="assets/slider/slider0.jpg" alt="">
-                                        </div>
-                                        <div class="text-content flexcol">
-                                            <h4>Shoes Fashion</h4>
-                                            <h2><span>Come and Get it</span><br><span>Brand New Shoes</span></h2>
-                                            <a href="#" class="primary-button">Shop Now</a>
-                                        </div>   
-                                    </div>
-                                </div>
-
-                                <div class="swiper-slide">
-                                    <div class="item">
-                                        <div class="image object-cover">
-                                            <img src="assets/slider/slider1.jpg" alt="">
-                                        </div>
-                                        <div class="text-content flexcol">
-                                            <h4>Quick Fashion</h4>
-                                            <h2><span>Fit Your Wardrobe</span><br><span>With Luxury Items</span></h2>
-                                            <a href="#" class="primary-button">Shop Now</a>
-                                        </div>   
-                                    </div>
-                                </div>
-
-                                <div class="swiper-slide">
-                                    <div class="item">
-                                        <div class="image object-cover">
-                                            <img src="assets/slider/slider2.jpg" alt="">
-                                        </div>
-                                        <div class="text-content flexcol">
-                                            <h4>Quick Offer</h4>
-                                            <h2><span>Wooden Minimal Sofa</span><br><span>Extra 50% Off</span></h2>
-                                            <a href="#" class="primary-button">Shop Now</a>
-                                        </div>   
-                                    </div>
-                                </div>
-
-                                <div class="swiper-slide">
-                                    <div class="item">
-                                        <div class="image object-cover">
-                                            <img src="assets/comp_img/GymEquip Pro/Adjustable Weith Bench/1.jpg" alt="">
-                                        </div>
-                                        <div class="text-content flexcol">
-                                            <h4>Best Deals</h4>
-                                            <h2><span>Fitness Equipment</span><br><span>Push The Limit</span></h2>
-                                            <a href="#" class="primary-button">Shop Now</a>
-                                        </div>   
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-pagination"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM do slider -->
-
-            <!-- brands -->
-            <div class="brands">
-                <div class="container">
-                    <div class="wrapper flexitem">
-                        <div class="item">
-                            <a href="#">
-                                <img src="assets/brands/zara.png" alt="">
-                            </a>
-                        </div>
-
-                        <div class="item">
-                            <a href="#">
-                                <img src="assets/brands/samsung.png" alt="">
-                            </a>
-                        </div>
-
-                        <div class="item">
-                            <a href="#">
-                                <img src="assets/brands/oppo.png" alt="">
-                            </a>
-                        </div>
-
-                        <div class="item">
-                            <a href="#">
-                                <img src="assets/brands/asus.png" alt="">
-                            </a>
-                        </div>
-
-                        <div class="item">
-                            <a href="#">
-                                <img src="assets/brands/hurley.png" alt="">
-                            </a>
-                        </div>
-
-                        <div class="item">
-                            <a href="#">
-                                <img src="assets/brands/dng.png" alt="">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- FIM das brands -->
 
             <div class="trending">
                 <div class="container">
                     <div class="wrapper">
                         <div class="sectop flexitem">
-                            <h2><span class="circle"></span><span>Trending Products</span></h2>
+                            <h2><span class="circle"></span><span>Featured Products</span></h2>
+                            <div class="cat-navigation flexitem">
+                                <div class="item-filter desktop-hide">
+                                    <a href="#" class="filter-trigger label">
+                                        <i class="ri-menu-2-line ri-2x"></i>
+                                        <span>Filter</span>
+                                    </a>
+                                </div>
+                                <div class="item-sortir">
+                                    <div class="label">
+                                        <span class="mobile-hide">Sort by default</span>
+                                        <div class="desktop-hide">Default</div>
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                    <ul>
+                                        <li>Default</li>
+                                        <li>Price High to Low</li>
+                                        <li>Price Low to High</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div class="column">
                             <div class="flexwrap">
-                                <div class="row products big">
-                                    <div class="item">
-                                        <div class="offer">
-                                            <p>Offer ends at</p>
-                                            <ul class="flexcenter">
-                                                <li>1</li>
-                                                <li>15</li>
-                                                <li>27</li>
-                                                <li>60</li>
-                                            </ul>
-                                        </div>
-                                        <div class="media">
-                                            <div class="image">
-                                                <a href="#">
-                                                    <img src="assets/comp_img/Gentle Groom/Beard Oil/1.jpg" alt="">
-                                                </a>
-                                            </div>
-                                            <div class="hoverable">
-                                                <ul>
-                                                    <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                    <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="discount circle flexcenter"><span>34%</span></div>
-                                        </div>
-                                        <div class="content">
-                                            <div class="rating">
-                                                <div class="stars">
-                                                    <i class="ri-star-fill" style="color:orange"></i>
-                                                    <i class="ri-star-fill" style="color:orange"></i>
-                                                    <i class="ri-star-fill" style="color:orange"></i>
-                                                    <i class="ri-star-fill" style="color:orange"></i>
-                                                    <i class="ri-star-fill" style="color:orange"></i>
-                                                </div>
-                                                <span class="mini-text">(2,548)</span>
-                                            </div>
-                                            <h3 class="main-links"><a href="#">Beard Oil 125ml</a></h3>
-                                            <div class="price">
-                                                <span class="current">19.99€</span>
-                                                <span class="normal mini-text">30.00€</span>
-                                            </div>
-
-                                            <div class="mini-text">
-                                                <p>Min. Order: 15 un</p>
-                                                <p>Free Shipping</p>
-                                                <p class="brand-info">By: GentleGroom</p>
-                                            </div>
-
-                                            <div class="stock mini-text">
-                                                <div class="qty">
-                                                    <span>Stock: <strong class="qty-available">107</strong></span>
-                                                    <span>Sold: <strong class="qty-sold">3,459</strong></span>
-                                                </div>
-                                                <div class="bar">
-                                                    <div class="available"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="row products mini">
 
@@ -522,7 +471,55 @@
                                 </div>
 
                                 <div class="row products mini">
+
                                     <% productsGroup2.forEach(product => { %>
+                                        <div class="item">
+                                            <div class="media">
+                                                <div class="thumbnail object-cover">
+                                                    <a href="#">
+                                                        <img src="<%= product.main_img %>" alt="">
+                                                    </a>
+                                                </div>
+                                                <div class="hoverable">
+                                                    <ul>
+                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                                <% if (product.is_promotion) { %>
+                                                    <div class="discount circle flexcenter"><span><%= product.discount_percentage %>%</span></div>
+                                                <% } %>
+                                            </div>
+                                            <div class="content">
+                                                <h3 class="main-links"><a href="#"><%= product.product_name %></a></h3>
+                                                <div class="rating">
+                                                    <div class="stars">
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                    </div>
+                                                    <span class="mini-text">(2,548)</span>
+                                                </div>
+                                                <div class="price">
+                                                    <span class="current"><%= product.is_promotion ? product.formatted_promotion_price : product.formatted_price %><%= product.price_symbol %></span>
+                                                    <% if (product.is_promotion) { %>
+                                                        <span class="normal mini-text"><%= product.formatted_price %><%= product.price_symbol %></span>
+                                                    <% } %>
+                                                </div>
+                                                <div class="mini-text">
+                                                    <p>Min. Order: <%= product.min_order %> un</p>
+                                                    <p>Ready to Ship</p>
+                                                    <p class="brand-info">By: <%= product.company_name %></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                </div>
+
+                                <div class="row products mini">
+                                    <% productsGroup3.forEach(product => { %>
                                         <div class="item">
                                             <div class="media">
                                                 <div class="thumbnail object-cover">
@@ -572,6 +569,9 @@
                                     <% }); %>
                                 </div>
                             </div>
+                            <div class="load-more flexcenter">
+                                <a href="#" class="secondary-button">Load more</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -584,14 +584,31 @@
                     <div class="wrapper">
                         <div class="column">
                             <div class="sectop flexitem">
-                                <h2><span class="circle"></span><span>Featured Products</span></h2>
-                                <div class="second-links">
-                                    <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
+                                <h2><span class="circle"></span><span>Featured Services</span></h2>
+                                <div class="cat-navigation flexitem">
+                                    <div class="item-filter desktop-hide">
+                                        <a href="#" class="filter-trigger label">
+                                            <i class="ri-menu-2-line ri-2x"></i>
+                                            <span>Filter</span>
+                                        </a>
+                                    </div>
+                                    <div class="item-sortir">
+                                        <div class="label">
+                                            <span class="mobile-hide">Sort by default</span>
+                                            <div class="desktop-hide">Default</div>
+                                            <i class="ri-arrow-down-s-line"></i>
+                                        </div>
+                                        <ul>
+                                            <li>Default</li>
+                                            <li>Price High to Low</li>
+                                            <li>Price Low to High</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="products main flexwrap">
-                                <% productsGroup3.forEach(product => { %>
+                                <% productsGroup4.forEach(product => { %>
                                     <div class="item">
                                         <div class="media">
                                             <div class="thumbnail object-cover">
@@ -643,6 +660,9 @@
                                         </div>
                                     </div>
                                 <% }); %>
+                            </div>
+                            <div class="load-more flexcenter">
+                                <a href="#" class="secondary-button">Load more</a>
                             </div>
                         </div>
                     </div>
@@ -748,7 +768,6 @@
                 </div>
             </div>
             <!-- FIM dos banners -->
-
         </main>
         <!-- Fim do main -->
 
@@ -840,7 +859,6 @@
             </div>
             <!-- Fim dos widgets -->
 
-            
             <!-- footer info -->
             <div class="footer-info">
                 <div class="container">
@@ -854,8 +872,8 @@
                                     <li><a href="#"><i class="ri-twitter-line"></i></a></li>
                                     <li><a href="#"><i class="ri-facebook-line"></i></a></li>
                                     <li><a href="#"><i class="ri-instagram-line"></i></a></li>
-                                    <li><a href="#"><i class="ri-tiktok-line"></i></a></li>
                                     <li><a href="#"><i class="ri-linkedin-line"></i></a></li>
+                                    <li><a href="#"><i class="ri-youtube-line"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -902,7 +920,7 @@
                             </li>
 
                             <li>
-                                <a href="#0">
+                                <a href="#0" class="cart-trigger">
                                     <i class="ri-shopping-cart-line"></i>
                                     <span>Cart</span>
                                     <div class="fly-item">
@@ -939,6 +957,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.3.1/index.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
