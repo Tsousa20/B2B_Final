@@ -535,361 +535,66 @@
                                     </div>
                                     <div class="products main flexwrap">
                                         <!--products category structure-->
-                                        <div class="item">
-                                            <div class="media">
-                                                <div class="thumbnail object-cover">
-                                                    <a href="#">
-                                                        <img src="assets/comp_img/Fresco Supply/Artisanal Blue Cheese/1.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="hoverable">
-                                                    <ul>
-                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="content">
-                                                <div class="rating">
-                                                    <div class="stars">
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                    </div>
-                                                    <span class="mini-text">(1,955)</span>
-                                                </div>
-        
-                                                <h3><a href="#">Artisinal Blue Cheese</a></h3>
-                                                <div class="price">
-                                                    <span class="current">20.00€ / kg</span>
-                                                </div>
 
-                                                <div class="mini-text">
-                                                    <p>By: FrescoSupply</p>
-                                                </div>
+                                        <% products.forEach(product => { %>
+                                            <div class="item">
+                                                <a href="/page-single/<%= product.id %>">
+                                                    <div class="media">
+                                                        <div class="thumbnail object-cover">
+                                                            <a href="/page-single/<%= product.id %>">
+                                                                <img src="<%= product.main_img %>" alt="">
+                                                            </a>
+                                                        </div>
+                                                        <div class="hoverable">
+                                                            <ul>
+                                                                <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                                                                <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <% if (product.is_promotion) { %>
+                                                            <div class="discount circle flexcenter"><span><%= product.discount_percentage %>%</span></div>
+                                                        <% } %>
+                                                    </div>
+                                                    <div class="content">
+                                                        <div class="rating">
+                                                            <div class="stars">
+                                                                <i class="ri-star-fill" style="color:orange"></i>
+                                                                <i class="ri-star-fill" style="color:orange"></i>
+                                                                <i class="ri-star-fill" style="color:orange"></i>
+                                                                <i class="ri-star-fill" style="color:orange"></i>
+                                                                <i class="ri-star-fill" style="color:orange"></i>
+                                                            </div>
+                                                            <span class="mini-text">(1,955)</span>
+                                                        </div>
+                
+                                                        <h3><a href="/page-single/<%= product.id %>"><%= product.product_name %></a></h3>
+                                                        <div class="price">
+                                                            <span class="current"><%= product.is_promotion ? product.formatted_promotion_price : product.formatted_price %><%= product.price_symbol %></span>
+                                                            <% if (product.is_promotion) { %>
+                                                                <span class="normal mini-text"><%= product.formatted_price %><%= product.price_symbol %></span>
+                                                            <% } %>
+                                                        </div>
 
-                                                <div class="footer">
-                                                    <ul class="mini-text">
-                                                        <li>Min. Order: 15kg</li>
-                                                        <li>Ready to Ship</li>
-                                                        <li>Produced in: Portugal</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-        
-                                        <div class="item">
-                                            <div class="media">
-                                                <div class="thumbnail object-cover">
-                                                    <a href="#">
-                                                        <img src="assets/comp_img/Fresco Supply/Dry-Aged Ribeye Steak/3.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="hoverable">
-                                                    <ul>
-                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="content">
-                                                <div class="rating">
-                                                    <div class="stars">
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                    </div>
-                                                    <span class="mini-text">(944)</span>
-                                                </div>
-        
-                                                <h3><a href="#">Dry-Aged Ribeye Steak</a></h3>
-                                                <div class="price">
-                                                    <span class="current">25€ / kg</span>
-                                                </div>
+                                                        <div class="mini-text">
+                                                            <p>By: <%= product.company_name %></p>
+                                                        </div>
 
-                                                <div class="mini-text">
-                                                    <p>By: FrescoSupply</p>
-                                                </div>
-                                                
-                                                <div class="footer">
-                                                    <ul class="mini-text">
-                                                        <li>Min. Order: 20kg</li>
-                                                        <li>Ready to Ship</li>
-                                                        <li>Produce in: Portugal</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-        
-                                        <div class="item">
-                                            <div class="media">
-                                                <div class="thumbnail object-cover">
-                                                    <a href="#">
-                                                        <img src="assets/comp_img/Fresco Supply/Organic Heirloom Tomatoes/1.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="hoverable">
-                                                    <ul>
-                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="content">
-                                                <div class="rating">
-                                                    <div class="stars">
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
+                                                        <div class="footer">
+                                                            <ul class="mini-text">
+                                                                <li>Min. Order: <%= product.min_order %> un</li>
+                                                                <li>Ready to Ship</li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
-                                                    <span class="mini-text">(3,459)</span>
-                                                </div>
-        
-                                                <h3><a href="#">Organic Heirloom Tomatoes</a></h3>
-                                                <div class="price">
-                                                    <span class="current">$2.99 / kg</span>
-                                                </div>
-                                                <div class="mini-text">
-                                                    <p>By: FrescoSupply</p>
-                                                </div>
-                                                
-                                                <div class="footer">
-                                                    <ul class="mini-text">
-                                                        <li>Min. Order: 20kg</li>
-                                                        <li>Ready to Ship</li>
-                                                        <li>Produce in: Portugal</li>
-                                                    </ul>
-                                                </div>
+                                                </a>
                                             </div>
-                                        </div>
-        
-                                        <div class="item">
-                                            <div class="media">
-                                                <div class="thumbnail object-cover">
-                                                    <a href="#">
-                                                        <img src="assets/comp_img/EliteSpirits Distributors/Domaine du Castel Grand Vin 2020/1.png" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="hoverable">
-                                                    <ul>
-                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="content">
-                                                <div class="rating">
-                                                    <div class="stars">
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                    </div>
-                                                    <span class="mini-text">(1,955)</span>
-                                                </div>
-        
-                                                <h3><a href="#">Domaine du Castel Grand Vin 2020</a></h3>
-                                                <div class="price">
-                                                    <span class="current">80.00€</span>
-                                                </div>
-
-                                                <div class="mini-text">
-                                                    <p>By: EliteSpirits</p>
-                                                </div>
-                                                
-                                                <div class="footer">
-                                                    <ul class="mini-text">
-                                                        <li>Min. Order: 12 un</li>
-                                                        <li>Ready to Ship</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-        
-                                        <div class="item">
-                                            <div class="media">
-                                                <div class="thumbnail object-cover">
-                                                    <a href="#">
-                                                        <img src="assets/comp_img/EliteSpirits Distributors/Suntory Yamazaki 12 Jahre 100 Anniversary Edition/1.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="hoverable">
-                                                    <ul>
-                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="content">
-                                                <div class="rating">
-                                                    <div class="stars">
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                    </div>
-                                                    <span class="mini-text">(1,955)</span>
-                                                </div>
-        
-                                                <h3><a href="#">Suntory Yamazaki 12 Jahre 100 Anniversary Edition</a></h3>
-                                                <div class="price">
-                                                    <span class="current">230.00€</span>
-                                                </div>
-                                                <div class="mini-text">
-                                                    <p>By: EliteSpirits</p>
-                                                </div>
-                                                
-                                                <div class="footer">
-                                                    <ul class="mini-text">
-                                                        <li>Min. Order: 3 un</li>
-                                                        <li>Ready to Ship</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-        
-                                        <div class="item">
-                                            <div class="media">
-                                                <div class="thumbnail object-cover">
-                                                    <a href="#">
-                                                        <img src="assets/comp_img/Maykro/Basmati Rice/1.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="hoverable">
-                                                    <ul>
-                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="content">
-                                                <div class="rating">
-                                                    <div class="stars">
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                    </div>
-                                                    <span class="mini-text">(1,955)</span>
-                                                </div>
-        
-                                                <h3><a href="#">Basmati Rice 5kg</a></h3>
-                                                <div class="price">
-                                                    <span class="current">4.00€</span>
-                                                </div>
-                                                <div class="mini-text">
-                                                    <p>By: Maykro</p>
-                                                </div>
-                                                
-                                                <div class="footer">
-                                                    <ul class="mini-text">
-                                                        <li>Min. Order: 30 un</li>
-                                                        <li>Ready to Ship</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-        
-                                        <div class="item">
-                                            <div class="media">
-                                                <div class="thumbnail object-cover">
-                                                    <a href="#">
-                                                        <img src="assets/comp_img/Maykro/Beer/2.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="hoverable">
-                                                    <ul>
-                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="content">
-                                                <div class="rating">
-                                                    <div class="stars">
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                    </div>
-                                                    <span class="mini-text">(106)</span>
-                                                </div>
-        
-                                                <h3><a href="#">Bear Super Bock 1L</a></h3>
-                                                <div class="price">
-                                                    <span class="current">1.00€</span>
-                                                </div>
-
-                                                <div class="mini-text">
-                                                    <p>By: Maykro</p>
-                                                </div>
-                                                
-                                                <div class="footer">
-                                                    <ul class="mini-text">
-                                                        <li>Min. Order: 12 un</li>
-                                                        <li>Ready to Ship</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-        
-                                        <div class="item">
-                                            <div class="media">
-                                                <div class="thumbnail object-cover">
-                                                    <a href="#">
-                                                        <img src="assets/comp_img/Maykro/Chicken Breasts/3.jpg" alt="">
-                                                    </a>
-                                                </div>
-                                                <div class="hoverable">
-                                                    <ul>
-                                                        <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                        <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="content">
-                                                <div class="rating">
-                                                    <div class="stars">
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                        <i class="ri-star-fill" style="color:orange"></i>
-                                                    </div>
-                                                    <span class="mini-text">(245)</span>
-                                                </div>
-        
-                                                <h3><a href="#">Chicken Breasts</a></h3>
-                                                <div class="price">
-                                                    <span class="current">2.50€ / kg</span>
-                                                </div>
-                                                <div class="mini-text">
-                                                    <p>By: Maykro</p>
-                                                </div>
-                                                
-                                                <div class="footer">
-                                                    <ul class="mini-text">
-                                                        <li>Min. Order: 20kg</li>
-                                                        <li>Ready to Ship</li>
-                                                        <li>Produced in: Portugal</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <% }); %>
                                     </div>
-                                    <div class="load-more flexcenter">
-                                        <a href="#" class="secondary-button">Load more</a>
-                                    </div>
+                                    <% if (totalProducts2 > 12) { %>
+                                        <div class="load-more flexcenter">
+                                            <a id="load-more" class="secondary-button">Load more</a>
+                                        </div>
+                                    <% } %>
                                 </div>
                             </div>
                         </div>
@@ -984,7 +689,7 @@
                                                 <% }); %>
                                             </ul>
                                             <div class="second-links">
-                                                <a href="#" id="loadMoreButton" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
+                                                <a href="#" id="load-more" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -1207,81 +912,6 @@
             }
         })
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            let offset = 18; // Começa depois dos primeiros 18 produtos
-            const loadMoreButton = document.getElementById('loadMoreButton');
-            const productsContainer = document.querySelector('.flexwrap');
     
-            loadMoreButton.addEventListener('click', async () => {
-                try {
-                    const response = await fetch(`/load-more-products?offset=${offset}`);
-                    const products = await response.json();
-    
-                    // Criar três divs para as linhas de produtos
-                    for (let i = 0; i < 3; i++) {
-                        const rowDiv = document.createElement('div');
-                        rowDiv.classList.add('row', 'products', 'mini');
-    
-                        // Adicionar produtos à linha atual
-                        for (let j = 0; j < 6 && (i * 6 + j) < products.length; j++) {
-                            const product = products[i * 6 + j];
-                            const productHtml = `
-                                
-                                <div class="media">
-                                    <div class="thumbnail object-cover">
-                                        <a href="#">
-                                            <img src="${product.main_img}" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="hoverable">
-                                        <ul>
-                                            <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    ${product.is_promotion ? `<div class="discount circle flexcenter"><span>${product.discount_percentage}%</span></div>` : ''}
-                                </div>
-                                <div class="content">
-                                    <h3 class="main-links"><a href="#">${product.product_name}</a></h3>
-                                    <div class="rating">
-                                        <div class="stars">
-                                            <i class="ri-star-fill" style="color:orange"></i>
-                                            <i class="ri-star-fill" style="color:orange"></i>
-                                            <i class="ri-star-fill" style="color:orange"></i>
-                                            <i class="ri-star-fill" style="color:orange"></i>
-                                            <i class="ri-star-fill" style="color:orange"></i>
-                                        </div>
-                                        <span class="mini-text">(2,548)</span>
-                                    </div>
-                                    <div class="price">
-                                        <span class="current">${product.is_promotion ? product.formatted_promotion_price : product.formatted_price}${product.price_symbol}</span>
-                                        ${product.is_promotion ? `<span class="normal mini-text">${product.formatted_price}${product.price_symbol}</span>` : ''}
-                                    </div>
-                                    <div class="mini-text">
-                                        <p>Min. Order: ${product.min_order} un</p>
-                                        <p>${product.stock > product.min_order ? 'Ready to Ship' : 'Out of Stock'}</p>
-                                        <p class="brand-info">By: ${product.company_name}</p>
-                                    </div>
-                                </div>  
-                            `;
-    
-                            const productDiv = document.createElement('div');
-                            productDiv.classList.add('item');
-                            productDiv.innerHTML = productHtml;
-                            rowDiv.appendChild(productDiv);
-                        }
-    
-                        // Adicionar a linha ao contêiner de produtos
-                        productsContainer.appendChild(rowDiv);
-                    }
-    
-                    offset += 18; // Incrementa o offset para a próxima requisição
-                } catch (error) {
-                    console.error('Erro ao carregar mais produtos:', error);
-                }
-            });
-        });
-    </script>
 </body>
 </html>

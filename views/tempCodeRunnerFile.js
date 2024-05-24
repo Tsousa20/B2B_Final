@@ -1,1 +1,1 @@
-sub_departamento_nome
+formatted_promotion_price

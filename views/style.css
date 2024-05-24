@@ -1433,6 +1433,16 @@ form.search button:hover{
     background-color: var(--light-bg-color);
 }
 
+.products.one .noavailable{
+    font-size: var(--font-small);
+    font-weight: var(--fw5);
+    padding: 0.5em;
+    margin-right: 1em;
+    border-radius: 3px;
+    color: #c5080b;
+    background-color: var(--light-bg-color);
+}
+
 .products.one .add-review{
     color: var(--dark-color);
 }

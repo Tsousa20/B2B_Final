@@ -32,8 +32,6 @@ connection.connect(function(error){
 
 
 
-
-
 // routes
 //************ Index routes *********
 app.get('/', async (req, res) => {
@@ -160,8 +158,24 @@ app.get('/page-category', async (req, res) => {
         const query12 = 'SELECT COUNT(p.id) AS total_produtos FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 4 AND p.price >= 150';
         const results12 = await executeQuery(query12);
 
+        // Decima Terceira Query -> Vai buscar os produtos que pertencem aquele departamento 12 de cada vez
+        const query13 = 'SELECT p.*, c.company_name AS company_name FROM products p JOIN companies c ON p.company_id = c.id JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 4 LIMIT 12';
+        const products = await executeQuery(query13);
+
+        // Decima Quarta Query -> Conta o numero de produtos existentes que pertencem aquele departamento
+        const countQuery = 'SELECT COUNT(*) AS total FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 4';
+        const [{ total }] = await executeQuery(countQuery);
+
+        // Formatar os preços com duas casas decimais
+        products.forEach(product => {
+            product.formatted_price = product.price.toFixed(2);
+            if (product.is_promotion) {
+                product.formatted_promotion_price = product.promotion_price.toFixed(2);
+            }
+        });
+
         // Renderizar a página EJS com os resultados
-        res.render('page-category', { results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results7, results8, results9, results10, results11, results12 });
+        res.render('page-category', { results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results7, results8, results9, results10, results11, results12, products, totalProducts2: total });
         
     } catch (error) {
         console.error(error);
@@ -169,30 +183,34 @@ app.get('/page-category', async (req, res) => {
     }
 });
 
-
 app.get('/load-more-products', async (req, res) => {
-    const departmentId = 23; // ID do departamento específico
-    const page = parseInt(req.query.page) || 1; // Página atual, default é 1
-    const limit = 2; // Número de produtos por página
-    const offset = (page - 1) * limit; // Calcula o OFFSET
-
     try {
-        const result = await executeQuery(
-            `SELECT p.*
-             FROM products p
-             JOIN sub_departments sd ON p.sub_department_id = sd.id
-             JOIN departments d ON sd.department_id = d.id
-             WHERE d.id = $1
-             LIMIT $2 OFFSET $3`,
-            [departmentId, limit, offset]
-        );
+        const offset = parseInt(req.query.offset) || 0; // Pegar o offset da query string
 
-        res.json(result); // Envia os produtos como resposta JSON
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Erro ao processar a query.');
+        // Query para contar o numero de produtos que pertencem aquele departamento
+        const countQuery = 'SELECT COUNT(*) AS total FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 4';
+        const [{ total }] = await executeQuery(countQuery);
+
+        // Query para carregar mais produtos com base no offset
+        const query = 'SELECT p.*, c.company_name FROM products p JOIN companies c ON p.company_id = c.id JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 4 LIMIT ?, 12';
+        const products = await executeQuery(query, [offset]);
+
+        // Formatar os preços com duas casas decimais
+        products.forEach(product => {
+            product.formatted_price = product.price.toFixed(2);
+            if (product.is_promotion) {
+                product.formatted_promotion_price = product.promotion_price.toFixed(2);
+            }
+        });
+
+        res.json({ products, total });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao carregar mais produtos.');
     }
 });
+
 
 function executeQuery(query, params = []) {
     return new Promise((resolve, reject) => {
@@ -206,41 +224,76 @@ function executeQuery(query, params = []) {
     });
 }
 
-app.get('/load-more-products', async (req, res) => {
+//************ page-single routes *********
+app.get('/page-single/:id', async (req, res) => {
     try {
-        const offset = parseInt(req.query.offset, 18) || 0; // Pegar o offset da query string
 
-        // Query para carregar mais produtos com base no offset
-        const query = `SELECT p.*, c.company_name AS company_name 
-        FROM products p 
-        JOIN companies c ON p.company_id = c.id 
-        ORDER BY RAND() 
-        LIMIT 18 OFFSET ${offset}`;
+        // Id do produto selecionado
+        const productId = req.params.id;
 
-        const products = await executeQuery(query, [offset]);
+        // Primeira Query -> Vai buscar todos os deartamentos para a navbar superior
+        const query1 = 'SELECT * FROM departments';
+        const results1 = await executeQuery(query1);
+ 
+        // Segunda Query -> Vai buscar empresas para a navbar superior
+        const query2 = 'SELECT company_name FROM companies ORDER BY RAND() LIMIT 9';
+        const results2 = await executeQuery(query2);
+ 
+        // Terceira Query -> Conta o numero de produtos para o menu lateral
+        const query3 = 'SELECT COUNT(*) AS total_products FROM products';
+        const results3 = await executeQuery(query3);
 
+        // Quarta query -> Vai buscar produtos para os banners
+        const query4 = 'SELECT p.* FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 2 ORDER BY RAND() LIMIT 5';
+        const results4 = await executeQuery(query4);
+
+        // Quinta query -> Vai buscar produtos para os banners
+        const query5 = 'SELECT p.* FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 3 ORDER BY RAND() LIMIT 5';
+        const results5 = await executeQuery(query5);
+
+        // Sexta query -> Vai buscar produtos para os banners
+        const query6 = 'SELECT p.* FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 6 ORDER BY RAND() LIMIT 5';
+        const results6 = await executeQuery(query6);
+
+        const query7 = 'SELECT p.*, c.company_name, r.rating, r.rating_coment, r.rating_author, r.data_review, sd.name_sub_depart AS name_sub_depart, d.name_depart AS name_depart FROM products p JOIN companies c ON p.company_id = c.id JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id LEFT JOIN rating_product r ON p.id = r.product_id WHERE p.id = ?';
+        const results7 = await executeQuery(query7, [productId]);
+        const productDetails = results7[0];
+    
         // Formatar os preços com duas casas decimais
-        products.forEach(product => {
+        productDetails.formatted_price = productDetails.price.toFixed(2);
+
+        const query8 = 'SELECT p.id, p.main_img, p.product_name, p.stock, p.price, p.price_symbol, p.min_order, p.product_description, p.sub_department_id, c.company_name, AVG(r.rating) AS average_rating, COUNT(r.rating) AS total_ratings FROM products p JOIN companies c ON p.company_id = c.id JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id LEFT JOIN rating_product r ON p.id = r.product_id WHERE d.id = (SELECT department_id FROM sub_departments WHERE id = (SELECT sub_department_id FROM products WHERE id = ?)) AND p.id != ? GROUP BY p.id, p.main_img, p.product_name, p.stock, p.price, p.price_symbol, p.min_order, p.product_description, p.sub_department_id, c.company_name LIMIT 12';
+        const results8 = await executeQuery(query8, [productId, productId]);
+
+        results8.forEach(product => {
             product.formatted_price = product.price.toFixed(2);
             if (product.is_promotion) {
                 product.formatted_promotion_price = product.promotion_price.toFixed(2);
             }
         });
+        
+        res.render('page-single', { results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, productDetails, results8 });
 
-        res.json(products);
     } catch (error) {
         console.error(error);
-        res.status(500).send('Erro ao carregar mais produtos.');
+        res.status(500).send('Erro ao processar as queries.');
     }
-});
+})
+
+function executeQuery(query, params = []) {
+    return new Promise((resolve, reject) => {
+        connection.query(query, params, (error, results, fields) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
 //************ page-offer routes *********
 app.get('/page-offer', (req, res) => {
     res.render('page-offer')
-})
-
-//************ page-single routes *********
-app.get('/page-single', (req, res) => {
-    res.render('page-single')
 })
 
 //************ cart routes *********

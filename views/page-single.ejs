@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ecommerce Website</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
@@ -45,8 +45,7 @@
                                     <li><a href="#">Home</a></li>
                                     <li><a href="#">About</a></li>
 
-                                
-
+                                   
                                     <li class="has-child">
                                         <a href="#">Categories
                                             <div class="icon-small"><i class="ri-arrow-down-s-line"></i></div>
@@ -58,15 +57,10 @@
                                                         <div class="row">
                                                             <h4>Departments</h4>
                                                             <ul>
-                                                                <li><a href="#">Aparel</a></li>
-                                                                <li><a href="#">Health & Beauty</a></li>
-                                                                <li><a href="#">Eletronics & Technology</a></li>
-                                                                <li><a href="#">Food & Beverages</a></li>
-                                                                <li><a href="#">Home Interior</a></li>
-                                                                <li><a href="#">Agriculture</a></li>
-                                                                <li><a href="#">Pet Suplies</a></li>
-                                                                <li><a href="#">Sports</a></li>
-                                                                <li><a href="#">Shipping & Packaging</a></li>
+                                                                <% results1.forEach(result => { %>
+                                                                    <li><a href="#"><%= result.name_depart%></a></li>
+                                                                <% }); %>
+                                                                
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -102,17 +96,11 @@
                                                     <div class="flexcol">
                                                         <div class="row">
                                                             <h4>Top Brands</h4>
-                                                            <ul class="women-brands">
-                                                                <li><a href="#">StyleWeave</a></li>
-                                                                <li><a href="#">PureGlow</a></li>
-                                                                <li><a href="#">GentleCut</a></li>
-                                                                <li><a href="#">EliteSpirits</a></li>
-                                                                <li><a href="#">Maykro</a></li>
-                                                                <li><a href="#">InterSpace</a></li>
-                                                                <li><a href="#">AgriSeeds</a></li>
-                                                                <li><a href="#">AgroFeed</a></li>
-                                                                <li><a href="#">Fitzone</a></li>
-                                                                <li><a href="#">StyroCrafters</a></li>
+                                                            <ul class="row">
+                                                                <% results2.forEach(result => { %>
+                                                                    <li><a href="#"><%= result.company_name%></a></li>
+                                                                <% }); %>
+                                                                
                                                             </ul>
                                                             <a href="#" class="view-all">View all companies<i class="ri-arrow-right-line"></i></a>
                                                         </div>
@@ -122,7 +110,7 @@
                                                             <div class="media">
                                                                 <div class="thumbnail object-cover">
                                                                     <a href="#">
-                                                                        <img src="assets/menu/menu_homeinterior.jpg" alt="">
+                                                                        <img src="/assets/menu/menu_homeinterior.jpg" alt="">
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -173,7 +161,7 @@
                                             <ul class="products mini">
                                                 <li class="item">
                                                     <div class="thumbnail object-cover">
-                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                        <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
                                                     </div>
                                                     <div class="item-content">
                                                         <p><a href="#">Dimmable Ceiling Light Modern</a></p>
@@ -187,7 +175,7 @@
 
                                                 <li class="item">
                                                     <div class="thumbnail object-cover">
-                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                        <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
                                                     </div>
                                                     <div class="item-content">
                                                         <p><a href="#">Modern Storage Cabinet with Door & 3 drwaers</a></p>
@@ -201,7 +189,7 @@
 
                                                 <li class="item">
                                                     <div class="thumbnail object-cover">
-                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                        <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
                                                     </div>
                                                     <div class="item-content">
                                                         <p><a href="#">Dimmable Ceiling Light Modern</a></p>
@@ -215,7 +203,7 @@
 
                                                 <li class="item">
                                                     <div class="thumbnail object-cover">
-                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                        <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
                                                     </div>
                                                     <div class="item-content">
                                                         <p><a href="#">Dimmable Ceiling Light Modern</a></p>
@@ -257,7 +245,7 @@
                             <div class="dpt-cat">
                                 <div class="dpt-head">
                                     <div class="main-text">All Departments</div>
-                                    <div class="mini-text mobile-hide">Total 1059 Products</div>
+                                    <div class="mini-text mobile-hide">Total <%= totalProducts %> Products</div>
                                     <a href="#" class="dpt-trigger mobile-hide">
                                         <i class="ri-menu-3-line ri-xl"></i>
                                         <i class="ri-close-line ri-xl"></i>
@@ -383,14 +371,6 @@
                                                 <li><a href="#">Transportation Services</a></li>
                                             </ul>
                                         </li>
-
-                                        <li>
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-shield-star-line"></i></div>
-                                                Best Seller
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                        </li>
                                     </ul>
                                 </div>
 
@@ -419,9 +399,9 @@
                         <div class="breadcrumb">
                             <ul class="flexitem">
                                 <li><a href="#">Home</a></li>
-                                <li><a href="#">Shipping & Packaging</a></li>
-                                <li><a href="#">Custom Packaging</a></li>
-                                <li>Poly Mailers 5 pack</li>
+                                <li><a href="#"><%= productDetails.name_depart %></a></li>
+                                <li><a href="#"><%= productDetails.name_sub_depart %></a></li>
+                                <li><%= productDetails.product_name %></li>
                             </ul>
                         </div>
 
@@ -436,19 +416,19 @@
                                             <div class="big-image">
                                                 <div class="big-image-wrapper swiper-wrapper">
                                                     <div class="image-show swiper-slide">
-                                                        <a data-fslightbox href="assets/comp_img/CustomPack Solutions/Poly Mailers/1.jpg"><img src="assets/comp_img/CustomPack Solutions/Poly Mailers/1.jpg" alt=""></a>
+                                                        <a data-fslightbox href="/<%= productDetails.main_img %>"><img src="/<%= productDetails.main_img %>" alt=""></a>
                                                     </div>
 
                                                     <div class="image-show swiper-slide">
-                                                        <a data-fslightbox href="assets/comp_img/CustomPack Solutions/Poly Mailers/2.jpg"><img src="assets/comp_img/CustomPack Solutions/Poly Mailers/2.jpg" alt=""></a>
+                                                        <a data-fslightbox href="/<%= productDetails.main_img %>"><img src="/<%= productDetails.main_img %>" alt=""></a>
                                                     </div>
 
                                                     <div class="image-show swiper-slide">
-                                                        <a data-fslightbox href="assets/comp_img/CustomPack Solutions/Poly Mailers/3.jpg"><img src="assets/comp_img/CustomPack Solutions/Poly Mailers/3.jpg" alt=""></a>
+                                                        <a data-fslightbox href="/<%= productDetails.main_img %>"><img src="/<%= productDetails.main_img %>" alt=""></a>
                                                     </div>
 
                                                     <div class="image-show swiper-slide">
-                                                        <a data-fslightbox href="assets/comp_img/CustomPack Solutions/Poly Mailers/1.jpg"><img src="assets/comp_img/CustomPack Solutions/Poly Mailers/1.jpg" alt=""></a>
+                                                        <a data-fslightbox href="/<%= productDetails.main_img %>"><img src="/<%= productDetails.main_img %>" alt=""></a>
                                                     </div>
                                                 </div>
                                                 <div class="swiper-button-next"></div>
@@ -458,15 +438,15 @@
                                             <div thumbSlider="" class="small-image">
                                                 <ul class="small-image-wrapper flexitem swiper-wrapper">
                                                     <li class="thumbnail-show swiper-slide">
-                                                        <img src="assets/comp_img/CustomPack Solutions/Poly Mailers/1.jpg" alt="">
+                                                        <img src="/<%= productDetails.main_img %>" alt="">
                                                     </li>
 
                                                     <li class="thumbnail-show swiper-slide">
-                                                        <img src="assets/comp_img/CustomPack Solutions/Poly Mailers/2.jpg" alt="">
+                                                        <img src="/<%= productDetails.main_img %>" alt="">
                                                     </li>
 
                                                     <li class="thumbnail-show swiper-slide">
-                                                        <img src="assets/comp_img/CustomPack Solutions/Poly Mailers/3.jpg" alt="">
+                                                        <img src="/<%= productDetails.main_img %>" alt="">
                                                     </li>
                                                 </ul>
                                             </div>
@@ -474,9 +454,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="item">
-                                            <h1>Poly Mailers 5 pack</h1>
+                                            <h1><%= productDetails.product_name %></h1>
                                             <div class="content">
-                                                <p class="mini-text">By: CustomPack Solutions</p>
+                                                <p class="mini-text">By: <%= productDetails.company_name %></p>
                                                 <div class="rating">
                                                     <div class="stars">
                                                         <i class="ri-star-fill" style="color:orange"></i>
@@ -489,12 +469,16 @@
                                                 </div>
 
                                                 <div class="stock-sku">
-                                                    <span class="available">In Stock</span>
+                                                    <% if (productDetails.stock >= productDetails.min_order) { %>
+                                                        <span class="available">In Stock</span>
+                                                    <% } else { %>
+                                                        <span class="noavailable">Out of Stock</span>
+                                                    <% } %>
                                                     <span class="sku mini-text">SKU-881</span>
                                                 </div>
 
                                                 <div class="price">
-                                                    <span class="current">4.50€</span>
+                                                    <span class="current"><%= productDetails.formatted_price %><%= productDetails.price_symbol %></span>
                                                 </div>
 
                                                 <form class="actions">
@@ -525,18 +509,15 @@
                                                             <a href="#0" class="icon-small">Information</a>
                                                             <ul class="content">
                                                                 <li><span>Reference</span> <span>SKU-881</span></li>
-                                                                <li><span>Brand</span> <span>CustomPack Solutions</span></li>
-                                                                <li><span>Purpose</span> <span>Custom Packaging</span></li>
-                                                                <li><span>Material</span> <span>100% Recicled Polyester</span></li>
-                                                                <li><span>Color</span> <span>White</span></li>
+                                                                <li><span>Brand</span> <span><%= productDetails.company_name %></span></li>
+                                                                <li><span>Purpose</span> <span><%= productDetails.name_sub_depart %></span></li>
                                                             </ul>
                                                         </li>
 
                                                         <li class="has-child">
                                                             <a href="#0" class="icon-small">Details</a>
                                                             <div class="content">
-                                                                <p>Our bags are designed to resist water, providing additional protection for your items during transport and storage. Whether you're packing food, clothes, electronics or any other item, you can rely on our waterproof bags to keep your products dry and protected in any conditions.</p>
-                                                                <p>With the possibility of personalisation, you can create exclusive bags that represent your brand in a unique and professional way. Add logos, designs and personalised information to make your brand stand out and impress your customers.</p>
+                                                                <p><%= productDetails.product_description %></p>
                                                             </div>
                                                         </li>
 
@@ -660,300 +641,59 @@
                             </div>
 
                             <div class="products main flexwrap">
-                                <div class="item">
-                                    <div class="media">
-                                        <div class="thumbnail object-cover">
-                                            <a href="#">
-                                                <img src="assets/products/apparel1.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="hoverable">
-                                            <ul>
-                                                <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="discount circle flexcenter"><span>25%</span></div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="rating">
-                                            <div class="stars">
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
+                                <% results8.forEach(result => { %>
+                                    <div class="item">
+                                        <div class="media">
+                                            <div class="thumbnail object-cover">
+                                                <a href="/page-single/<%= result.id %>">
+                                                    <img src="/<%= result.main_img %>" alt="">
+                                                </a>
                                             </div>
-                                            <span class="mini-text">(1,955)</span>
-                                        </div>
-
-                                        <h3><a href="#">Under Armor Men's Tech</a></h3>
-                                        <div class="price">
-                                            <span class="current">$56.50</span>
-                                            <span class="normal mini-text">$75.50</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="media">
-                                        <div class="thumbnail object-cover">
-                                            <a href="#">
-                                                <img src="assets/products/apparel2.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="hoverable">
-                                            <ul>
-                                                <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="discount circle flexcenter"><span>17%</span></div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="rating">
-                                            <div class="stars">
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
+                                            <div class="hoverable">
+                                                <ul>
+                                                    <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                                                    <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                                                </ul>
                                             </div>
-                                            <span class="mini-text">(944)</span>
+                                            <% if (result.is_promotion) { %>
+                                                <div class="discount circle flexcenter"><span><%= result.discount_percentage %>%</span></div>
+                                            <% } %>
                                         </div>
-
-                                        <h3><a href="#">Women's Lightweight Knit Hoodie Sweater Pullover</a></h3>
-                                        <div class="price">
-                                            <span class="current">$37.50</span>
-                                            <span class="normal mini-text">$45.50</span>
-                                        </div>
-                                        
-                                        <div class="footer">
-                                            <ul class="mini-text">
-                                                <li>Polyester Cotton</li>
-                                                <li>Pull on Closure</li>
-                                                <li>Fashion Personality</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="media">
-                                        <div class="thumbnail object-cover">
-                                            <a href="#">
-                                                <img src="assets/products/apparel3.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="hoverable">
-                                            <ul>
-                                                <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="discount circle flexcenter"><span>31%</span></div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="rating">
-                                            <div class="stars">
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
+                                        <div class="content">
+                                            <div class="rating">
+                                                <div class="stars">
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                    <i class="ri-star-fill" style="color:orange"></i>
+                                                </div>
+                                                <span class="mini-text">(<%= result.total_ratings %>)</span>
                                             </div>
-                                            <span class="mini-text">(3,459)</span>
-                                        </div>
 
-                                        <h3><a href="#">Happy Sailed Womens Summer Boho Floral</a></h3>
-                                        <div class="price">
-                                            <span class="current">$129.99</span>
-                                            <span class="normal mini-text">$199.98</span>
-                                        </div>
-                                        <div class="footer">
-                                            <ul class="mini-text">
-                                                <li>65% Polyester, 35% Cotton</li>
-                                                <li>Imported</li>
-                                                <li>Machine Wash</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="media">
-                                        <div class="thumbnail object-cover">
-                                            <a href="#">
-                                                <img src="assets/products/apparel4.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="hoverable">
-                                            <ul>
-                                                <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="discount circle flexcenter"><span>25%</span></div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="rating">
-                                            <div class="stars">
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
+                                            <h3><a href="/page-single/<%= result.id %>"><%= result.product_name %></a></h3>
+                                            <div class="price">
+                                                <span class="current"><%= result.is_promotion ? result.formatted_promotion_price : result.formatted_price %><%= result.price_symbol %></span>
+                                                <% if (result.is_promotion) { %>
+                                                    <span class="normal mini-text"><%= result.formatted_price %><%= result.price_symbol %></span>
+                                                <% } %>
                                             </div>
-                                            <span class="mini-text">(1,955)</span>
-                                        </div>
-
-                                        <h3><a href="#">Under Armor Men's Tech</a></h3>
-                                        <div class="price">
-                                            <span class="current">$56.50</span>
-                                            <span class="normal mini-text">$75.50</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="media">
-                                        <div class="thumbnail object-cover">
-                                            <a href="#">
-                                                <img src="assets/products/shoe1.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="hoverable">
-                                            <ul>
-                                                <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="discount circle flexcenter"><span>25%</span></div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="rating">
-                                            <div class="stars">
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
+                                            <div class="mini-text">
+                                                <p>By: <%= result.company_name %></p>
                                             </div>
-                                            <span class="mini-text">(1,955)</span>
-                                        </div>
-
-                                        <h3><a href="#">Under Armor Men's Tech</a></h3>
-                                        <div class="price">
-                                            <span class="current">$56.50</span>
-                                            <span class="normal mini-text">$75.50</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="media">
-                                        <div class="thumbnail object-cover">
-                                            <a href="#">
-                                                <img src="assets/products/shoe2.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="hoverable">
-                                            <ul>
-                                                <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="discount circle flexcenter"><span>25%</span></div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="rating">
-                                            <div class="stars">
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
+                                            <div class="footer">
+                                                <ul class="mini-text">
+                                                    <li>Min. Order: <%= result.min_order %> un</li>
+                                                    <% if (result.stock >= result.min_order) { %>
+                                                        <li>Ready to Ship</li>
+                                                    <% } else { %>
+                                                        <li>Out of Stock</li>
+                                                    <% } %>
+                                                </ul>
                                             </div>
-                                            <span class="mini-text">(1,955)</span>
-                                        </div>
-
-                                        <h3><a href="#">Under Armor Men's Tech</a></h3>
-                                        <div class="price">
-                                            <span class="current">$56.50</span>
-                                            <span class="normal mini-text">$75.50</span>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="media">
-                                        <div class="thumbnail object-cover">
-                                            <a href="#">
-                                                <img src="assets/products/shoe3.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="hoverable">
-                                            <ul>
-                                                <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="discount circle flexcenter"><span>25%</span></div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="rating">
-                                            <div class="stars">
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                            </div>
-                                            <span class="mini-text">(106)</span>
-                                        </div>
-
-                                        <h3><a href="#">Under Armor Men's Tech</a></h3>
-                                        <div class="price">
-                                            <span class="current">$139.99</span>
-                                            <span class="normal mini-text">$179.99</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="media">
-                                        <div class="thumbnail object-cover">
-                                            <a href="#">
-                                                <img src="assets/products/shoe4.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="hoverable">
-                                            <ul>
-                                                <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="discount circle flexcenter"><span>25%</span></div>
-                                    </div>
-                                    <div class="content">
-                                        <div class="rating">
-                                            <div class="stars">
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                                <i class="ri-star-fill" style="color:orange"></i>
-                                            </div>
-                                            <span class="mini-text">(245)</span>
-                                        </div>
-
-                                        <h3><a href="#">Under Armor Men's Tech</a></h3>
-                                        <div class="price">
-                                            <span class="current">$104.90</span>
-                                            <span class="normal mini-text">$154.90</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <% }); %>
                             </div>
                         </div>
                     </div>
@@ -970,26 +710,26 @@
                                 <div class="row">
                                     <div class="item">
                                         <div class="image">
-                                            <img src="assets/banner/banner1.jpg" alt="">
+                                            <img src="/assets/banner/banner1.jpg" alt="">
                                         </div>
                                         <div class="text-content flexcol">
-                                            <h4>Brutal Sale!</h4>
-                                            <h3><span>Get the deal in here</span><br>Living Room Chair</h3>
-                                            <a href="#" class="primary-button">Shop Now</a>
+                                            <h4>Service!</h4>
+                                            <h3><span>Design your business</span><br>Interior design</h3>
+                                            <a href="#" class="primary-button">Discover Now</a>
                                         </div>
                                         <a href="#" class="over-link"></a>
                                     </div>
                                 </div>
 
                                 <div class="row">
-                                    <div class="item get-gray">
+                                    <div class="item">
                                         <div class="image">
-                                            <img src="assets/banner/banner2.jpg" alt="">
+                                            <img src="/assets/banner/banner3.1.jpg" alt="">
                                         </div>
                                         <div class="text-content flexcol">
-                                            <h4>Brutal Sale!</h4>
-                                            <h3><span>Discount everyday</span><br>Office Outfit</h3>
-                                            <a href="#" class="primary-button">Shop Now</a>
+                                            <h4>Service!</h4>
+                                            <h3><span>Ship your products anywhere</span><br>Transportation Services</h3>
+                                            <a href="#" class="primary-button">Discover Now</a>
                                         </div>
                                         <a href="#" class="over-link"></a>
                                     </div>
@@ -1001,16 +741,32 @@
                                 <div class="row">
                                     <div class="item">
                                         <div class="image">
-                                            <img src="assets/banner/procat1.jpg" alt="">
+                                            <img src="/assets/banner/procat1.jpg" alt="">
                                         </div>
                                         <div class="content mini-links">
-                                            <h4>Beauty</h4>
+                                            <h4>Health & Beauty</h4>
                                             <ul class="flexcol">
-                                                <li><a href="#">Makeup</a></li>
-                                                <li><a href="#">Skin Care</a></li>
-                                                <li><a href="#">Hair Care</a></li>
-                                                <li><a href="#">Fragance</a></li>
-                                                <li><a href="#">Foot & Hand Care</a></li>
+                                                <% results4.forEach(result => { %>
+                                                    <li><a href="#"><%= result.product_name %></a></li>
+                                                <% }); %>
+                                            </ul>
+                                            <div class="second-links">
+                                                <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="item">
+                                        <div class="image">
+                                            <img src="/assets/banner/procat2.jpg" alt="">
+                                        </div>
+                                        <div class="content mini-links">
+                                            <h4>Eletronics & Technology</h4>
+                                            <ul class="flexcol">
+                                                <% results5.forEach(result => { %>
+                                                    <li><a href="#"><%= result.product_name %></a></li>
+                                                <% }); %>
                                             </ul>
                                             <div class="second-links">
                                                 <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
@@ -1022,40 +778,17 @@
                                 <div class="row">
                                     <div class="item">
                                         <div class="image">
-                                            <img src="assets/banner/procat2.jpg" alt="">
+                                            <img src="/assets/banner/procat3.jpg" alt="">
                                         </div>
                                         <div class="content mini-links">
-                                            <h4>Gadgets</h4>
+                                            <h4>Agriculture</h4>
                                             <ul class="flexcol">
-                                                <li><a href="#">Camera</a></li>
-                                                <li><a href="#">Smart Phones</a></li>
-                                                <li><a href="#">Computers</a></li>
-                                                <li><a href="#">GPS & Navigation</a></li>
-                                                <li><a href="#">Headphones</a></li>
+                                                <% results6.forEach(result => { %>
+                                                    <li><a href="#"><%= result.product_name %></a></li>
+                                                <% }); %>
                                             </ul>
                                             <div class="second-links">
-                                                <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="item">
-                                        <div class="image">
-                                            <img src="assets/banner/procat3.jpg" alt="">
-                                        </div>
-                                        <div class="content mini-links">
-                                            <h4>Home Decor</h4>
-                                            <ul class="flexcol">
-                                                <li><a href="#">Kitchen</a></li>
-                                                <li><a href="#">Dining Room</a></li>
-                                                <li><a href="#">Pantry</a></li>
-                                                <li><a href="#">Great Room</a></li>
-                                                <li><a href="#">Breakfast Nook</a></li>
-                                            </ul>
-                                            <div class="second-links">
-                                                <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
+                                                <a href="#" id="load-more" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -1256,6 +989,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.3.1/index.js"></script>
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
 </body>
 </html>
