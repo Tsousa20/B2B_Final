@@ -77,8 +77,18 @@ app.get('/', async (req, res) => {
             }
         });
 
+        // Oitava query
+        const query8 = 'SELECT p.*, c.company_name AS company_name FROM products p JOIN companies c ON p.company_id = c.id WHERE p.is_promotion = 1 ORDER BY RAND() LIMIT 1';
+        const results8 = await executeQuery(query8);
+        const productBig = results8[0];
+
+        // Formatar os preços com duas casas decimais
+        productBig.formatted_price = productBig.price.toFixed(2);
+        productBig.formatted_promotion_price = productBig.promotion_price.toFixed(2);   
+
+
         // Renderizar a página EJS com os resultados
-        res.render('index', { results1, results2, totalProducts: results3[0].total_products, productsGroup1, productsGroup2, productsGroup3, results5, results6, results7 });
+        res.render('index', { results1, results2, totalProducts: results3[0].total_products, productsGroup1, productsGroup2, productsGroup3, results5, results6, results7, productBig });
         
     } catch (error) {
         console.error(error);
@@ -261,8 +271,13 @@ app.get('/page-single/:id', async (req, res) => {
     
         // Formatar os preços com duas casas decimais
         productDetails.formatted_price = productDetails.price.toFixed(2);
+        if (productDetails.is_promotion) {
+            productDetails.formatted_promotion_price = productDetails.promotion_price.toFixed(2);
+        }
+        
+  
 
-        const query8 = 'SELECT p.id, p.main_img, p.product_name, p.stock, p.price, p.price_symbol, p.min_order, p.product_description, p.sub_department_id, c.company_name, AVG(r.rating) AS average_rating, COUNT(r.rating) AS total_ratings FROM products p JOIN companies c ON p.company_id = c.id JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id LEFT JOIN rating_product r ON p.id = r.product_id WHERE d.id = (SELECT department_id FROM sub_departments WHERE id = (SELECT sub_department_id FROM products WHERE id = ?)) AND p.id != ? GROUP BY p.id, p.main_img, p.product_name, p.stock, p.price, p.price_symbol, p.min_order, p.product_description, p.sub_department_id, c.company_name LIMIT 12';
+        const query8 = 'SELECT p.id, p.main_img, p.product_name, p.stock, p.is_promotion, p.promotion_price, p.discount_percentage, p.price, p.price_symbol, p.min_order, p.product_description, p.sub_department_id, c.company_name, AVG(r.rating) AS average_rating, COUNT(r.rating) AS total_ratings FROM products p JOIN companies c ON p.company_id = c.id JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id LEFT JOIN rating_product r ON p.id = r.product_id WHERE d.id = (SELECT department_id FROM sub_departments WHERE id = (SELECT sub_department_id FROM products WHERE id = ?)) AND p.id != ? GROUP BY p.id, p.main_img, p.product_name, p.stock, p.is_promotion, p.promotion_price, p.discount_percentage, p.price, p.price_symbol, p.min_order, p.product_description, p.sub_department_id, c.company_name LIMIT 12';
         const results8 = await executeQuery(query8, [productId, productId]);
 
         results8.forEach(product => {
@@ -292,7 +307,7 @@ function executeQuery(query, params = []) {
     });
 }
 //************ page-offer routes *********
-app.get('/page-offer', (req, res) => {
+app.get('/page-offer', async (req, res) => {
     res.render('page-offer')
 })
 
