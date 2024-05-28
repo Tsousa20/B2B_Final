@@ -292,7 +292,7 @@
                         <div class="column">
                             <div class="holder">
                                 <div class="row sidebar">
-                                    <div class="filter">
+                                    <div class="filter" data-subdepartment-id="<%= results0 %>">
                                         <div class="filter-block">
                                             <h4>Services</h4>
                                             <ul>
@@ -312,7 +312,7 @@
                                             <ul>
                                                 <% results8.forEach(function(result) { %>
                                                     <li>
-                                                        <input type="checkbox" name="checkbox" id="<%= result.company_name %>">
+                                                        <input type="checkbox" name="brand" id="<%= result.company_name %>" value="<%= result.company_name %>">
                                                         <label for="<%= result.company_name %>">
                                                             <span class="checked"></span>
                                                             <span><%= result.company_name %></span>
@@ -328,7 +328,7 @@
                                             <ul>
                                                 <% results9.forEach(function(result) { %>
                                                     <li>
-                                                        <input type="checkbox" name="checkbox" id="price_0_50">
+                                                        <input type="checkbox" name="price" id="price_0_50" value="0-50">
                                                         <label for="price_0_50">
                                                             <span class="checked"></span>
                                                             <span>0€ - 50€</span>
@@ -339,7 +339,7 @@
 
                                                 <% results10.forEach(function(result) { %>
                                                     <li>
-                                                        <input type="checkbox" name="checkbox" id="price_50_100">
+                                                        <input type="checkbox" name="price" id="price_50_100" value="50-100">
                                                         <label for="price_50_100">
                                                             <span class="checked"></span>
                                                             <span>50€ - 100€</span>
@@ -350,7 +350,7 @@
 
                                                 <% results11.forEach(function(result) { %>
                                                     <li>
-                                                        <input type="checkbox" name="checkbox" id="price_100_150">
+                                                        <input type="checkbox" name="price" id="price_100_150" value="100-150">
                                                         <label for="price_100_150">
                                                             <span class="checked"></span>
                                                             <span>100€ - 150€</span>
@@ -361,8 +361,8 @@
 
                                                 <% results12.forEach(function(result) { %>
                                                     <li>
-                                                        <input type="checkbox" name="checkbox" id="price_0_50">
-                                                        <label for="price_0_50">
+                                                        <input type="checkbox" name="price" id="price_150_max" value="150-max">
+                                                        <label for="price_150_max">
                                                             <span class="checked"></span>
                                                             <span>150€ - Max</span>
                                                         </label>
