@@ -1,6 +1,7 @@
 const express = require('express');
 var morgan = require('morgan');
 const mysql = require("mysql");
+const bodyParser = require('body-parser');
 
 // criar uma app express
 const app = express()
@@ -11,6 +12,10 @@ app.set('view engine', 'ejs')
 //Middleware
 app.use(express.static('views'))
 app.use(morgan('dev'))
+
+// Configuração do body-parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 //mysql
@@ -153,6 +158,7 @@ app.get('/page-category/:id', async (req, res) => {
 
         // Id do produto selecionado
         const departmentId = req.params.id;
+        const results0 = departmentId;
 
         // Primeira Query -> Vai buscar todos os deartamentos para a navbar superior
         const query1 = 'SELECT * FROM departments';
@@ -179,7 +185,7 @@ app.get('/page-category/:id', async (req, res) => {
         const results6 = await executeQuery(query6);
 
         // Setima Query -> Vai buscar os sub-departamentos para a secção de produtos e respetivas quantidades
-        const query7 = 'SELECT sd.id, sd.name_sub_depart AS sub_departamento_nome, COUNT(p.id) AS total_produtos FROM sub_departments sd LEFT JOIN products p ON sd.id = p.sub_department_id JOIN departments d ON sd.department_id = d.id WHERE d.id = ? GROUP BY sd.id, sd.name_sub_depart';
+        const query7 = 'SELECT sd.id AS sub_departamento_id, sd.name_sub_depart AS sub_departamento_nome, COUNT(p.id) AS total_produtos FROM sub_departments sd LEFT JOIN products p ON sd.id = p.sub_department_id JOIN departments d ON sd.department_id = d.id WHERE d.id = ? GROUP BY sd.id, sd.name_sub_depart';
         const results7 = await executeQuery(query7, [departmentId]);
 
         // Oitava Query -> Vai buscar as empresas para a secção de brands e respetivas quantidades
@@ -254,7 +260,7 @@ app.get('/page-category/:id', async (req, res) => {
         const results17 = await executeQuery(query17);
 
         // Renderizar a página EJS com os resultados
-        res.render('page-category', { results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results7, results8, results9, results10, results11, results12, products, totalProducts2: total, DepartmentId: department_id, departmentDetails, departments: departmentList, results17 });
+        res.render('page-category', { results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results7, results8, results9, results10, results11, results12, products, totalProducts2: total, DepartmentId: department_id, departmentDetails, departments: departmentList, results17 });
         
     } catch (error) {
         console.error(error);
@@ -292,6 +298,68 @@ app.get('/load-more-products/:department_id', async (req, res) => {
         res.status(500).send('Erro ao carregar mais produtos.');
     }
 });
+
+// rota dos filtros
+app.post('/filter-products/:departmentId', async (req, res) => {
+    const { subDepartments, brands, prices } = req.body;
+    const { departmentId } = req.params;
+
+    let query = `
+    SELECT p.*, c.company_name
+    FROM products p
+    JOIN companies c ON p.company_id = c.id
+    JOIN sub_departments sd ON p.sub_department_id = sd.id
+    WHERE sd.department_id = ?
+`;
+    let queryParams = [departmentId];
+
+    if (subDepartments && subDepartments.length > 0) {
+        query += ' AND p.sub_department_id IN (?)';
+        queryParams.push(subDepartments);
+    }
+
+    if (brands && brands.length > 0) {
+        query += ' AND c.company_name IN (?)';
+        queryParams.push(brands);
+    }
+
+    if (prices && prices.length > 0) {
+        const priceConditions = prices.map(price => {
+            const [min, max] = price.split('-');
+            if (max === 'max') {
+                return 'p.price >= ?';
+            }
+            return 'p.price BETWEEN ? AND ?';
+        }).join(' OR ');
+
+        query += ` AND (${priceConditions})`;
+        prices.forEach(price => {
+            const [min, max] = price.split('-');
+            queryParams.push(min);
+            if (max !== 'max') {
+                queryParams.push(max);
+            }
+        });
+    }
+
+
+    try {
+        const products = await executeQuery(query, queryParams);
+        // Formatando os preços
+        products.forEach(product => {
+            product.formatted_price = product.price.toFixed(2);
+            if (product.is_promotion) {
+                product.formatted_promotion_price = product.promotion_price.toFixed(2);
+            }
+        });
+        res.json({ products });
+    } catch (error) {
+        console.error('Erro ao carregar produtos filtrados:', error);
+        res.status(500).send('Erro ao carregar produtos filtrados');
+    }
+});
+
+
 
 
 function executeQuery(query, params = []) {
