@@ -2696,11 +2696,11 @@ input[type="range"]::-webkit-slider-thumb{
 
     /*showing the first sub-menu na navbar lateral*/
 
-    .dpt-menu .beauty ul{
+    .dpt-menu .healthbeauty ul{
         background-image: url(assets/menu/menu_beauty.jpg);
     }
     
-    .dpt-menu .eletric ul{
+    .dpt-menu .eletronicstechonology ul{
         background-image: url(assets/menu/menu_eletronic.jpg);
     }
 
@@ -2708,12 +2708,12 @@ input[type="range"]::-webkit-slider-thumb{
         background-image: url(assets/menu/menu_apparel.jpg);
     }
 
-    .dpt-menu .food ul{
+    .dpt-menu .foodbeverages ul{
         background-image: url(assets/menu/menu_food_resized.jpg);
     }
 
 
-    .dpt-menu .homekit ul{
+    .dpt-menu .interiordecor ul{
         background-image: url(assets/menu/menu_homeinterior.jpg);
     }
 
@@ -2721,7 +2721,7 @@ input[type="range"]::-webkit-slider-thumb{
         background-image: url(assets/menu/menu_agro_resized.jpg);
     }
 
-    .dpt-menu .pet ul{
+    .dpt-menu .petsuplies ul{
         background-image: url(assets/menu/menu_pet_resized.webp);
     }
 
@@ -2729,7 +2729,7 @@ input[type="range"]::-webkit-slider-thumb{
         background-image: url(assets/menu/menu_sports_resized.jpg);
     }
 
-    .dpt-menu .shipping ul{
+    .dpt-menu .shippingpackaging ul{
         background-image: url(assets/menu/menu_shipping_resized.webp);
     }
 

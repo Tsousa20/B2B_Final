@@ -294,22 +294,6 @@
                                 <div class="row sidebar">
                                     <div class="filter">
                                         <div class="filter-block">
-                                            <h4>Products</h4>
-                                            <ul>
-                                                <% results7.forEach(function(result) { %>
-                                                    <li>
-                                                        <input type="checkbox" name="checkbox" id="<%= result.sub_departamento_nome %>">
-                                                        <label for="<%= result.sub_departamento_nome %>">
-                                                            <span class="checked"></span>
-                                                            <span><%= result.sub_departamento_nome %></span>
-                                                        </label>
-                                                        <span class="count"><%= result.total_produtos %></span>
-                                                    </li>
-                                                <% }); %>
-                                            </ul>
-                                        </div>
-
-                                        <div class="filter-block">
                                             <h4>Services</h4>
                                             <ul>
                                                 <li>
@@ -396,13 +380,14 @@
                                                 <ul class="flexitem">
                                                     <li><a href="#">Home</a></li>
                                                     <li><%= departmentDetails.name_depart %></li>
+                                                    <li><%= departmentDetails.name_sub_depart %></li>
                                                 </ul>
                                             </div>
                                             <div class="page-title">
-                                                <h1><%= departmentDetails.name_depart %></h1>
+                                                <h1><%= departmentDetails.name_sub_depart %></h1>
                                             </div>
                                             <div class="cat-description">
-                                                <p><%= departmentDetails.description_depart %></p>
+                                                <p><%= departmentDetails.sub_depart_description %></p>
                                             </div>
                                             <div class="cat-navigation flexitem">
                                                 <div class="item-filter desktop-hide">
@@ -485,7 +470,7 @@
                                     </div>
                                     <% if (totalProducts2 > 12) { %>
                                         <div class="load-more flexcenter">
-                                            <a id="load-more-Depart" data-id="<%= DepartmentId %>" class="secondary-button">Load more</a>
+                                            <a id="load-more-subDepart" data-id="<%= subDepartmentId %>" class="secondary-button">Load more</a>
                                         </div>
                                     <% } %>
                                 </div>

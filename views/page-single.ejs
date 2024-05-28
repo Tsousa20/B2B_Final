@@ -42,7 +42,7 @@
                             <div class="logo"><a href="/"><span class="circle"></span>.D11Store</a></div>
                             <nav class="mobile-hide">
                                 <ul class="flexitem second-links">
-                                    <li><a href="#">Home</a></li>
+                                    <li><a href="/">Home</a></li>
                                     <li><a href="#">About</a></li>
 
                                    
@@ -58,9 +58,19 @@
                                                             <h4>Departments</h4>
                                                             <ul>
                                                                 <% results1.forEach(result => { %>
-                                                                    <li><a href="#"><%= result.name_depart%></a></li>
+                                                                    <li><a href="/page-category/<%= result.id %>"><%= result.name_depart%></a></li>
                                                                 <% }); %>
                                                                 
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flexcol">
+                                                        <div class="row">
+                                                            <h4>Sub-Departments</h4>
+                                                            <ul>
+                                                                <% results10.forEach(result => { %>
+                                                                    <li><a href="/page-sub_category/<%= result.id %>"><%= result.name_sub_depart%></a></li>
+                                                                <% }); %>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -76,20 +86,6 @@
                                                                 <li><a href="#">Pet Grooming</a></li>
                                                                 <li><a href="#">Sport Management Software</a></li>
                                                                 <li><a href="#">Transportation</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flexcol">
-                                                        <div class="row">
-                                                            <h4>Business</h4>
-                                                            <ul>
-                                                                <li><a href="#">Fashion</a></li>
-                                                                <li><a href="#">Makeup & Cosmetics</a></li>
-                                                                <li><a href="#">Technology</a></li>
-                                                                <li><a href="#">Restaurants & Hotels</a></li>
-                                                                <li><a href="#">Agriculture</a></li>
-                                                                <li><a href="#">Veterinarian & Pet Store</a></li>
-                                                                <li><a href="#">Sports Club</a></li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -254,123 +250,20 @@
 
                                 <div class="dpt-menu">
                                     <ul class="second-links">
-                                        <li class="has-child aparel">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-shirt-line"></i></div>
-                                                Apparel
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Textiles</a></li>
-                                                <li><a href="#">Sustainable Fibers</a></li>
-                                                <li><a href="#">Clothing & Acessories</a></li>
-                                                <li><a href="#">Clothing Production Services</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child beauty">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-heart-pulse-line"></i></div>
-                                                Health & Beauty
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Makeup & Skincare</a></li>
-                                                <li><a href="#">Men's Grooming</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child eletric">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-macbook-line"></i></div>
-                                                Eletronics & Technology
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Eletronic Components</a></li>
-                                                <li><a href="#">Cables</a></li>
-                                                <li><a href="#">3D Printing</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child food">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-restaurant-line"></i></div>
-                                                Food & Beverages
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Fruits & Vegetables</a></li>
-                                                <li><a href="#">Cheese & Dairy</a></li>
-                                                <li><a href="#">Meat & Seafood</a></li>
-                                                <li><a href="#">Beverages</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child homekit">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-home-8-line"></i></div>
-                                                Interior Decor
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Interior Decoration Services</a></li>
-                                                <li><a href="#">Office Furniture</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child agriculture">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-seedling-line"></i></div>
-                                                Agriculture
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Seeds</a></li>
-                                                <li><a href="#">Food Production</a></li>
-                                                <li><a href="#">Agro-Technology & Services</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child pet">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-bear-smile-line"></i></div>
-                                                Pet Suplies
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Cattle Feed</a></li>
-                                                <li><a href="#">Pet Medication</a></li>
-                                                <li><a href="#">Products & Equipment</a></li>
-                                                <li><a href="#">Pet Grooming</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child sports">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-basketball-line"></i></div>
-                                                Sports
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Training Equipment</a></li>
-                                                <li><a href="#">Management Software Sevices</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child shipping">
-                                            <a>
-                                                <div class="icon-large"><i class="ri-box-3-line"></i></div>
-                                                Shipping & Packaging
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Styrofoam</a></li>
-                                                <li><a href="#">Packaging Materials</a></li>
-                                                <li><a href="#">Custom Packaging </a></li>
-                                                <li><a href="#">Transportation Services</a></li>
-                                            </ul>
-                                        </li>
+                                        <% departments.forEach(department => { %>
+                                            <li class="has-child <%= department.name.toLowerCase().replace(/[\s&]/g, '') %>">
+                                                <a href="/page-category/<%= department.id %>">
+                                                    <div class="icon-large"><i class="<%= department.icon %>"></i></div>
+                                                    <%= department.name %>
+                                                    <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                                </a>
+                                                <ul>
+                                                    <% department.subDepartments.forEach(subDepartment => { %>
+                                                        <li><a href="/page-sub_category/<%= subDepartment.id %>"><%= subDepartment.name %></a></li>
+                                                    <% }); %>
+                                                </ul>
+                                            </li>
+                                        <% }); %>
                                     </ul>
                                 </div>
 

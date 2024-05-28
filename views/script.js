@@ -149,19 +149,22 @@ function increaseQuantity() {
 
 // Load More Button Page-Category
 document.addEventListener('DOMContentLoaded', async () => {
+    const DepartmentIdElement = document.getElementById('load-more-Depart');
+    const DepartmentId = DepartmentIdElement.dataset.id;
+
     let offset = 12; // Começa depois dos primeiros 2 produtos
-    const loadMoreButton = document.getElementById('load-more');
+    const loadMoreButton = document.getElementById('load-more-Depart');
     const productsContainer = document.querySelector('.products.main.flexwrap');
 
     loadMoreButton.addEventListener('click', async () => {
         try {
-            const response = await fetch(`/load-more-products?offset=${offset}`);
+            const response = await fetch(`/load-more-products/${DepartmentId}?offset=${offset}`);
             const { products, total } = await response.json();
 
             // Adiciona os produtos à lista existente na página
             appendProducts(products);
 
-            offset += 2; // Incrementa o offset para a próxima requisição
+            offset += 12; // Incrementa o offset para a próxima requisição
 
             // Verifica se a quantidade de produtos retornados é menor que 2
             if (offset >= total) {
@@ -178,8 +181,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const productHTML = `
                 <div class="media">
                     <div class="thumbnail object-cover">
-                        <a href="#">
-                            <img src="${product.main_img}" alt="">
+                        <a href="/page-single/${product.id}">
+                            <img src="/${product.main_img}" alt="">
                         </a>
                     </div>
                     <div class="hoverable">
@@ -201,7 +204,88 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </div>
                         <span class="mini-text">(2,548)</span>
                     </div>
-                    <h3><a href="#">${product.product_name}</a></h3>
+                    <h3><a href="/page-single/${product.id}">${product.product_name}</a></h3>
+                    <div class="price">
+                        <span class="current">${product.is_promotion ? product.formatted_promotion_price : product.formatted_price}${product.price_symbol}</span>
+                        ${product.is_promotion ? `<span class="normal mini-text">${product.formatted_price}${product.price_symbol}</span>` : ''}
+                    </div>
+                    <div class="mini-text">
+                        <p>By: ${product.company_name}</p>
+                    </div>
+                    <div class="footer">
+                        <ul class="mini-text">
+                            <li>Min. Order: ${product.min_order} un</li>
+                            <li>Ready to Ship</li>
+                        </ul>
+                    </div>
+                </div>  
+            `;
+            const productDiv = document.createElement('div');
+            productDiv.classList.add('item');
+            productDiv.innerHTML = productHTML;
+            productsContainer.appendChild(productDiv);
+        });
+    }
+});
+
+// Load More Button Page-Sub_Category
+document.addEventListener('DOMContentLoaded', async () => {
+    const subDepartmentIdElement = document.getElementById('load-more-subDepart');
+    const subDepartmentId = subDepartmentIdElement.dataset.id;
+
+    let offset = 12; // Começa depois dos primeiros 2 produtos
+    const loadMoreButton = document.getElementById('load-more-subDepart');
+    const productsContainer = document.querySelector('.products.main.flexwrap');
+
+    loadMoreButton.addEventListener('click', async () => {
+        try {
+            const response = await fetch(`/load-more-products-sub-departments/${subDepartmentId}?offset=${offset}`);
+            const { products, total } = await response.json();
+
+            // Adiciona os produtos à lista existente na página
+            appendProducts(products);
+
+            offset += 12; // Incrementa o offset para a próxima requisição
+
+            // Verifica se a quantidade de produtos retornados é menor que 2
+            if (offset >= total) {
+                loadMoreButton.style.display = 'none'; // Esconde o botão
+            }
+            
+        } catch (error) {
+            console.error('Erro ao carregar mais produtos:', error);
+        }
+    });
+    function appendProducts(products) {
+    // Loop pelos produtos e adiciona cada um à lista de produtos
+        products.forEach(product => {
+            const productHTML = `
+                <div class="media">
+                    <div class="thumbnail object-cover">
+                        <a href="/page-single/${product.id}">
+                            <img src="/${product.main_img}" alt="">
+                        </a>
+                    </div>
+                    <div class="hoverable">
+                        <ul>
+                            <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                        </ul>
+                    </div>
+                    ${product.is_promotion ? `<div class="discount circle flexcenter"><span>${product.discount_percentage}%</span></div>` : ''}
+                </div>
+                <div class="content">
+                    <div class="rating">
+                        <div class="stars">
+                            <i class="ri-star-fill" style="color:orange"></i>
+                            <i class="ri-star-fill" style="color:orange"></i>
+                            <i class="ri-star-fill" style="color:orange"></i>
+                            <i class="ri-star-fill" style="color:orange"></i>
+                            <i class="ri-star-fill" style="color:orange"></i>
+                        </div>
+                        <span class="mini-text">(2,548)</span>
+                    </div>
+                    <h3><a href="/page-single/${product.id}">${product.product_name}</a></h3>
                     <div class="price">
                         <span class="current">${product.is_promotion ? product.formatted_promotion_price : product.formatted_price}${product.price_symbol}</span>
                         ${product.is_promotion ? `<span class="normal mini-text">${product.formatted_price}${product.price_symbol}</span>` : ''}
