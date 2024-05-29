@@ -309,176 +309,213 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// Filters Page-Category
-document.addEventListener('DOMContentLoaded', () => {
-    const filterForm = document.querySelector('.filter');
-    const productsContainer = document.querySelector('.products.main.flexwrap');
-    const departmentId = filterForm.getAttribute('data-department-id');
+// // Filters Page-Category
+// document.addEventListener('DOMContentLoaded', () => {
+//     const filterForm = document.querySelector('.filter');
+//     const productsContainer = document.querySelector('.products.main.flexwrap');
+//     const departmentId = filterForm.getAttribute('data-department-id');
+
+//     const orderByDefault = document.querySelector('#order-default');
+//     const orderByHighLow = document.querySelector('#order-high-low');
+//     const orderByLowHigh = document.querySelector('#order-low-high');
+
+//     let currentOrder = 'default';
+
+//     orderByDefault.addEventListener('click', () => {
+//         currentOrder = 'default';
+//         applyFiltersAndSort();
+//         updateSortLabel('Default');
+//     });
+
+//     orderByHighLow.addEventListener('click', () => {
+//         currentOrder = 'high-low';
+//         applyFiltersAndSort();
+//         updateSortLabel('Price High to Low');
+//     });
+
+//     orderByLowHigh.addEventListener('click', () => {
+//         currentOrder = 'low-high';
+//         applyFiltersAndSort();
+//         updateSortLabel('Price Low to High');
+//     });
+
+//     filterForm.addEventListener('change', () => {
+//         applyFiltersAndSort();
+//     });
+
+//     function updateSortLabel(label) {
+//         const sortLabel = document.querySelector('.item-sortir .label .mobile-hide');
+//         sortLabel.textContent = label;
+//     }
+
+//     async function applyFiltersAndSort() {
+//         const subDepartments = Array.from(document.querySelectorAll('input[name="sub_department"]:checked')).map(cb => cb.value);
+//         const brands = Array.from(document.querySelectorAll('input[name="brand"]:checked')).map(cb => cb.value);
+//         const prices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(cb => cb.value);
+
+//         const filters = {
+//             subDepartments,
+//             brands,
+//             prices,
+//             order: currentOrder
+//         };
+
+//         try {
+//             const response = await fetch(`/filter-products/${departmentId}`, {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 },
+//                 body: JSON.stringify(filters)
+//             });
+
+//             const { products } = await response.json();
+//             displayProducts(products);
+//         } catch (error) {
+//             console.error('Erro ao carregar produtos filtrados:', error);
+//         }
+//     };
+
+//     function displayProducts(products) {
+//         productsContainer.innerHTML = '';
+//         products.forEach(product => {
+//             const productHTML = `
+//                 <div class="media">
+//                     <div class="thumbnail object-cover">
+//                         <a href="/page-single/${product.id}">
+//                             <img src="/${product.main_img}" alt="">
+//                         </a>
+//                     </div>
+//                     <div class="hoverable">
+//                         <ul>
+//                             <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+//                             <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+//                         </ul>
+//                     </div>
+//                     ${product.is_promotion ? `<div class="discount circle flexcenter"><span>${product.discount_percentage}%</span></div>` : ''}
+//                 </div>
+//                 <div class="content">
+//                     <div class="rating">
+//                         <div class="stars">
+//                             <i class="ri-star-fill" style="color:orange"></i>
+//                             <i class="ri-star-fill" style="color:orange"></i>
+//                             <i class="ri-star-fill" style="color:orange"></i>
+//                             <i class="ri-star-fill" style="color:orange"></i>
+//                             <i class="ri-star-fill" style="color:orange"></i>
+//                         </div>
+//                         <span class="mini-text">(2,548)</span>
+//                     </div>
+//                     <h3><a href="/page-single/${product.id}">${product.product_name}</a></h3>
+//                     <div class="price">
+//                         <span class="current">${product.is_promotion ? product.formatted_promotion_price : product.formatted_price}${product.price_symbol}</span>
+//                         ${product.is_promotion ? `<span class="normal mini-text">${product.formatted_price}${product.price_symbol}</span>` : ''}
+//                     </div>
+//                     <div class="mini-text">
+//                         <p>By: ${product.company_name}</p>
+//                     </div>
+//                     <div class="footer">
+//                         <ul class="mini-text">
+//                             <li>Min. Order: ${product.min_order} un</li>
+//                             <li>Ready to Ship</li>
+//                         </ul>
+//                     </div>
+//                 </div>
+//             `;
+//             const productDiv = document.createElement('div');
+//             productDiv.classList.add('item');
+//             productDiv.innerHTML = productHTML;
+//             productsContainer.appendChild(productDiv);
+//         });
+//     }
+// });
+
+// // //Filters Page-Sub_Category
+// document.addEventListener('DOMContentLoaded', () => {
+//     const filterForm = document.querySelector('.filter');
+//     const productsContainer = document.querySelector('.products.main.flexwrap');
+//     const subDepartmentId = filterForm.getAttribute('data-subdepartment-id');
+
+//     filterForm.addEventListener('change', async () => {
+//         const brands = Array.from(document.querySelectorAll('input[name="brand"]:checked')).map(cb => cb.value);
+//         const prices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(cb => cb.value);
+
+//         const filters = {
+//             brands,
+//             prices
+//         };
+
+//         try {
+//             const response = await fetch(`/filter-products-sub_category/${subDepartmentId}`, {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 },
+//                 body: JSON.stringify(filters)
+//             });
+
+//             const { products } = await response.json();
+//             displayProducts(products);
+//         } catch (error) {
+//             console.error('Erro ao carregar produtos filtrados:', error);
+//         }
+//     });
+
+//     function displayProducts(products) {
+//         productsContainer.innerHTML = '';
+//         products.forEach(product => {
+//             const productHTML = `
+//                 <div class="media">
+//                     <div class="thumbnail object-cover">
+//                         <a href="/page-single/${product.id}">
+//                             <img src="/${product.main_img}" alt="">
+//                         </a>
+//                     </div>
+//                     <div class="hoverable">
+//                         <ul>
+//                             <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
+//                             <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+//                         </ul>
+//                     </div>
+//                     ${product.is_promotion ? `<div class="discount circle flexcenter"><span>${product.discount_percentage}%</span></div>` : ''}
+//                 </div>
+//                 <div class="content">
+//                     <div class="rating">
+//                         <div class="stars">
+//                             <i class="ri-star-fill" style="color:orange"></i>
+//                             <i class="ri-star-fill" style="color:orange"></i>
+//                             <i class="ri-star-fill" style="color:orange"></i>
+//                             <i class="ri-star-fill" style="color:orange"></i>
+//                             <i class="ri-star-fill" style="color:orange"></i>
+//                         </div>
+//                         <span class="mini-text">(2,548)</span>
+//                     </div>
+//                     <h3><a href="/page-single/${product.id}">${product.product_name}</a></h3>
+//                     <div class="price">
+//                         <span class="current">${product.is_promotion ? product.formatted_promotion_price : product.formatted_price}${product.price_symbol}</span>
+//                         ${product.is_promotion ? `<span class="normal mini-text">${product.formatted_price}${product.price_symbol}</span>` : ''}
+//                     </div>
+//                     <div class="mini-text">
+//                         <p>By: ${product.company_name}</p>
+//                     </div>
+//                     <div class="footer">
+//                         <ul class="mini-text">
+//                             <li>Min. Order: ${product.min_order} un</li>
+//                             <li>Ready to Ship</li>
+//                         </ul>
+//                     </div>
+//                 </div>
+//             `;
+//             const productDiv = document.createElement('div');
+//             productDiv.classList.add('item');
+//             productDiv.innerHTML = productHTML;
+//             productsContainer.appendChild(productDiv);
+//         });
+//     }
+// });
 
 
-    filterForm.addEventListener('change', async () => {
-        const subDepartments = Array.from(document.querySelectorAll('input[name="sub_department"]:checked')).map(cb => cb.value);
-        const brands = Array.from(document.querySelectorAll('input[name="brand"]:checked')).map(cb => cb.value);
-        const prices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(cb => cb.value);
 
-        const filters = {
-            subDepartments,
-            brands,
-            prices
-        };
 
-        try {
-            const response = await fetch(`/filter-products/${departmentId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(filters)
-            });
-
-            const { products } = await response.json();
-            displayProducts(products);
-        } catch (error) {
-            console.error('Erro ao carregar produtos filtrados:', error);
-        }
-    });
-
-    function displayProducts(products) {
-        productsContainer.innerHTML = '';
-        products.forEach(product => {
-            const productHTML = `
-                <div class="media">
-                    <div class="thumbnail object-cover">
-                        <a href="/page-single/${product.id}">
-                            <img src="/${product.main_img}" alt="">
-                        </a>
-                    </div>
-                    <div class="hoverable">
-                        <ul>
-                            <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                        </ul>
-                    </div>
-                    ${product.is_promotion ? `<div class="discount circle flexcenter"><span>${product.discount_percentage}%</span></div>` : ''}
-                </div>
-                <div class="content">
-                    <div class="rating">
-                        <div class="stars">
-                            <i class="ri-star-fill" style="color:orange"></i>
-                            <i class="ri-star-fill" style="color:orange"></i>
-                            <i class="ri-star-fill" style="color:orange"></i>
-                            <i class="ri-star-fill" style="color:orange"></i>
-                            <i class="ri-star-fill" style="color:orange"></i>
-                        </div>
-                        <span class="mini-text">(2,548)</span>
-                    </div>
-                    <h3><a href="/page-single/${product.id}">${product.product_name}</a></h3>
-                    <div class="price">
-                        <span class="current">${product.is_promotion ? product.formatted_promotion_price : product.formatted_price}${product.price_symbol}</span>
-                        ${product.is_promotion ? `<span class="normal mini-text">${product.formatted_price}${product.price_symbol}</span>` : ''}
-                    </div>
-                    <div class="mini-text">
-                        <p>By: ${product.company_name}</p>
-                    </div>
-                    <div class="footer">
-                        <ul class="mini-text">
-                            <li>Min. Order: ${product.min_order} un</li>
-                            <li>Ready to Ship</li>
-                        </ul>
-                    </div>
-                </div>
-            `;
-            const productDiv = document.createElement('div');
-            productDiv.classList.add('item');
-            productDiv.innerHTML = productHTML;
-            productsContainer.appendChild(productDiv);
-        });
-    }
-});
-
-//Filters Page-Sub_Category
-document.addEventListener('DOMContentLoaded', () => {
-    const filterForm = document.querySelector('.filter');
-    const productsContainer = document.querySelector('.products.main.flexwrap');
-    const subDepartmentId = filterForm.getAttribute('data-subdepartment-id');
-
-    filterForm.addEventListener('change', async () => {
-        const brands = Array.from(document.querySelectorAll('input[name="brand"]:checked')).map(cb => cb.value);
-        const prices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(cb => cb.value);
-
-        const filters = {
-            brands,
-            prices
-        };
-
-        try {
-            const response = await fetch(`/filter-products-sub_category/${subDepartmentId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(filters)
-            });
-
-            const { products } = await response.json();
-            displayProducts(products);
-        } catch (error) {
-            console.error('Erro ao carregar produtos filtrados:', error);
-        }
-    });
-
-    function displayProducts(products) {
-        productsContainer.innerHTML = '';
-        products.forEach(product => {
-            const productHTML = `
-                <div class="media">
-                    <div class="thumbnail object-cover">
-                        <a href="/page-single/${product.id}">
-                            <img src="/${product.main_img}" alt="">
-                        </a>
-                    </div>
-                    <div class="hoverable">
-                        <ul>
-                            <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                            <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
-                        </ul>
-                    </div>
-                    ${product.is_promotion ? `<div class="discount circle flexcenter"><span>${product.discount_percentage}%</span></div>` : ''}
-                </div>
-                <div class="content">
-                    <div class="rating">
-                        <div class="stars">
-                            <i class="ri-star-fill" style="color:orange"></i>
-                            <i class="ri-star-fill" style="color:orange"></i>
-                            <i class="ri-star-fill" style="color:orange"></i>
-                            <i class="ri-star-fill" style="color:orange"></i>
-                            <i class="ri-star-fill" style="color:orange"></i>
-                        </div>
-                        <span class="mini-text">(2,548)</span>
-                    </div>
-                    <h3><a href="/page-single/${product.id}">${product.product_name}</a></h3>
-                    <div class="price">
-                        <span class="current">${product.is_promotion ? product.formatted_promotion_price : product.formatted_price}${product.price_symbol}</span>
-                        ${product.is_promotion ? `<span class="normal mini-text">${product.formatted_price}${product.price_symbol}</span>` : ''}
-                    </div>
-                    <div class="mini-text">
-                        <p>By: ${product.company_name}</p>
-                    </div>
-                    <div class="footer">
-                        <ul class="mini-text">
-                            <li>Min. Order: ${product.min_order} un</li>
-                            <li>Ready to Ship</li>
-                        </ul>
-                    </div>
-                </div>
-            `;
-            const productDiv = document.createElement('div');
-            productDiv.classList.add('item');
-            productDiv.innerHTML = productHTML;
-            productsContainer.appendChild(productDiv);
-        });
-    }
-});
 
 
 

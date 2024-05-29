@@ -301,7 +301,7 @@ app.get('/load-more-products/:department_id', async (req, res) => {
 
 // rota dos filtros
 app.post('/filter-products/:departmentId', async (req, res) => {
-    const { subDepartments, brands, prices } = req.body;
+    const { subDepartments, brands, prices, order } = req.body;
     const { departmentId } = req.params;
 
     let query = `
@@ -340,6 +340,14 @@ app.post('/filter-products/:departmentId', async (req, res) => {
                 queryParams.push(max);
             }
         });
+    }
+
+    if (order === 'high-low') {
+        query += ' ORDER BY p.price DESC';
+    } else if (order === 'low-high') {
+        query += ' ORDER BY p.price ASC';
+    } else {
+        query += ' ORDER BY p.id';
     }
 
 
@@ -516,7 +524,7 @@ app.get('/load-more-products-sub-departments/:sub_department_id', async (req, re
 });
 
 app.post('/filter-products-sub_category/:subDepartmentId', async (req, res) => {
-    const { brands, prices } = req.body;
+    const { brands, prices, order } = req.body;
     const { subDepartmentId } = req.params;
 
     let query = `
@@ -524,7 +532,7 @@ app.post('/filter-products-sub_category/:subDepartmentId', async (req, res) => {
     FROM products p
     JOIN companies c ON p.company_id = c.id
     WHERE p.sub_department_id = ?
-`;
+    `;
 
     let queryParams = [subDepartmentId];
 
@@ -550,6 +558,14 @@ app.post('/filter-products-sub_category/:subDepartmentId', async (req, res) => {
                 queryParams.push(max);
             }
         });
+    }
+
+    if (order === 'high-low') {
+        query += ' ORDER BY p.price DESC';
+    } else if (order === 'low-high') {
+        query += ' ORDER BY p.price ASC';
+    } else {
+        query += ' ORDER BY p.id';
     }
 
     try {
