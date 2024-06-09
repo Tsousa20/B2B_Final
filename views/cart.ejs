@@ -42,11 +42,10 @@
                             <div class="logo"><a href="/"><span class="circle"></span>.D11Store</a></div>
                             <nav class="mobile-hide">
                                 <ul class="flexitem second-links">
-                                    <li><a href="#">Home</a></li>
+                                    <li><a href="/">Home</a></li>
                                     <li><a href="#">About</a></li>
 
-                                
-
+                                   
                                     <li class="has-child">
                                         <a href="#">Categories
                                             <div class="icon-small"><i class="ri-arrow-down-s-line"></i></div>
@@ -58,15 +57,20 @@
                                                         <div class="row">
                                                             <h4>Departments</h4>
                                                             <ul>
-                                                                <li><a href="#">Aparel</a></li>
-                                                                <li><a href="#">Health & Beauty</a></li>
-                                                                <li><a href="#">Eletronics & Technology</a></li>
-                                                                <li><a href="#">Food & Beverages</a></li>
-                                                                <li><a href="#">Home Interior</a></li>
-                                                                <li><a href="#">Agriculture</a></li>
-                                                                <li><a href="#">Pet Suplies</a></li>
-                                                                <li><a href="#">Sports</a></li>
-                                                                <li><a href="#">Shipping & Packaging</a></li>
+                                                                <% results1.forEach(result => { %>
+                                                                    <li><a href="/page-category/<%= result.id %>"><%= result.name_depart%></a></li>
+                                                                <% }); %>
+                                                                
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flexcol">
+                                                        <div class="row">
+                                                            <h4>Sub-Departments</h4>
+                                                            <ul>
+                                                                <% results2.forEach(result => { %>
+                                                                    <li><a href="/page-sub_category/<%= result.id %>"><%= result.name_sub_depart%></a></li>
+                                                                <% }); %>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -87,32 +91,12 @@
                                                     </div>
                                                     <div class="flexcol">
                                                         <div class="row">
-                                                            <h4>Business</h4>
-                                                            <ul>
-                                                                <li><a href="#">Fashion</a></li>
-                                                                <li><a href="#">Makeup & Cosmetics</a></li>
-                                                                <li><a href="#">Technology</a></li>
-                                                                <li><a href="#">Restaurants & Hotels</a></li>
-                                                                <li><a href="#">Agriculture</a></li>
-                                                                <li><a href="#">Veterinarian & Pet Store</a></li>
-                                                                <li><a href="#">Sports Club</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flexcol">
-                                                        <div class="row">
                                                             <h4>Top Brands</h4>
-                                                            <ul class="women-brands">
-                                                                <li><a href="#">StyleWeave</a></li>
-                                                                <li><a href="#">PureGlow</a></li>
-                                                                <li><a href="#">GentleCut</a></li>
-                                                                <li><a href="#">EliteSpirits</a></li>
-                                                                <li><a href="#">Maykro</a></li>
-                                                                <li><a href="#">InterSpace</a></li>
-                                                                <li><a href="#">AgriSeeds</a></li>
-                                                                <li><a href="#">AgroFeed</a></li>
-                                                                <li><a href="#">Fitzone</a></li>
-                                                                <li><a href="#">StyroCrafters</a></li>
+                                                            <ul class="row">
+                                                                <% results3.forEach(result => { %>
+                                                                    <li><a href="#"><%= result.company_name%></a></li>
+                                                                <% }); %>
+                                                                
                                                             </ul>
                                                             <a href="#" class="view-all">View all companies<i class="ri-arrow-right-line"></i></a>
                                                         </div>
@@ -122,7 +106,7 @@
                                                             <div class="media">
                                                                 <div class="thumbnail object-cover">
                                                                     <a href="#">
-                                                                        <img src="assets/menu/menu_homeinterior.jpg" alt="">
+                                                                        <img src="/assets/menu/menu_homeinterior.jpg" alt="">
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -173,7 +157,7 @@
                                             <ul class="products mini">
                                                 <li class="item">
                                                     <div class="thumbnail object-cover">
-                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                        <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
                                                     </div>
                                                     <div class="item-content">
                                                         <p><a href="#">Dimmable Ceiling Light Modern</a></p>
@@ -187,7 +171,7 @@
 
                                                 <li class="item">
                                                     <div class="thumbnail object-cover">
-                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                        <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
                                                     </div>
                                                     <div class="item-content">
                                                         <p><a href="#">Modern Storage Cabinet with Door & 3 drwaers</a></p>
@@ -201,7 +185,7 @@
 
                                                 <li class="item">
                                                     <div class="thumbnail object-cover">
-                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                        <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
                                                     </div>
                                                     <div class="item-content">
                                                         <p><a href="#">Dimmable Ceiling Light Modern</a></p>
@@ -215,7 +199,7 @@
 
                                                 <li class="item">
                                                     <div class="thumbnail object-cover">
-                                                        <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
+                                                        <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
                                                     </div>
                                                     <div class="item-content">
                                                         <p><a href="#">Dimmable Ceiling Light Modern</a></p>
@@ -257,7 +241,7 @@
                             <div class="dpt-cat">
                                 <div class="dpt-head">
                                     <div class="main-text">All Departments</div>
-                                    <div class="mini-text mobile-hide">Total 1059 Products</div>
+                                    <div class="mini-text mobile-hide">Total <%= totalProducts %> Products</div>
                                     <a href="#" class="dpt-trigger mobile-hide">
                                         <i class="ri-menu-3-line ri-xl"></i>
                                         <i class="ri-close-line ri-xl"></i>
@@ -266,131 +250,20 @@
 
                                 <div class="dpt-menu">
                                     <ul class="second-links">
-                                        <li class="has-child aparel">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-shirt-line"></i></div>
-                                                Aparel
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Textiles</a></li>
-                                                <li><a href="#">Sustainable Fibers</a></li>
-                                                <li><a href="#">Clothing & Acessories</a></li>
-                                                <li><a href="#">Clothing Production Services</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child beauty">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-heart-pulse-line"></i></div>
-                                                Health & Beauty
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Makeup & Skincare</a></li>
-                                                <li><a href="#">Men's Grooming</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child eletric">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-macbook-line"></i></div>
-                                                Eletronics & Technology
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Eletronic Components</a></li>
-                                                <li><a href="#">Cables</a></li>
-                                                <li><a href="#">3D Printing</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child food">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-restaurant-line"></i></div>
-                                                Food & Beverages
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Fruits & Vegetables</a></li>
-                                                <li><a href="#">Cheese & Dairy</a></li>
-                                                <li><a href="#">Meat & Seafood</a></li>
-                                                <li><a href="#">Beverages</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child homekit">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-home-8-line"></i></div>
-                                                Home Interior
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Interior Decoration Services</a></li>
-                                                <li><a href="#">Office Furniture</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child agriculture">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-seedling-line"></i></div>
-                                                Agriculture
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Seeds</a></li>
-                                                <li><a href="#">Food Production</a></li>
-                                                <li><a href="#">Agro-Technology & Services</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child pet">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-bear-smile-line"></i></div>
-                                                Pet Suplies
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Cattle Feed</a></li>
-                                                <li><a href="#">Pet Medication</a></li>
-                                                <li><a href="#">Products & Equipment</a></li>
-                                                <li><a href="#">Pet Grooming</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child sports">
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-basketball-line"></i></div>
-                                                Sports
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Training Equipment</a></li>
-                                                <li><a href="#">Management Software Sevices</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li class="has-child shipping">
-                                            <a>
-                                                <div class="icon-large"><i class="ri-box-3-line"></i></div>
-                                                Shipping & Packaging
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                            <ul>
-                                                <li><a href="#">Styrofoam</a></li>
-                                                <li><a href="#">Packaging Materials</a></li>
-                                                <li><a href="#">Custom Packaging </a></li>
-                                                <li><a href="#">Transportation Services</a></li>
-                                            </ul>
-                                        </li>
-
-                                        <li>
-                                            <a href="#">
-                                                <div class="icon-large"><i class="ri-shield-star-line"></i></div>
-                                                Best Seller
-                                                <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
-                                            </a>
-                                        </li>
+                                        <% departments.forEach(department => { %>
+                                            <li class="has-child <%= department.name.toLowerCase().replace(/[\s&]/g, '') %>">
+                                                <a href="/page-category/<%= department.id %>">
+                                                    <div class="icon-large"><i class="<%= department.icon %>"></i></div>
+                                                    <%= department.name %>
+                                                    <div class="icon-small"><i class="ri-arrow-right-s-line"></i></div>
+                                                </a>
+                                                <ul>
+                                                    <% department.subDepartments.forEach(subDepartment => { %>
+                                                        <li><a href="/page-sub_category/<%= subDepartment.id %>"><%= subDepartment.name %></a></li>
+                                                    <% }); %>
+                                                </ul>
+                                            </li>
+                                        <% }); %>
                                     </ul>
                                 </div>
 
@@ -434,161 +307,73 @@
                                                     <th>Item</th>
                                                     <th>Price</th>
                                                     <th>Qty</th>
+                                                    <th>Total Order</th>
                                                     <th>Subtotal</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="flexitem">
-                                                        <div class="thumbnail object-cover">
-                                                            <a href="#"><img src="assets/products/home2.jpg" alt=""></a>
-                                                        </div>
-                                                        <div class="content">
-                                                            <strong><a href="#">Dimmable Ceiling Light Modern</a></strong>
-                                                            <p>Color: Gold</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>$279.99</td>
-                                                    <td>
-                                                        <div class="qty-control flexitem">
-                                                            <button class="minus">-</button>
-                                                            <input type="text" value="2" min="1">
-                                                            <button class="plus">+</button>
-                                                        </div>
-                                                    </td>
-                                                    <td>$559.98</td>
-                                                    <td><a href="#" class="item-remove"><i class="ri-close-line"></i></a></td>
-                                                    <td></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="flexitem">
-                                                        <div class="thumbnail object-cover">
-                                                            <a href="#"><img src="assets/products/home3.jpg" alt=""></a>
-                                                        </div>
-                                                        <div class="content">
-                                                            <strong><a href="#">Modern Storage Cabinet with Door & 3 Drawers</a></strong>
-                                                            <p>Type: Stand</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>$129.99</td>
-                                                    <td>
-                                                        <div class="qty-control flexitem">
-                                                            <button class="minus">-</button>
-                                                            <input type="text" value="1" min="1">
-                                                            <button class="plus">+</button>
-                                                        </div>
-                                                    </td>
-                                                    <td>$129.99</td>
-                                                    <td><a href="#" class="item-remove"><i class="ri-close-line"></i></a></td>
-                                                    <td></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="flexitem">
-                                                        <div class="thumbnail object-cover">
-                                                            <a href="#"><img src="assets/products/home4.jpg" alt=""></a>
-                                                        </div>
-                                                        <div class="content">
-                                                            <strong><a href="#">Vonanda Velvet Sofa Couch</a></strong>
-                                                        </div>
-                                                    </td>
-                                                    <td>$352.99</td>
-                                                    <td>
-                                                        <div class="qty-control flexitem">
-                                                            <button class="minus">-</button>
-                                                            <input type="text" value="1" min="1">
-                                                            <button class="plus">+</button>
-                                                        </div>
-                                                    </td>
-                                                    <td>$352.99</td>
-                                                    <td><a href="#" class="item-remove"><i class="ri-close-line"></i></a></td>
-                                                    <td></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="flexitem">
-                                                        <div class="thumbnail object-cover">
-                                                            <a href="#"><img src="assets/products/home5.jpg" alt=""></a>
-                                                        </div>
-                                                        <div class="content">
-                                                            <strong><a href="#">Awesome Bed for a Couple</a></strong>
-                                                            <p>Type: King Size</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>$579.99</td>
-                                                    <td>
-                                                        <div class="qty-control flexitem">
-                                                            <button class="minus">-</button>
-                                                            <input type="text" value="1" min="1">
-                                                            <button class="plus">+</button>
-                                                        </div>
-                                                    </td>
-                                                    <td>$579.99</td>
-                                                    <td><a href="#" class="item-remove"><i class="ri-close-line"></i></a></td>
-                                                    <td></td>
-                                                </tr>
+                                                <% results6.forEach(result => { %>
+                                                    <tr>
+                                                        <td class="flexitem">
+                                                            <div class="thumbnail object-cover">
+                                                                <a href="#"><img src="/<%= result.main_img %>" alt=""></a>
+                                                            </div>
+                                                            <div class="content">
+                                                                <strong><a href="#"><%= result.product_name %></a></strong>
+                                                                <p>Brand: <%= result.company_name %></p>
+                                                                <p>Min. Order: <%= result.min_order %> un</p>
+                                                            </div>
+                                                        </td>
+                                                        <td><%= result.price.toFixed(2) %> €</td>
+                                                        <td>
+                                                            <div class="qty-control flexitem">
+                                                                <button class="minus" onclick="decreaseQuantity()">-</button>
+                                                                <input type="text" value="<%= result.quantity %>" class="input_quantity">
+                                                                <button class="plus" onclick="increaseQuantity()">+</button>
+                                                            </div>
+                                                        </td>
+                                                        <td><%= (result.min_order * result.quantity) %> un</td>
+                                                        <td><%= (result.price * result.quantity).toFixed(2) %> €</td>
+                                                        <td><a href="#" class="item-remove"><i class="ri-close-line"></i></a></td>
+                                                        <td></td>
+                                                    </tr>
+                                                <% }); %>
                                             </tbody>
                                         </table>
                                     </div>
                                 </form>
                                 <div class="cart-summary styled">
                                     <div class="item">
-                                        <div class="coupon">
-                                            <input type="text" placeholder="Enter coupon">
-                                            <button>Apply</button>
-                                        </div>
                                         <div class="shipping-rate collapse">
                                             <div class="has-child expand">
-                                                <a href="#" class="icon-small">Estimate Shipping and Tax</a>
+                                                <a href="#" class="icon-small">Shipping and Tax</a>
                                                 <div class="content">
-                                                    <div class="countries">
+                                                    <div class="delivery_type">
                                                         <form action="">
-                                                            <label for="country">Country</label>
-                                                            <select name="country" id="country">
-                                                                <option value=""></option>
-                                                                <option value="1">Afganistan</option>
-                                                                <option value="2">Aland Islan</option>
-                                                                <option value="3">Albania</option>
-                                                                <option value="4" selected="selected">United States</option>
-                                                                <option value="5">Others</option>
+                                                            <label for="delivery_type">Select Delivery Type</label>
+                                                            <select name="delivery_type" id="delivery_type">
+                                                                <option value="1">International</option>
+                                                                <option value="2" selected="selected">National</option>
                                                             </select>
                                                         </form>
                                                     </div>
 
-                                                    <div class="states">
+                                                    <div class="delivery_speed">
                                                         <form action="">
-                                                            <label for="state">State/Province</label>
-                                                            <select name="state" id="state">
-                                                                <option value="">Select a region state or province</option>
-                                                                <option value="1">Alabama</option>
-                                                                <option value="2">Alaska</option>
-                                                                <option value="3">American Samoa</option>
-                                                                <option value="4">Arizona</option>
-                                                                <option value="5">Arkansas</option>
-                                                                <option value="6">Others</option>
+                                                            <label for="delivery_speed">Select Delivery Speed</label>
+                                                            <select name="delivery_speed" id="delivery_speed">
+                                                                <option value="1" selected="selected">Normal</option>
+                                                                <option value="2">Express</option>
                                                             </select>
-                                                        </form>
-                                                    </div>
-                                                    <div class="postal-code">
-                                                        <form action="">
-                                                            <label for="postal">Zip/Postal Code</label>
-                                                            <input type="number" name="postal" id="postal">
                                                         </form>
                                                     </div>
                                                     <div class="rate-options variant">
                                                         <form action="">
                                                             <p>
-                                                                <span>Flat: $10.00</span>
+                                                                <span>Price: $10.00</span>
                                                                 <input type="radio" name="rate-option" id="flat" checked>
                                                                 <label for="flat" class="circle"></label>
-                                                            </p>
-
-                                                            <p>
-                                                                <span>Best: $0.00</span>
-                                                                <input type="radio" name="rate-option" id="best">
-                                                                <label for="best" class="circle"></label>
                                                             </p>
                                                         </form>
                                                     </div>
@@ -616,7 +401,7 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <a href="checkout.html" class="secondary-button">Checkout</a>
+                                            <a href="/checkout" class="secondary-button">Checkout</a>
                                         </div>
                                     </div>
                                 </div>

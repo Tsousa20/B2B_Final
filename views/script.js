@@ -517,5 +517,3 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
-
-

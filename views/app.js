@@ -705,9 +705,105 @@ app.get('/page-offer', async (req, res) => {
 })
 
 //************ cart routes *********
-app.get('/cart', (req, res) => {
-    res.render('cart')
+app.get('/cart', async (req, res) => {
+    try {
+
+        const companyId = 1;
+
+        // Primeira Query -> Vai buscar todos os deartamentos para a navbar superior
+        const query1 = 'SELECT * FROM departments';
+        const results1 = await executeQuery(query1);
+
+        // Decima Setima Query -> vai buscar os sub-departamentos para o nav superior
+        const query2 = 'SELECT * FROM sub_departments ORDER BY RAND() LIMIT 9';
+        const results2 = await executeQuery(query2);
+
+        // Segunda Query -> Vai buscar empresas para a navbar superior
+        const query3 = 'SELECT company_name FROM companies ORDER BY RAND() LIMIT 9';
+        const results3 = await executeQuery(query3);
+
+        // Terceira Query -> Conta o numero de produtos para o menu lateral
+        const query4 = 'SELECT COUNT(*) AS total_products FROM products';
+        const results4 = await executeQuery(query4);
+
+        // Quinta query -> vai buscar os departamentos e sub-departamentos para o menu lateral
+        const query5 = 'SELECT d.id AS department_id, d.name_depart AS department_name, d.icon_depart AS icon_depart, sd.id AS sub_department_id, sd.name_sub_depart AS sub_department_name FROM departments d LEFT JOIN sub_departments sd ON d.id = sd.department_id';
+        const results5 = await executeQuery(query5);
+
+        // Agrupar os resultados por departamento
+        const departments = results5.reduce((acc, row) => {
+            const { department_id, department_name, icon_depart, sub_department_id, sub_department_name } = row;
+            if (!acc[department_id]) {
+                acc[department_id] = {
+                    id: department_id,
+                    name: department_name,
+                    icon: icon_depart,
+                    subDepartments: []
+                };
+            }
+            if (sub_department_id) {
+                acc[department_id].subDepartments.push({
+                    id: sub_department_id,
+                    name: sub_department_name
+                });
+            }
+            return acc;
+        }, {});
+
+        const departmentList = Object.values(departments);
+
+        const query6 = 'SELECT p.id AS product_id, p.product_name AS product_name, p.price, p.main_img, p.min_order, c.quantity, co.company_name AS company_name FROM carts c JOIN products p ON c.product_id = p.id JOIN companies co ON p.company_id = co.id WHERE c.company_id = ?';
+        const results6 = await executeQuery(query6, [companyId]);
+
+        res.render('cart', { results1, results2, results3, totalProducts: results4[0].total_products, departments: departmentList, results6 })
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao processar as queries.');
+    }
 })
+
+// Rota para adicionar itens ao carrinho
+app.post('/add-to-cart', async (req, res) => {
+    const { companyId, productId, quantity } = req.body;
+
+    try {
+        // Verifique se o item já está no carrinho
+        const [cartItem] = await executeQuery(
+            'SELECT * FROM carts WHERE company_id = ? AND product_id = ?',
+            [companyId, productId]
+        );
+
+        if (cartItem) {
+            // Atualize a quantidade se o item já estiver no carrinho
+            await executeQuery(
+                'UPDATE carts SET quantity = quantity + ? WHERE company_id = ? AND product_id = ?',
+                [quantity, companyId, productId]
+            );
+        } else {
+            // Insira um novo item no carrinho
+            await executeQuery(
+                'INSERT INTO carts (company_id, product_id, quantity) VALUES (?, ?, ?)',
+                [companyId, productId, quantity]
+            );
+        }
+        res.redirect(`/page-single/${productId}`);
+    } catch (error) {
+        console.error('Erro ao adicionar item ao carrinho:', error);
+        res.json({ success: false, error: 'Erro ao adicionar item ao carrinho' });
+    }
+});
+
+function executeQuery(query, params = []) {
+    return new Promise((resolve, reject) => {
+        connection.query(query, params, (error, results, fields) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
 
 //************ checkout routes *********
 app.get('/checkout', (req, res) => {

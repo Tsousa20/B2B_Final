@@ -401,13 +401,17 @@
                                                     </div>
                                                 <% } %>
                                                 
-                                                <form class="actions">
+                                                <form class="actions" action="/add-to-cart" method="POST">
+                                                    <input type="hidden" name="companyId" value="1"> <!-- valor do companyId -->
+                                                    <input type="hidden" name="productId" value="<%= productDetails.id %>">
                                                     <div class="qty-control flexitem">
                                                         <button class="minus circle" onclick="decreaseQuantity()">-</button>
-                                                        <input type="text" value="1" class="input_quantity">
+                                                        <input type="text" name="quantity" value="1" class="input_quantity">
                                                         <button class="plus circle" onclick="increaseQuantity()">+</button>
                                                     </div>
-                                                    <div class="button-cart"><button class="primary-button">Add to cart</button></div>
+                                                    <div class="button-cart">
+                                                        <button type="submit" class="primary-button">Add to cart</button>
+                                                    </div>
                                                 </form>
 
                                                 <div class="wish-share">
