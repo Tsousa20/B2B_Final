@@ -752,10 +752,15 @@ app.get('/cart', async (req, res) => {
 
         const departmentList = Object.values(departments);
 
+        // Sexta query -> vai buscar os produtos que o cliente adicionou ao carrinho
         const query6 = 'SELECT p.id AS product_id, p.product_name AS product_name, p.price, p.main_img, p.min_order, c.quantity, co.company_name AS company_name FROM carts c JOIN products p ON c.product_id = p.id JOIN companies co ON p.company_id = co.id WHERE c.company_id = ?';
         const results6 = await executeQuery(query6, [companyId]);
 
-        res.render('cart', { results1, results2, results3, totalProducts: results4[0].total_products, departments: departmentList, results6 })
+        // Setima query -> vai buscar as opções de entrega
+        const query7 = 'SELECT * FROM delivery_services';
+        const deliveryServices = await executeQuery(query7);
+
+        res.render('cart', { results1, results2, results3, totalProducts: results4[0].total_products, departments: departmentList, results6, deliveryServices })
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro ao processar as queries.');
@@ -790,6 +795,27 @@ app.post('/add-to-cart', async (req, res) => {
     } catch (error) {
         console.error('Erro ao adicionar item ao carrinho:', error);
         res.json({ success: false, error: 'Erro ao adicionar item ao carrinho' });
+    }
+});
+
+// Rota para atualizar automatcamente o preço da entrega
+app.get('/get-delivery-price', async (req, res) => {
+    const { type, speed } = req.query;
+
+    try {
+        const query = 'SELECT delivery_price, delivery_speed FROM delivery_services WHERE delivery_type = ? AND delivery_speed = ?';
+        const results = await executeQuery(query, [type, speed]);
+
+        if (results.length > 0) {
+            const price = results[0].delivery_price;
+            const speed = results[0].delivery_speed;
+            res.json({ success: true, price: price, speed: speed });
+        } else {
+            res.json({ success: false, error: 'Preço da entrega não encontrado' });
+        }
+    } catch (error) {
+        console.error('Erro ao obter o preço da entrega:', error);
+        res.json({ success: false, error: 'Erro ao obter o preço da entrega' });
     }
 });
 

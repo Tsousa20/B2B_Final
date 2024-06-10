@@ -513,6 +513,104 @@ document.addEventListener('DOMContentLoaded', async () => {
 //     }
 // });
 
+// Adicionar automaticamente o preço de enetrega na página cart
+document.addEventListener('DOMContentLoaded', function() {
+    const deliveryTypeSelect = document.getElementById('delivery_type');
+    const deliverySpeedSelect = document.getElementById('delivery_speed');
+    const deliveryPriceSpan = document.getElementById('delivery_price');
+    const shippingElement = document.getElementById('shipping');
+    const shippingSpeedElement = document.getElementById('shipping-speed');
+    const subtotalElement = document.getElementById('subtotal');
+    const totalElement = document.getElementById('total');
+
+    function updateDeliveryPrice() {
+        const selectedType = deliveryTypeSelect.value;
+        const selectedSpeed = deliverySpeedSelect.value;
+
+        // Envia uma solicitação AJAX para obter o preço da entrega
+        fetch(`/get-delivery-price?type=${selectedType}&speed=${selectedSpeed}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    deliveryPriceSpan.textContent = `Price: €${data.price.toFixed(2)}`;
+                    shippingElement.textContent = `${data.price.toFixed(2)} €`;
+                    shippingSpeedElement.textContent = `(${data.speed})`;
+                    updateTotal();
+                } else {
+                    deliveryPriceSpan.textContent = 'Price: €0.00';
+                    shippingElement.textContent = '0.00 €';
+                    shippingSpeedElement.textContent = '(Standart)';
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao obter o preço da entrega:', error);
+            });
+    }
+
+    function updateTotal() {
+        const subtotals = document.querySelectorAll('[id^="subtotal_item_"]');
+        let subtotal = 0;
+        subtotals.forEach(subtotalElement => {
+            subtotal += parseFloat(subtotalElement.textContent.replace('€', '').trim());
+        });
+        subtotalElement.textContent = `${subtotal.toFixed(2)} €`;
+
+        const shipping = parseFloat(shippingElement.textContent.replace('€', '').trim());
+        const total = subtotal + shipping;
+        totalElement.innerHTML = `<strong>${total.toFixed(2)} €</strong>`;
+    }
+
+    function updateSubtotalItem(productId) {
+        const quantityInput = document.getElementById(`quantity_${productId}`);
+        const price = parseFloat(document.getElementById(`price_${productId}`).textContent.replace('€', '').trim());
+        const quantity = parseInt(quantityInput.value);
+        const subtotal = quantity * price;
+        const subtotalElement = document.getElementById(`subtotal_item_${productId}`);
+        subtotalElement.textContent = `${subtotal.toFixed(2)} €`;
+        updateTotal();
+    }
+
+    function decreaseQuantityItem(productId) {
+        const quantityInput = document.getElementById('quantity_' + productId);
+        let quantity = parseInt(quantityInput.value);
+        if (quantity > 1) {
+            quantity--;
+            quantityInput.value = quantity;
+            updateSubtotalItem(productId);
+        }
+    }
+
+    function increaseQuantityItem(productId) {
+        const quantityInput = document.getElementById('quantity_' + productId);
+        let quantity = parseInt(quantityInput.value);
+        quantity++;
+        quantityInput.value = quantity;
+        updateSubtotalItem(productId);
+    }
+
+    document.querySelectorAll('.plus').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            increaseQuantityItem(productId);
+        });
+    });
+
+    document.querySelectorAll('.minus').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            decreaseQuantityItem(productId);
+        });
+    });
+    
+    
+
+    deliveryTypeSelect.addEventListener('change', updateDeliveryPrice);
+    deliverySpeedSelect.addEventListener('change', updateDeliveryPrice);
+
+    updateDeliveryPrice();
+});
+
+
 
 
 
