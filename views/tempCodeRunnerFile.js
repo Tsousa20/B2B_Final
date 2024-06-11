@@ -1,1 +1,1 @@
-SELECT sd.id AS sub_departamento_id, sd.name_sub_depart AS sub_departamento_nome, COUNT(p.id) AS total_produtos FROM sub_departments sd LEFT JOIN products p ON sd.id = p.sub_department_id JOIN departments d ON sd.department_id = d.id WHERE d.id = ? GROUP BY sd.id, sd.name_sub_depart'
+cart_shipping_price

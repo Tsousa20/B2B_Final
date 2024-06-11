@@ -333,8 +333,9 @@
                                                             <td>
                                                                 <div class="qty-control flexitem">
                                                                     <button type="button" class="minus" data-product-id="<%= result.product_id %>" onclick="decreaseQuantityItem('<%= result.product_id %>')">-</button>
-                                                                    <input type="text" value="<%= result.quantity %>" class="input_quantity" id="quantity_<%= result.product_id %>">
-                                                                    <button type="button"  class="plus" data-product-id="<%= result.product_id %>" onclick="increaseQuantityItem('<%= result.product_id %>')">+</button>
+                                                                    <input type="text" name="quantities[]" value="<%= result.quantity %>" class="input_quantity" id="quantity_<%= result.product_id %>">
+                                                                    <input type="hidden" name="productIds[]" value="<%= result.product_id %>">
+                                                                    <button type="button" class="plus" data-product-id="<%= result.product_id %>" onclick="increaseQuantityItem('<%= result.product_id %>')">+</button>
                                                                 </div>
                                                             </td>
                                                             <td><%= (result.min_order * result.quantity) %> un</td>
@@ -402,15 +403,15 @@
                                                     <tbody>
                                                         <tr>
                                                             <th>Subtotal</th>
-                                                            <td id="subtotal"><%= subtotal.toFixed(2) %> €</td>
+                                                            <td name="cart_subtotal" id="subtotal"><%= subtotal.toFixed(2) %> €</td>
                                                         </tr>
                                                         <tr>
                                                             <th>Shipping <span class="mini-text" id="shipping-speed">(Standart)</span></th>
-                                                            <td id="shipping">0.00 €</td>
+                                                            <td name="cart_shipping_price" id="shipping">0.00 €</td>
                                                         </tr>
                                                         <tr class="grand-total">
                                                             <th>TOTAL</th>
-                                                            <td id="total"><strong><%= subtotal.toFixed(2) %> €</strong></td>
+                                                            <td name="cart_total" id="total"><strong><%= subtotal.toFixed(2) %> €</strong></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

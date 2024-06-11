@@ -819,6 +819,35 @@ app.get('/get-delivery-price', async (req, res) => {
     }
 });
 
+app.post('/update-cart-and-checkout', async (req, res) => {
+    
+    const company_id = 1; // Ajuste conforme necessário
+    const { quantities, productIds, delivery_type, delivery_speed } = req.body;
+    
+    try {
+        // Atualizar quantidades de produtos no carrinho
+        for (let i = 0; i < productIds.length; i++) {
+            const productId = productIds[i];
+            const quantity = parseInt(quantities[i], 10);
+
+            console.log(`Updating product ${productId} to quantity ${quantity}`);
+            const sqlUpdateQuantity = 'UPDATE carts SET quantity = ? WHERE company_id = ? AND product_id = ?';
+            await executeQuery(sqlUpdateQuantity, [quantity, company_id, productId]);
+        }
+
+        // Atualizar tipo de entrega e velocidade
+        const sqlUpdateDelivery = 'UPDATE carts SET delivery_type = ?, delivery_speed = ? WHERE company_id = ?';
+        await executeQuery(sqlUpdateDelivery, [delivery_type, delivery_speed, company_id]);
+
+        // Redirecionar para a página de checkout
+        res.redirect('/checkout');
+    } catch (error) {
+        console.error('Erro ao atualizar o carrinho:', error);
+        res.status(500).send('Internal Server Error');
+    }
+
+});
+
 function executeQuery(query, params = []) {
     return new Promise((resolve, reject) => {
         connection.query(query, params, (error, results, fields) => {
