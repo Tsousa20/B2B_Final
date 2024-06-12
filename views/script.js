@@ -523,6 +523,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const subtotalElement = document.getElementById('subtotal');
     const totalElement = document.getElementById('total');
 
+    // Campos ocultos
+    const cartSubtotalInput = document.getElementById('cart_subtotal_input');
+    const cartShippingPriceInput = document.getElementById('cart_shipping_price_input');
+    const cartTotalInput = document.getElementById('cart_total_input');
+
     function updateDeliveryPrice() {
         const selectedType = deliveryTypeSelect.value;
         const selectedSpeed = deliverySpeedSelect.value;
@@ -532,14 +537,22 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    const price = data.price.toFixed(2);
                     deliveryPriceSpan.textContent = `Price: €${data.price.toFixed(2)}`;
                     shippingElement.textContent = `${data.price.toFixed(2)} €`;
                     shippingSpeedElement.textContent = `(${data.speed})`;
+
+                    // Atualizar campo oculto de shipping
+                    cartShippingPriceInput.value = price;
+
                     updateTotal();
                 } else {
                     deliveryPriceSpan.textContent = 'Price: €0.00';
                     shippingElement.textContent = '0.00 €';
                     shippingSpeedElement.textContent = '(Standart)';
+
+                    // Atualizar campo oculto de shipping
+                    cartShippingPriceInput.value = '0.00';
                 }
             })
             .catch(error => {
@@ -555,9 +568,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         subtotalElement.textContent = `${subtotal.toFixed(2)} €`;
 
+        // Atualizar campo oculto de subtotal
+        cartSubtotalInput.value = subtotal.toFixed(2);
+
         const shipping = parseFloat(shippingElement.textContent.replace('€', '').trim());
         const total = subtotal + shipping;
         totalElement.innerHTML = `<strong>${total.toFixed(2)} €</strong>`;
+
+        // Atualizar campo oculto de total
+        cartTotalInput.value = total.toFixed(2);
     }
 
     function updateSubtotalItem(productId) {
@@ -569,6 +588,58 @@ document.addEventListener('DOMContentLoaded', function() {
         subtotalElement.textContent = `${subtotal.toFixed(2)} €`;
         updateTotal();
     }
+
+    deliveryTypeSelect.addEventListener('change', updateDeliveryPrice);
+    deliverySpeedSelect.addEventListener('change', updateDeliveryPrice);
+
+    updateDeliveryPrice();
+
+
+    document.querySelectorAll('.item-remove').forEach(button => {
+        button.addEventListener('click', async function(event) {
+            event.preventDefault();
+
+            const productId = this.getAttribute('data-product-id');
+
+            try {
+                const response = await fetch('/remove-from-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    // Mostrar mensagem de confirmação
+                    alert('Produto removido do carrinho.');
+
+                    // Recarregar a página
+                    window.location.reload();
+                } else {
+                    alert('Erro ao remover o produto do carrinho.');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao remover o produto do carrinho.');
+            }
+        });
+    });
+
+    document.querySelectorAll('.plus').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            increaseQuantityItem(productId);
+        });
+    });
+
+    document.querySelectorAll('.minus').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-product-id');
+            decreaseQuantityItem(productId);
+        });
+    });
 
     function decreaseQuantityItem(productId) {
         const quantityInput = document.getElementById('quantity_' + productId);
@@ -587,27 +658,56 @@ document.addEventListener('DOMContentLoaded', function() {
         quantityInput.value = quantity;
         updateSubtotalItem(productId);
     }
+    
+});
 
-    document.querySelectorAll('.plus').forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.getAttribute('data-product-id');
-            increaseQuantityItem(productId);
+// Mensagem de confirmação do carrinho
+document.addEventListener('DOMContentLoaded', function() {
+    const checkoutButton = document.getElementById('checkout-button');
+    const checkoutForm = document.getElementById('checkout-form');
+
+    checkoutButton.addEventListener('click', function(event) {
+        const confirmation = confirm("Do you want to submit your cart?");
+        if (confirmation) {
+            checkoutForm.submit();
+        }
+    });
+});
+
+
+// Remover artigos do icon de carrinho
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.item-remove-smallCart').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            const productId = button.getAttribute('data-product-id');
+
+            try {
+                const response = await fetch('/remove-from-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    // Remover o item do DOM
+                    button.closest('.item').remove();
+                    
+                    // Mostrar mensagem de confirmação
+                    alert('Produto removido do carrinho.');
+                } else {
+                    alert('Erro ao remover o produto do carrinho.');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao remover o produto do carrinho.');
+            }
         });
     });
-
-    document.querySelectorAll('.minus').forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.getAttribute('data-product-id');
-            decreaseQuantityItem(productId);
-        });
-    });
-    
-    
-
-    deliveryTypeSelect.addEventListener('change', updateDeliveryPrice);
-    deliverySpeedSelect.addEventListener('change', updateDeliveryPrice);
-
-    updateDeliveryPrice();
 });
 
 

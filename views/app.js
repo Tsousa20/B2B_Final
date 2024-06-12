@@ -259,8 +259,13 @@ app.get('/page-category/:id', async (req, res) => {
         const query17 = 'SELECT * FROM sub_departments ORDER BY RAND() LIMIT 9';
         const results17 = await executeQuery(query17);
 
+        // Cart Query -> Vai buscar os itens do carrinho do cliente
+        const company_id = 1;
+        const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+        const cartItems = await executeQuery(cartQuery, [company_id]);
+
         // Renderizar a página EJS com os resultados
-        res.render('page-category', { results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results7, results8, results9, results10, results11, results12, products, totalProducts2: total, DepartmentId: department_id, departmentDetails, departments: departmentList, results17 });
+        res.render('page-category', { results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results7, results8, results9, results10, results11, results12, products, totalProducts2: total, DepartmentId: department_id, departmentDetails, departments: departmentList, results17, cartItems });
         
     } catch (error) {
         console.error(error);
@@ -483,14 +488,20 @@ app.get('/page-sub_category/:id', async (req, res) => {
        const query17 = 'SELECT * FROM sub_departments ORDER BY RAND() LIMIT 9';
        const results17 = await executeQuery(query17);
 
+       // Cart Query -> Vai buscar os itens do carrinho do cliente
+       const company_id = 1;
+       const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+       const cartItems = await executeQuery(cartQuery, [company_id]);
+
        // Renderizar a página EJS com os resultados
-       res.render('page-sub_category', { results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results8, results9, results10, results11, results12, products, totalProducts2: total, subDepartmentId: sub_department_id, departmentDetails, departments: departmentList, results17 });
+       res.render('page-sub_category', { results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results8, results9, results10, results11, results12, products, totalProducts2: total, subDepartmentId: sub_department_id, departmentDetails, departments: departmentList, results17, cartItems });
        
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro ao processar as queries.');
     }
 });
+
 
 app.get('/load-more-products-sub-departments/:sub_department_id', async (req, res) => {
     try {
@@ -679,8 +690,13 @@ app.get('/page-single/:id', async (req, res) => {
         // Decima Query -> vai buscar os sub-departamentos para o nav superior
         const query10 = 'SELECT * FROM sub_departments ORDER BY RAND() LIMIT 9';
         const results10 = await executeQuery(query10);
+
+        // Cart Query -> Vai buscar os itens do carrinho do cliente
+        const company_id = 1;
+        const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+        const cartItems = await executeQuery(cartQuery, [company_id]);
         
-        res.render('page-single', { results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, productDetails, results8, departments: departmentList, results10 });
+        res.render('page-single', { results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, productDetails, results8, departments: departmentList, results10, cartItems });
 
     } catch (error) {
         console.error(error);
@@ -822,7 +838,7 @@ app.get('/get-delivery-price', async (req, res) => {
 app.post('/update-cart-and-checkout', async (req, res) => {
     
     const company_id = 1; // Ajuste conforme necessário
-    const { quantities, productIds, delivery_type, delivery_speed } = req.body;
+    const { quantities, productIds, delivery_type, delivery_speed, cart_subtotal, cart_shipping_price, cart_total } = req.body;
     
     try {
         // Atualizar quantidades de produtos no carrinho
@@ -835,9 +851,9 @@ app.post('/update-cart-and-checkout', async (req, res) => {
             await executeQuery(sqlUpdateQuantity, [quantity, company_id, productId]);
         }
 
-        // Atualizar tipo de entrega e velocidade
-        const sqlUpdateDelivery = 'UPDATE carts SET delivery_type = ?, delivery_speed = ? WHERE company_id = ?';
-        await executeQuery(sqlUpdateDelivery, [delivery_type, delivery_speed, company_id]);
+        // Atualizar tipo de entrega, velocidade e valores de subtotal, shipping e total
+        const sqlUpdateDelivery = 'UPDATE carts SET delivery_type = ?, delivery_speed = ?, cart_subtotal = ?, cart_shipping_price = ?, cart_total = ? WHERE company_id = ?';
+        await executeQuery(sqlUpdateDelivery, [delivery_type, delivery_speed, cart_subtotal, cart_shipping_price, cart_total, company_id]);
 
         // Redirecionar para a página de checkout
         res.redirect('/checkout');
@@ -846,6 +862,22 @@ app.post('/update-cart-and-checkout', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 
+});
+
+app.post('/remove-from-cart', async (req, res) => {
+    try {
+        const { productId } = req.body;
+        const companyId = 1;
+
+        // Consulta para remover o item do carrinho
+        const query = 'DELETE FROM carts WHERE product_id = ? AND company_id = ?';
+        await executeQuery(query, [productId, companyId]);
+
+        res.json({ success: true, message: 'Produto removido do carrinho.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Erro ao remover o produto do carrinho.' });
+    }
 });
 
 function executeQuery(query, params = []) {

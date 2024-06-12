@@ -299,7 +299,7 @@
                         </div>
                         <div class="products one cart">
                             <div class="flexwrap">
-                                <form action="/update-cart-and-checkout" method="POST">
+                                <form id="checkout-form" action="/update-cart-and-checkout" method="POST">
                                     <div class="form-cart">
                                         <div class="item">
                                             <table id="cart-table">
@@ -404,18 +404,21 @@
                                                         <tr>
                                                             <th>Subtotal</th>
                                                             <td name="cart_subtotal" id="subtotal"><%= subtotal.toFixed(2) %> €</td>
+                                                            <input type="hidden" name="cart_subtotal" id="cart_subtotal_input" value="<%= subtotal.toFixed(2) %>">
                                                         </tr>
                                                         <tr>
                                                             <th>Shipping <span class="mini-text" id="shipping-speed">(Standart)</span></th>
                                                             <td name="cart_shipping_price" id="shipping">0.00 €</td>
+                                                            <input type="hidden" name="cart_shipping_price" id="cart_shipping_price_input" value="0.00">
                                                         </tr>
                                                         <tr class="grand-total">
                                                             <th>TOTAL</th>
                                                             <td name="cart_total" id="total"><strong><%= subtotal.toFixed(2) %> €</strong></td>
+                                                            <input type="hidden" name="cart_total" id="cart_total_input" value="<%= subtotal.toFixed(2) %>">
                                                         </tr>
                                                     </tbody>
                                                 </table>
-                                                <button type="submit" class="secondary-button">Checkout</button>
+                                                <button type="button" id="checkout-button" class="secondary-button">Checkout</button>
                                             </div>
                                         </div>
                                     </div>
