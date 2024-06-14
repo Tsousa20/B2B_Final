@@ -2,6 +2,10 @@ const express = require('express');
 var morgan = require('morgan');
 const mysql = require("mysql");
 const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
+const multer = require('multer');
+const path = require('path');
+const session = require('express-session');
 
 // criar uma app express
 const app = express()
@@ -16,6 +20,14 @@ app.use(morgan('dev'))
 // Configuração do body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configuração do express-session
+app.use(session({
+    secret: '$anjos9487$martins9274$lanca9479$sousa8548$',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 
 
 //mysql
@@ -612,6 +624,9 @@ function executeQuery(query, params = []) {
 app.get('/page-single/:id', async (req, res) => {
     try {
 
+        // Sessão do user
+        const user = req.session.user;
+
         // Id do produto selecionado
         const productId = req.params.id;
 
@@ -696,7 +711,7 @@ app.get('/page-single/:id', async (req, res) => {
         const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
         const cartItems = await executeQuery(cartQuery, [company_id]);
         
-        res.render('page-single', { results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, productDetails, results8, departments: departmentList, results10, cartItems });
+        res.render('page-single', { user, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, productDetails, results8, departments: departmentList, results10, cartItems });
 
     } catch (error) {
         console.error(error);
@@ -784,8 +799,12 @@ app.get('/cart', async (req, res) => {
 })
 
 // Rota para adicionar itens ao carrinho
-app.post('/add-to-cart', async (req, res) => {
+app.post('/add-to-cart', checkSession, async (req, res) => {
     const { companyId, productId, quantity } = req.body;
+
+    console.log(`company_id: ${companyId}`);
+    console.log(`product_id: ${productId}`);
+    console.log(`quantity: ${quantity}`);
 
     try {
         // Verifique se o item já está no carrinho
@@ -891,6 +910,133 @@ function executeQuery(query, params = []) {
         });
     });
 }
+
+//************ login routes *********
+function checkSession(req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        res.status(401).json({ success: false, message: 'Você precisa estar logado para adicionar produtos ao carrinho.' });
+    }
+}
+
+app.get('/check-session', checkSession, (req, res) => {
+    const userId = req.session.user.id;
+    res.json({ isAuthenticated: true, userId: userId });
+});
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'views/assets/empresas_img'); // Diretório onde os arquivos serão armazenados
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname)); // Nome do arquivo
+    }
+});
+
+const upload = multer({ storage: storage });
+
+function executeQuery(query, params = []) {
+    return new Promise((resolve, reject) => {
+        connection.query(query, params, (error, results, fields) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+app.post('/create-account', upload.single('main_img'), (req, res) => {
+    const { email, password, company_name, contact, address, nif, company_description } = req.body;
+    const main_img = req.file ? req.file.filename : '';
+
+    // Verificar se já existem contas com os mesmos valores para company_name, nif, ou email
+    const checkDuplicatesQuery = 'SELECT * FROM companies WHERE company_name = ? OR nif = ? OR email = ?';
+    const checkDuplicatesValues = [company_name, nif, email];
+
+    executeQuery(checkDuplicatesQuery, checkDuplicatesValues)
+        .then(results => {
+            if (results.length > 0) {
+                // Se tiver contas com dados duplicados
+                let duplicateFields = [];
+                if (results.some(result => result.company_name === company_name)) {
+                    duplicateFields.push('Company Name');
+                }
+                if (results.some(result => result.nif === nif)) {
+                    duplicateFields.push('NIF');
+                }
+                if (results.some(result => result.email === email)) {
+                    duplicateFields.push('Email');
+                }
+                const message = `Um ou mais campos já estão registados: ${duplicateFields.join(', ')}`;
+                res.status(400).json({ success: false, message });
+            } else {
+                bcrypt.hash(password, 10, (err, hash) => {
+                    if (err) throw err;
+
+                    // SQL para inserir uma nova empresa
+                    const insertQuery = 'INSERT INTO companies (email, passwrd, company_name, contact, adress, nif, company_description, main_img) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+                    const insertValues = [email, hash, company_name, contact, address, nif, company_description, main_img];
+
+                    executeQuery(insertQuery, insertValues)
+                        .then(result => {
+                            console.log('Empresa registrada com sucesso!');
+                            res.json({ success: true, message: 'Account successfully created!' });
+                        })
+                        .catch(error => {
+                            console.error('Erro ao registrar a empresa:', error);
+                            res.status(500).json({ success: false, message: 'Erro ao registrar a empresa' });
+                        });
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao verificar duplicatas:', error);
+            res.status(500).json({ success: false, message: 'Erro ao verificar duplicatas' });
+        });
+ 
+});
+
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+
+    try {
+        // Verificar o email
+        const query = 'SELECT * FROM companies WHERE email = ?';
+        const results = await executeQuery(query, [email]);
+
+        if (results.length === 0) {
+            console.log('Email não encontrado na base de dados');
+            return res.status(401).json({ success: false, message: 'Invalid credentials. Check your email and password and try again.' });
+        }
+
+
+        // Comparar a passwd fornecida com a senha hash armazenada usando bcrypt
+        const hashedPassword = results[0].passwrd;
+        bcrypt.compare(password, hashedPassword, (bcryptErr, bcryptResult) => {
+            if (bcryptErr) {
+                console.error('Erro ao comparar as senhas:', bcryptErr);
+                return res.status(500).json({ success: false, message: 'Error trying to log in. Please try again later.' });
+            }
+
+            if (bcryptResult) {
+                console.log('Login bem-sucedido');
+                req.session.user = { id: results[0].id, email: results[0].email };
+                res.json({ success: true, message: 'Login successful!' });
+            } else {
+                console.log('Senha incorreta');
+                res.status(401).json({ success: false, message: 'Invalid credentials. Check your email and password and try again.' });
+            }
+        });
+    } catch (error) {
+        console.error('Erro ao tentar fazer login:', error);
+        res.status(500).json({ success: false, message: 'Error trying to log in. Please try again later.' });
+    }
+});
+
 
 //************ checkout routes *********
 app.get('/checkout', (req, res) => {

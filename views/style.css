@@ -2400,7 +2400,6 @@ input[type="range"]::-webkit-slider-thumb{
 /*--------------------
 * 15. MODAL
 *---------------------*/
-
 .modal{
     position: fixed;
     top: 0;
@@ -2415,45 +2414,192 @@ input[type="range"]::-webkit-slider-thumb{
     text-align: center;
     background-color: var(--light-bg-color);
     z-index: 1000;
-    visibility: hidden;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: transform .2s, visibility .2s, opacity .2s;
 }
 
-.showmodal .modal{
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(0);
-    transition: transform 1s, visibility 1s, opacity 1s;
+#modal {
+    display: none;
 }
 
-.modal .image{
-    position: relative;
-    height: calc(150px + 10vw);
-    overflow: hidden;
-    max-height: 400px;
-    margin: -2em -2em 0 -2em;
-}
-
-.modal h2{
-    font-size: 1.75em;
-    text-transform: uppercase;
-    max-width: 300px;
-    margin: 0.5em auto;
-    line-height: 1;
-}
-
-.modal p{
-    margin-bottom: 1em;
-    color: var(--light-text-color);
-}
 
 .modal .t-close{
     position: absolute;
     top: 1em;
     right: 1em;
 }
+
+.box-createAccount {
+    width: 800px;
+    max-width: 800px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--white-color);
+    border-style: solid;
+    border-width: 2px;
+    border-color: var(--primary-color);
+    padding: 50px 60px 70px;
+    text-align: center;
+}
+
+
+.box-createAccount h1 {
+    font-size: 30px;
+    margin-bottom: 50px;
+    color: var(--dark-color);
+    position: relative;
+}
+
+.box-createAccount h1::after {
+    content: '';
+    width: 30px;
+    height: 4px;
+    border-radius: 3px;
+    background-color: var(--primary-color);
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.box-login {
+    width: 100%;
+    max-width: 800px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--white-color);
+    border-style: solid;
+    border-width: 2px;
+    border-color: var(--primary-color);
+    padding: 50px 60px 70px;
+    text-align: center;
+}
+
+.box-login h1 {
+    font-size: 30px;
+    margin-bottom: 60px;
+    color: var(--dark-color);
+    position: relative;
+}
+
+.box-login h1::after {
+    content: '';
+    width: 30px;
+    height: 4px;
+    border-radius: 3px;
+    background-color: var(--primary-color);
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.input-field-login {
+    background: #eaeaea;
+    margin: 15px 0;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+textarea{
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 18px 15px;
+}
+
+.input-login {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 18px 15px;
+}
+
+.input-field-login i {
+    margin-left: 15px;
+    color: var(--primary-color);
+}
+
+form p {
+    text-align: left;
+    font-size: 13px;
+}
+
+form p a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.btn-field-login {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-field-login button {
+    flex-basis: 50%;
+    background: var(--primary-color);
+    color: var(--white-color);
+    height: 40px;
+    border-radius: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-field-login button:hover {
+    background: var(--secondary-dark-color);
+}
+
+
+.input-group-login {
+    height: 200px;
+}
+
+.input-group2 {
+    height: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: none;
+    column-gap: 7px;
+    justify-content: space-between;
+}
+
+.input-field-login {
+    flex: 1;
+    min-width: 45%;
+}
+
+.input-field-login .full-width {
+    flex: 100%;
+}
+
+.input-field input[type="file"] {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 18px 15px;
+}
+
+.input-field-login input[type="file"]::file-selector-button {
+    background: var(--primary-color);
+    color: var(--white-color);
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
 
 
 
