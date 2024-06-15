@@ -711,62 +711,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    const addToCartForm = document.getElementById('addToCartForm');
-
-    addToCartForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevenir o comportamento padrão do formulário
-
-        // Verificar se o usuário está autenticado
-        fetch('/check-session', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.isAuthenticated) {
-                const userId = data.userId;
-                addToCart(userId);
-            } else {
-                alert('Você precisa estar logado para adicionar produtos ao carrinho.');
-                // Exemplo de redirecionamento para a página de login
-                // window.location.href = '/login';
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao verificar autenticação:', error);
-            alert('Erro ao verificar autenticação. Por favor, tente novamente.');
-        });
-    });
-
-    function addToCart(userId) {
-        const productId = document.getElementById('productId').value;
-        const quantity = document.getElementById('quantity').value;
-
-        fetch('/add-to-cart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ companyId: userId, productId: productId, quantity: quantity })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Produto adicionado ao carrinho com sucesso!');
-                // window.location.reload(); // Recarregar a página após adicionar ao carrinho
-            } else {
-                alert('Erro ao adicionar produto ao carrinho: ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao adicionar produto ao carrinho:', error);
-            alert('Erro ao adicionar produto ao carrinho. Por favor, tente novamente.');
-        });
-    }
-});
 
 
 

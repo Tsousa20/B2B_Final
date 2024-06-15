@@ -133,9 +133,17 @@ app.get('/', async (req, res) => {
         const query10 = 'SELECT * FROM sub_departments ORDER BY RAND() LIMIT 9';
         const results10 = await executeQuery(query10);
 
-
-        // Renderizar a página EJS com os resultados
-        res.render('index', { results1, results2, totalProducts: results3[0].total_products, productsGroup1, productsGroup2, productsGroup3, results5, results6, results7, productBig, departments: departmentList, results10 });
+        // Cart Query -> Vai buscar os itens do carrinho do cliente
+        if (req.session.user) {
+            const userId = req.session.user.id;
+    
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartItems = await executeQuery(cartQuery, [userId]);
+    
+            res.render('index', { isAuthenticated:true, results1, results2, totalProducts: results3[0].total_products, productsGroup1, productsGroup2, productsGroup3, results5, results6, results7, productBig, departments: departmentList, results10, cartItems });
+        } else {
+            res.render('index', { isAuthenticated:false, results1, results2, totalProducts: results3[0].total_products, productsGroup1, productsGroup2, productsGroup3, results5, results6, results7, productBig, departments: departmentList, results10 });
+        }
         
     } catch (error) {
         console.error(error);
@@ -272,12 +280,16 @@ app.get('/page-category/:id', async (req, res) => {
         const results17 = await executeQuery(query17);
 
         // Cart Query -> Vai buscar os itens do carrinho do cliente
-        const company_id = 1;
-        const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
-        const cartItems = await executeQuery(cartQuery, [company_id]);
-
-        // Renderizar a página EJS com os resultados
-        res.render('page-category', { results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results7, results8, results9, results10, results11, results12, products, totalProducts2: total, DepartmentId: department_id, departmentDetails, departments: departmentList, results17, cartItems });
+        if (req.session.user) {
+            const userId = req.session.user.id;
+            
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartItems = await executeQuery(cartQuery, [userId]);
+            
+            res.render('page-category', { isAuthenticated:true, results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results7, results8, results9, results10, results11, results12, products, totalProducts2: total, DepartmentId: department_id, departmentDetails, departments: departmentList, results17, cartItems });
+        } else {
+            res.render('page-category', { isAuthenticated:false, results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results7, results8, results9, results10, results11, results12, products, totalProducts2: total, DepartmentId: department_id, departmentDetails, departments: departmentList, results17 });
+        }
         
     } catch (error) {
         console.error(error);
@@ -501,12 +513,16 @@ app.get('/page-sub_category/:id', async (req, res) => {
        const results17 = await executeQuery(query17);
 
        // Cart Query -> Vai buscar os itens do carrinho do cliente
-       const company_id = 1;
-       const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
-       const cartItems = await executeQuery(cartQuery, [company_id]);
-
-       // Renderizar a página EJS com os resultados
-       res.render('page-sub_category', { results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results8, results9, results10, results11, results12, products, totalProducts2: total, subDepartmentId: sub_department_id, departmentDetails, departments: departmentList, results17, cartItems });
+       if (req.session.user) {
+            const userId = req.session.user.id;
+        
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartItems = await executeQuery(cartQuery, [userId]);
+        
+            res.render('page-sub_category', { isAuthenticated:true, results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results8, results9, results10, results11, results12, products, totalProducts2: total, subDepartmentId: sub_department_id, departmentDetails, departments: departmentList, results17, cartItems });
+        } else {
+            res.render('page-sub_category', { isAuthenticated:false, results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results8, results9, results10, results11, results12, products, totalProducts2: total, subDepartmentId: sub_department_id, departmentDetails, departments: departmentList, results17 });
+        }
        
     } catch (error) {
         console.error(error);
@@ -620,12 +636,11 @@ function executeQuery(query, params = []) {
     });
 }
 
+
+
 //************ page-single routes *********
 app.get('/page-single/:id', async (req, res) => {
     try {
-
-        // Sessão do user
-        const user = req.session.user;
 
         // Id do produto selecionado
         const productId = req.params.id;
@@ -707,12 +722,16 @@ app.get('/page-single/:id', async (req, res) => {
         const results10 = await executeQuery(query10);
 
         // Cart Query -> Vai buscar os itens do carrinho do cliente
-        const company_id = 1;
-        const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
-        const cartItems = await executeQuery(cartQuery, [company_id]);
-        
-        res.render('page-single', { user, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, productDetails, results8, departments: departmentList, results10, cartItems });
-
+        if (req.session.user) {
+            const userId = req.session.user.id;
+            
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartItems = await executeQuery(cartQuery, [userId]);
+            
+            res.render('page-single', { isAuthenticated:true, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, productDetails, results8, departments: departmentList, results10, cartItems });
+        } else {
+            res.render('page-single', { isAuthenticated:false, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, productDetails, results8, departments: departmentList, results10 });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro ao processar as queries.');
@@ -730,16 +749,22 @@ function executeQuery(query, params = []) {
         });
     });
 }
+
+
+
 //************ page-offer routes *********
 app.get('/page-offer', async (req, res) => {
     res.render('page-offer')
 })
 
+
+
+
 //************ cart routes *********
-app.get('/cart', async (req, res) => {
+app.get('/cart', checkSession, async (req, res) => {
     try {
 
-        const companyId = 1;
+        const companyId = req.session.user.id;
 
         // Primeira Query -> Vai buscar todos os deartamentos para a navbar superior
         const query1 = 'SELECT * FROM departments';
@@ -791,7 +816,12 @@ app.get('/cart', async (req, res) => {
         const query7 = 'SELECT * FROM delivery_services';
         const deliveryServices = await executeQuery(query7);
 
-        res.render('cart', { results1, results2, results3, totalProducts: results4[0].total_products, departments: departmentList, results6, deliveryServices })
+        // Mostrar os produtos no icon do cart
+        const cartQuery = 'SELECT COUNT(*) AS totalProductsCart, SUM(p.price * c.quantity) AS subtotalCart FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+        const cartItems = await executeQuery(cartQuery, [companyId]);
+        const { totalProductsCart, subtotalCart } = cartItems[0];
+
+        res.render('cart', { results1, results2, results3, totalProducts: results4[0].total_products, departments: departmentList, results6, deliveryServices, totalProductsCart, subtotalCart })
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro ao processar as queries.');
@@ -800,7 +830,8 @@ app.get('/cart', async (req, res) => {
 
 // Rota para adicionar itens ao carrinho
 app.post('/add-to-cart', checkSession, async (req, res) => {
-    const { companyId, productId, quantity } = req.body;
+    const { productId, quantity } = req.body;
+    const companyId = req.session.user.id;
 
     console.log(`company_id: ${companyId}`);
     console.log(`product_id: ${productId}`);
@@ -819,14 +850,15 @@ app.post('/add-to-cart', checkSession, async (req, res) => {
                 'UPDATE carts SET quantity = quantity + ? WHERE company_id = ? AND product_id = ?',
                 [quantity, companyId, productId]
             );
+            res.json({ success: true, message: 'Produto adicionado ao carrinho com sucesso!' });
         } else {
             // Insira um novo item no carrinho
             await executeQuery(
                 'INSERT INTO carts (company_id, product_id, quantity) VALUES (?, ?, ?)',
                 [companyId, productId, quantity]
             );
+            res.json({ success: true, message: 'Produto adicionado ao carrinho com sucesso!' });
         }
-        res.redirect(`/page-single/${productId}`);
     } catch (error) {
         console.error('Erro ao adicionar item ao carrinho:', error);
         res.json({ success: false, error: 'Erro ao adicionar item ao carrinho' });
@@ -856,7 +888,7 @@ app.get('/get-delivery-price', async (req, res) => {
 
 app.post('/update-cart-and-checkout', async (req, res) => {
     
-    const company_id = 1; // Ajuste conforme necessário
+    const companyId = req.session.user.id;
     const { quantities, productIds, delivery_type, delivery_speed, cart_subtotal, cart_shipping_price, cart_total } = req.body;
     
     try {
@@ -867,12 +899,12 @@ app.post('/update-cart-and-checkout', async (req, res) => {
 
             console.log(`Updating product ${productId} to quantity ${quantity}`);
             const sqlUpdateQuantity = 'UPDATE carts SET quantity = ? WHERE company_id = ? AND product_id = ?';
-            await executeQuery(sqlUpdateQuantity, [quantity, company_id, productId]);
+            await executeQuery(sqlUpdateQuantity, [quantity, companyId, productId]);
         }
 
         // Atualizar tipo de entrega, velocidade e valores de subtotal, shipping e total
         const sqlUpdateDelivery = 'UPDATE carts SET delivery_type = ?, delivery_speed = ?, cart_subtotal = ?, cart_shipping_price = ?, cart_total = ? WHERE company_id = ?';
-        await executeQuery(sqlUpdateDelivery, [delivery_type, delivery_speed, cart_subtotal, cart_shipping_price, cart_total, company_id]);
+        await executeQuery(sqlUpdateDelivery, [delivery_type, delivery_speed, cart_subtotal, cart_shipping_price, cart_total, companyId]);
 
         // Redirecionar para a página de checkout
         res.redirect('/checkout');
@@ -886,7 +918,7 @@ app.post('/update-cart-and-checkout', async (req, res) => {
 app.post('/remove-from-cart', async (req, res) => {
     try {
         const { productId } = req.body;
-        const companyId = 1;
+        const companyId = req.session.user.id;
 
         // Consulta para remover o item do carrinho
         const query = 'DELETE FROM carts WHERE product_id = ? AND company_id = ?';
@@ -911,6 +943,8 @@ function executeQuery(query, params = []) {
     });
 }
 
+
+
 //************ login routes *********
 function checkSession(req, res, next) {
     if (req.session.user) {
@@ -921,6 +955,7 @@ function checkSession(req, res, next) {
 }
 
 app.get('/check-session', checkSession, (req, res) => {
+    console.log('Session check:', req.session);
     const userId = req.session.user.id;
     res.json({ isAuthenticated: true, userId: userId });
 });
@@ -1036,6 +1071,8 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error trying to log in. Please try again later.' });
     }
 });
+
+
 
 
 //************ checkout routes *********

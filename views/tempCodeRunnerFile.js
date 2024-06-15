@@ -1,1 +1,1 @@
-productId
+totalProductsCart

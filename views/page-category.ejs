@@ -127,16 +127,12 @@
 
                         <div class="right">
                             <ul class="flexitem second-links">
-                                <li class="mobile-hide"><a href="#">
+                                <li class="mobile-hide"><a href="#" id="showModalIcon">
                                     <div class="icon-large"><i class="ri-user-line"></i></div>
-                                </a></li>
-                                
-                                <li class="mobile-hide"><a href="#">
-                                    <div class="icon-large"><i class="ri-heart-line"></i></div>
-                                    <div class="fly-item"><span class="item-number">0</span></div>
                                 </a></li>
 
                                 <li class="iscart">
+                                    <% if (isAuthenticated) { %>
                                     <a href="#">
                                         <div class="icon-large">
                                             <i class="ri-shopping-cart-line"></i>
@@ -168,51 +164,9 @@
                                                                 <span class="fly-item"><span><%= item.quantity %>x</span>
                                                             </span>
                                                         </div>
-                                                        <a href="#" class="item-remove-smallCart" data-product-id="<%= item.product_id %>"><i class="ri-close-line"></i></a>
+                                                        <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
                                                     </li>
                                                     <% }) %>
-
-                                                    <!-- <li class="item">
-                                                        <div class="thumbnail object-cover">
-                                                            <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
-                                                        </div>
-                                                        <div class="item-content">
-                                                            <p><a href="#">Modern Storage Cabinet with Door & 3 drwaers</a></p>
-                                                            <span class="price">
-                                                                <span>$129.99</span>
-                                                                <span class="fly-item"><span>1x</span>
-                                                            </span>
-                                                        </div>
-                                                        <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
-                                                    </li>
-
-                                                    <li class="item">
-                                                        <div class="thumbnail object-cover">
-                                                            <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
-                                                        </div>
-                                                        <div class="item-content">
-                                                            <p><a href="#">Dimmable Ceiling Light Modern</a></p>
-                                                            <span class="price">
-                                                                <span>$279.99</span>
-                                                                <span class="fly-item"><span>2x</span>
-                                                            </span>
-                                                        </div>
-                                                        <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
-                                                    </li>
-
-                                                    <li class="item">
-                                                        <div class="thumbnail object-cover">
-                                                            <a href="#"><img src="/assets/products/home2.jpg" alt=""></a>
-                                                        </div>
-                                                        <div class="item-content">
-                                                            <p><a href="#">Dimmable Ceiling Light Modern</a></p>
-                                                            <span class="price">
-                                                                <span>$279.99</span>
-                                                                <span class="fly-item"><span>2x</span>
-                                                            </span>
-                                                        </div>
-                                                        <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
-                                                    </li> -->
                                                 </ul>
                                             </div>
                                             <div class="cart-footer">
@@ -221,12 +175,25 @@
                                                     <p><strong><%= cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2) %> €</strong></p>
                                                 </div>
                                                 <div class="actions">
-                                                    <a href="/cart.html" class="primary-button">View Cart</a>
-                                                    <a href="/checkout.html" class="secondary-button">Checkout</a>
+                                                    <a href="/cart" class="primary-button">View Cart</a>
+                                                    <a href="/checkout" class="secondary-button">Checkout</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <% } else{ %>
+                                    <a href="#">
+                                        <div class="icon-large">
+                                            <i class="ri-shopping-cart-line"></i>
+                                            <div class="fly-item"><span class="item-number">0</span></div>
+                                        </div>
+                                            
+                                        <div class="icon-text">
+                                            <div class="mini-text">Total</div>
+                                            <div class="cart-total">0 €</div>
+                                        </div>
+                                    </a>
+                                    <% } %>
                                 </li>
                             </ul>
                         </div>
@@ -779,6 +746,79 @@
         </div>
         <!-- Fim do search bottom -->
 
+        <div id="modal" class="modal">
+            
+            <div class="box-login">
+                <h1 id="loginTitle">Log In</h1>
+                <form id="loginForm" action="/login" method="POST">
+                    <div class="input-group-login">
+                        <div class="input-field-login">
+                            <i class="ri-user-fill"></i>
+                            <input class="input-login" type="email" id="loginEmail" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-lock-fill"></i>
+                            <input class="input-login" type="password" id="loginPassword" name="password" placeholder="Password" required>
+                        </div>
+                        <p>Don't have an account? <a href="#" class="show-create-account">Click Here!</a></p>
+                    </div>
+                    <div class="btn-field-login">
+                        <button type="submit" id="loginbtn">Log In</button>
+                    </div>
+                </form>
+                <a href="#" class="t-close modalclose flexcenter">
+                    <i class="ri-close-line"></i>
+                </a>
+            </div>
+
+            <div class="box-createAccount" style="display: none;">
+                <h1 id="createAccountTitle">Create Account</h1>
+                <form id="createAccountForm" action="/create-account" method="POST" enctype="multipart/form-data">
+                    <div class="input-group2">
+                        <div class="input-field-login">
+                            <i class="ri-shield-user-fill"></i>
+                            <input class="input-login" type="text" id="company_name" name="company_name" placeholder="Company Name" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-user-search-fill"></i>
+                            <input class="input-login" type="text" id="nif" name="nif" placeholder="NIF" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-mail-fill"></i>
+                            <input class="input-login" type="email" id="createEmail" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-lock-fill"></i>
+                            <input class="input-login" type="password" id="createPassword" name="password" placeholder="Password" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-phone-fill"></i>
+                            <input class="input-login" type="tel" id="contact" name="contact" placeholder="Contact" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-home-4-fill"></i>
+                            <input class="input-login" type="text" id="adress" name="address" placeholder="Adress" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-image-fill"></i>
+                            <input class="input-login" type="file" name="main_img" name="main_img" id="main_img" placeholder="Image" required>
+                        </div>
+                        <div class="input-field-login full-width">
+                            <i class="ri-file-text-fill"></i>
+                            <textarea id="company_description" name="company_description" placeholder="Description" required></textarea>
+                        </div>
+                    </div>
+                    <p style="margin-top: 50px;">Already have an account? <a href="#" class="show-login">Click Here!</a></p>
+                    <div class="btn-field-login">
+                        <button type="submit" id="createbtn">Create Account</button>
+                    </div>
+                </form>
+                <a href="#" class="t-close modalclose flexcenter">
+                    <i class="ri-close-line"></i>
+                </a>
+            </div>
+        </div>
+
         <div class="overlay"></div>
 
 
@@ -788,25 +828,129 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.3.1/index.js"></script>
     <script src="/script.js"></script>
     <script>
-        const FtoShow = '.filter';
-        const Fpopup = document.querySelector(FtoShow);
-        const Ftrigger = document.querySelector('.filter-trigger');
 
-        Ftrigger.addEventListener('click', () => {
-            setTimeout(() => {
-                if(!Fpopup.classList.contains('show')){
-                    Fpopup.classList.add('show')
-                }
-            }, 250)
-        })
+        // Model de login e create account
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBox = document.querySelector('.box-login');
+            const createAccountBox = document.querySelector('.box-createAccount');
+            const showCreateAccount = document.querySelector('.show-create-account');
+            const showLogin = document.querySelector('.show-login');
+            const modal = document.getElementById('modal');
+            const closeIcons = document.querySelectorAll('.modalclose');
+            const showModalIcon = document.getElementById('showModalIcon');
 
-        //auto close by click outside .filter
-        document.addEventListener('click', (e) => {
-            const isClosest = e.target.closest(FtoShow);
-            if(!isClosest && Fpopup.classList.contains('show')){
-                Fpopup.classList.remove('show')
-            }
-        })
+            console.log(loginBox, createAccountBox, showCreateAccount, showLogin);
+
+            // Inicialmente, exibe apenas o loginBox e oculta o createAccountBox
+            createAccountBox.style.display = 'none';
+
+            // Função para resetar os formulários ao estado inicial
+            function resetForms() {
+                loginBox.style.display = 'block';
+                createAccountBox.style.display = 'none';
+            };
+
+            // Mostrar o modal ao clicar no ícone
+            showModalIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                fetch('/check-session')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isAuthenticated) {
+                        alert('Você já tem sessão iniciada.');
+                    } else {
+                        resetForms();
+                        modal.style.display = 'block';
+                    }
+                })
+            });
+
+            // Mostrar formulário de criação de conta ao clicar no link
+            showCreateAccount.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginBox.style.display = 'none';
+                createAccountBox.style.display = 'block';
+            });
+
+            // Mostrar formulário de login ao clicar no link
+            showLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginBox.style.display = 'block';
+                createAccountBox.style.display = 'none';
+            });
+
+            // Fechar o modal ao clicar no ícone de fechar
+            closeIcons.forEach(function(icon) {
+                icon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    modal.style.display = 'none';
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const createAccountForm = document.getElementById('createAccountForm');
+
+            createAccountForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevenir o comportamento padrão do formulário
+
+                const formData = new FormData(createAccountForm);
+
+                fetch('/create-account', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message); // Mostrar a mensagem de sucesso
+                        window.location.reload(); // Recarregar a página
+                    } else {
+                        alert(data.message); // Mostrar a mensagem de erro, se houver
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao criar a conta. Por favor, tente novamente.');
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevenir o comportamento padrão do formulário
+
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+
+                // Verifique se os valores estão sendo capturados corretamente
+                console.log(`Email: ${email}, Password: ${password}`);
+
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email, password: password })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload(); // Recarregar a página após o login bem-sucedido
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao tentar fazer login. Por favor, tente novamente.');
+                });
+            });
+        });
+
 
         // Filters Page-Category
         document.addEventListener('DOMContentLoaded', () => {

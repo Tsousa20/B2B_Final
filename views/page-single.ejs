@@ -130,13 +130,9 @@
                                 <li class="mobile-hide"><a href="#" id="showModalIcon">
                                     <div class="icon-large"><i class="ri-user-line"></i></div>
                                 </a></li>
-                                
-                                <li class="mobile-hide"><a href="#">
-                                    <div class="icon-large"><i class="ri-heart-line"></i></div>
-                                    <div class="fly-item"><span class="item-number">0</span></div>
-                                </a></li>
 
                                 <li class="iscart">
+                                    <% if (isAuthenticated) { %>
                                     <a href="#">
                                         <div class="icon-large">
                                             <i class="ri-shopping-cart-line"></i>
@@ -179,12 +175,25 @@
                                                     <p><strong><%= cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2) %> €</strong></p>
                                                 </div>
                                                 <div class="actions">
-                                                    <a href="/cart.html" class="primary-button">View Cart</a>
-                                                    <a href="/checkout.html" class="secondary-button">Checkout</a>
+                                                    <a href="/cart" class="primary-button">View Cart</a>
+                                                    <a href="/checkout" class="secondary-button">Checkout</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <% } else{ %>
+                                    <a href="#">
+                                        <div class="icon-large">
+                                            <i class="ri-shopping-cart-line"></i>
+                                            <div class="fly-item"><span class="item-number">0</span></div>
+                                        </div>
+                                            
+                                        <div class="icon-text">
+                                            <div class="mini-text">Total</div>
+                                            <div class="cart-total">0 €</div>
+                                        </div>
+                                    </a>
+                                    <% } %>
                                 </li>
                             </ul>
                         </div>
@@ -971,8 +980,17 @@
             // Mostrar o modal ao clicar no ícone
             showModalIcon.addEventListener('click', function(e) {
                 e.preventDefault();
-                resetForms();
-                modal.style.display = 'block';
+
+                fetch('/check-session')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isAuthenticated) {
+                        alert('Você já tem sessão iniciada.');
+                    } else {
+                        resetForms();
+                        modal.style.display = 'block';
+                    }
+                })
             });
 
             // Mostrar formulário de criação de conta ao clicar no link
@@ -1048,7 +1066,6 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert(data.message); 
                         window.location.reload(); // Recarregar a página após o login bem-sucedido
                     } else {
                         alert(data.message);
@@ -1057,6 +1074,40 @@
                 .catch(error => {
                     console.error('Erro:', error);
                     alert('Erro ao tentar fazer login. Por favor, tente novamente.');
+                });
+            });
+        });
+
+        // Adicionar produtos ao carrinho e restante verificação
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToCartForm = document.getElementById('addToCartForm');
+
+            addToCartForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevenir o comportamento padrão do formulário
+
+                const productId = document.getElementById('productId').value;
+                const quantity = document.getElementById('quantity').value;
+
+                fetch('/add-to-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId: productId, quantity: quantity })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message); 
+                        window.location.reload();
+                    } else {
+                        const modal = document.getElementById('modal');
+                        modal.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao adicionar produto ao carrinho');
                 });
             });
         });
