@@ -248,11 +248,13 @@
                                                                 </div>
                                                                 <div class="content">
                                                                     <strong><a href="#"><%= result.product_name %></a></strong>
+                                                                    <input type="hidden" name="product_names[]" value="<%= result.product_name %>">
                                                                     <p>Brand: <%= result.company_name %></p>
                                                                     <p>Min. Order: <%= result.min_order %> un</p>
                                                                 </div>
                                                             </td>
                                                             <td id="price_<%= result.product_id %>"><%= result.price.toFixed(2) %> €</td>
+                                                            <input type="hidden" name="product_prices[]" value="<%= result.price %>>">
                                                             <td>
                                                                 <div class="qty-control flexitem">
                                                                     <button type="button" class="minus" data-product-id="<%= result.product_id %>" onclick="decreaseQuantityItem('<%= result.product_id %>')">-</button>

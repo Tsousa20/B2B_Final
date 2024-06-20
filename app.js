@@ -29,6 +29,9 @@ app.use(session({
     cookie: { secure: false }
 }));
 
+require('dotenv').config()
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 
 //mysql
 const connection = mysql.createConnection({
@@ -165,8 +168,105 @@ function executeQuery(query) {
 }
 
 
-app.get('/', (req, res) => {
-    res.render('index')
+app.get('/index', async (req, res) => {
+    try {
+        // Primeira Query
+        const query1 = 'SELECT * FROM departments';
+        const results1 = await executeQuery(query1);
+
+        // Segunda Query
+        const query2 = 'SELECT company_name FROM companies ORDER BY RAND() LIMIT 9';
+        const results2 = await executeQuery(query2);
+
+        // Terceira Query
+        const query3 = 'SELECT COUNT(*) AS total_products FROM products';
+        const results3 = await executeQuery(query3);
+
+        // Quarta query
+        const query4 = 'SELECT p.*, c.company_name AS company_name FROM products p JOIN companies c ON p.company_id = c.id ORDER BY RAND() LIMIT 20';
+        const products = await executeQuery(query4);
+
+        // Quinta query
+        const query5 = 'SELECT p.* FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 2 ORDER BY RAND() LIMIT 5';
+        const results5 = await executeQuery(query5);
+
+        // Sexta query
+        const query6 = 'SELECT p.* FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 3 ORDER BY RAND() LIMIT 5';
+        const results6 = await executeQuery(query6);
+
+        // Setima query
+        const query7 = 'SELECT p.* FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 6 ORDER BY RAND() LIMIT 5';
+        const results7 = await executeQuery(query7);
+
+        // Dividir os produtos em dois grupos de 4 produtos cada (Quarta query)
+        const productsGroup1 = products.slice(0, 6);
+        const productsGroup2 = products.slice(6, 12);
+        const productsGroup3 = products.slice(8, 16);
+
+        // Formatar os preços com duas casas decimais
+        products.forEach(product => {
+            product.formatted_price = product.price.toFixed(2);
+            if (product.is_promotion) {
+                product.formatted_promotion_price = product.promotion_price.toFixed(2);
+            }
+        });
+
+        // Oitava query -> Vai buscar 1 produto random para a promoção
+        const query8 = 'SELECT p.*, c.company_name AS company_name FROM products p JOIN companies c ON p.company_id = c.id WHERE p.is_promotion = 1 ORDER BY RAND() LIMIT 1';
+        const results8 = await executeQuery(query8);
+        const productBig = results8[0];
+
+        // Formatar os preços com duas casas decimais
+        productBig.formatted_price = productBig.price.toFixed(2);
+        productBig.formatted_promotion_price = productBig.promotion_price.toFixed(2);   
+
+        // Nona query -> vai buscar os departamentos e sub-departamentos para o menu lateral
+        const query9 = 'SELECT d.id AS department_id, d.name_depart AS department_name, d.icon_depart AS icon_depart, sd.id AS sub_department_id, sd.name_sub_depart AS sub_department_name FROM departments d LEFT JOIN sub_departments sd ON d.id = sd.department_id';
+        const results9 = await executeQuery(query9);
+
+        // Agrupar os resultados por departamento
+        const departments = results9.reduce((acc, row) => {
+            const { department_id, department_name, icon_depart, sub_department_id, sub_department_name } = row;
+            if (!acc[department_id]) {
+                acc[department_id] = {
+                    id: department_id,
+                    name: department_name,
+                    icon: icon_depart,
+                    subDepartments: []
+                };
+            }
+            if (sub_department_id) {
+                acc[department_id].subDepartments.push({
+                    id: sub_department_id,
+                    name: sub_department_name
+                });
+            }
+            return acc;
+        }, {});
+
+        const departmentList = Object.values(departments);
+
+        // Decima Query -> vai buscar os sub-departamentos para o nav superior
+        const query10 = 'SELECT * FROM sub_departments ORDER BY RAND() LIMIT 9';
+        const results10 = await executeQuery(query10);
+
+        // Cart Query -> Vai buscar os itens do carrinho do cliente
+        if (req.session.user) {
+            const userId = req.session.user.id;
+    
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartItems = await executeQuery(cartQuery, [userId]);
+    
+            res.render('index', { isAuthenticated:true, results1, results2, totalProducts: results3[0].total_products, productsGroup1, productsGroup2, productsGroup3, results5, results6, results7, productBig, departments: departmentList, results10, cartItems });
+        } else {
+            res.render('index', { isAuthenticated:false, results1, results2, totalProducts: results3[0].total_products, productsGroup1, productsGroup2, productsGroup3, results5, results6, results7, productBig, departments: departmentList, results10 });
+        }
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao processar as queries.');
+    }
+
 });
 
 
@@ -889,8 +989,8 @@ app.get('/get-delivery-price', async (req, res) => {
 app.post('/update-cart-and-checkout', async (req, res) => {
     
     const companyId = req.session.user.id;
-    const { quantities, productIds, delivery_type, delivery_speed, cart_subtotal, cart_shipping_price, cart_total } = req.body;
-    
+    const { quantities, productIds, delivery_type, delivery_speed, cart_subtotal, cart_shipping_price, cart_total, product_names, product_prices } = req.body;
+
     try {
         // Atualizar quantidades de produtos no carrinho
         for (let i = 0; i < productIds.length; i++) {
@@ -907,13 +1007,66 @@ app.post('/update-cart-and-checkout', async (req, res) => {
         await executeQuery(sqlUpdateDelivery, [delivery_type, delivery_speed, cart_subtotal, cart_shipping_price, cart_total, companyId]);
 
         // Redirecionar para a página de checkout
-        res.redirect('/checkout');
+        let line_items = [];
+        for (let i = 0; i < productIds.length; i++) {
+            const quantity = parseInt(quantities[i], 10);
+            const priceInDollars = parseFloat(product_prices[i]);
+            const priceInCents = Math.round(priceInDollars * 100);
+            const product_name = product_names[i]
+
+            line_items.push({
+                price_data: {
+                    currency: 'EUR',
+                    product_data: {
+                        name: product_name
+                    },
+                    unit_amount: priceInCents
+                },
+                quantity: quantity
+            });
+        }
+
+        // Adicionar custo de shipping
+        const shippingName = `Shipping ${delivery_type} ${delivery_speed}`;
+        const shippingPriceInCents = Math.round(parseFloat(cart_shipping_price) * 100);
+        line_items.push({
+            price_data: {
+                currency: 'EUR',
+                product_data: {
+                    name: shippingName
+                },
+                unit_amount: shippingPriceInCents
+            },
+            quantity: 1
+        });
+
+        // Criar a sessão do Stripe com todos os itens
+        const session = await stripe.checkout.sessions.create({
+            line_items: line_items,
+            mode: 'payment',
+            success_url: 'http://localhost:3000/complete?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url: 'http://localhost:3000/cart'
+        });
+    
+        res.redirect(session.url);
+        
+
     } catch (error) {
         console.error('Erro ao atualizar o carrinho:', error);
         res.status(500).send('Internal Server Error');
     }
 
 });
+
+app.get('/complete', async (req, res) => {
+    const result = Promise.all([
+        stripe.checkout.sessions.retrieve(req.query.session_id, { expand: ['payment_intent.payment_method'] }),
+        stripe.checkout.sessions.listLineItems(req.query.session_id)
+    ])
+    const message = 'Your payment was successful';
+    res.redirect('http://localhost:3000')
+});
+
 
 app.post('/remove-from-cart', async (req, res) => {
     try {
@@ -959,6 +1112,7 @@ app.get('/check-session', checkSession, (req, res) => {
     const userId = req.session.user.id;
     res.json({ isAuthenticated: true, userId: userId });
 });
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -1076,9 +1230,9 @@ app.post('/login', async (req, res) => {
 
 
 //************ checkout routes *********
-app.get('/checkout', (req, res) => {
-    res.render('checkout')
-})
+// app.get('/checkout', (req, res) => {
+//     res.render('checkout')
+// })
 
 
 //escutar os request
