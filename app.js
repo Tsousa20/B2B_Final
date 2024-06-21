@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const path = require('path');
 const session = require('express-session');
+const countries = require('countries-and-timezones').getAllCountries();
 
 // criar uma app express
 const app = express()
@@ -50,7 +51,13 @@ connection.connect(function(error){
     }
 })
 
-
+app.get('/api/countries', (req, res) => {
+    const countryList = Object.values(countries).map(country => ({
+        code: country.id,
+        name: country.name
+    }));
+    res.json(countryList);
+});
 
 // routes
 //************ Index routes *********
@@ -967,19 +974,47 @@ app.post('/add-to-cart', checkSession, async (req, res) => {
 
 // Rota para atualizar automatcamente o preço da entrega
 app.get('/get-delivery-price', async (req, res) => {
-    const { type, speed } = req.query;
+    const { speed, country } = req.query;
+    const companyId = req.session.user.id;
 
     try {
-        const query = 'SELECT delivery_price, delivery_speed FROM delivery_services WHERE delivery_type = ? AND delivery_speed = ?';
-        const results = await executeQuery(query, [type, speed]);
+
+        const query = 'SELECT companies.adress_country FROM carts JOIN products ON carts.product_id = products.id JOIN companies ON products.company_id = companies.id WHERE carts.company_id = ?';
+        const companyCountries = await executeQuery(query, [companyId]);
+
+        const countries = companyCountries.map(row => row.adress_country);
+
+        const allCountriesEqual = countries.every(country => country === countries[0]);
+
+        let deliveryType;
+
+        if (allCountriesEqual) {
+            // Se todos os países são iguais, comparar com o país selecionado pelo cliente
+            if (countries[0] === country) {
+                deliveryType = 'National';
+            } else {
+                deliveryType = 'International';
+            }
+        } else {
+            // Se há pelo menos um país diferente, é entrega internacional
+            deliveryType = 'International';
+        }
+
+        const deliveryQuery = 'SELECT delivery_price, delivery_speed, delivery_date_days FROM delivery_services WHERE delivery_speed = ? AND delivery_type = ?';
+        const results = await executeQuery(deliveryQuery, [speed, deliveryType]);
 
         if (results.length > 0) {
             const price = results[0].delivery_price;
-            const speed = results[0].delivery_speed;
-            res.json({ success: true, price: price, speed: speed });
+            const minDays = results[0].delivery_date_days;
+            const earliestDate = new Date();
+            earliestDate.setDate(earliestDate.getDate() + minDays);
+
+
+            res.json({ success: true, price: price, speed: results[0].delivery_speed, deliveryType: deliveryType, earliestDate });
         } else {
             res.json({ success: false, error: 'Preço da entrega não encontrado' });
         }
+
     } catch (error) {
         console.error('Erro ao obter o preço da entrega:', error);
         res.json({ success: false, error: 'Erro ao obter o preço da entrega' });
@@ -989,7 +1024,10 @@ app.get('/get-delivery-price', async (req, res) => {
 app.post('/update-cart-and-checkout', async (req, res) => {
     
     const companyId = req.session.user.id;
-    const { quantities, productIds, delivery_type, delivery_speed, cart_subtotal, cart_shipping_price, cart_total, product_names, product_prices } = req.body;
+    const { quantities, productIds, delivery_type, delivery_speed, delivery_country, delivery_adress, delivery_date, cart_subtotal, cart_shipping_price, cart_total, product_names, product_prices, total_orders } = req.body;
+
+    console.log(`Delivery type: ${delivery_type}`)
+    const delivery_DATE = new Date(delivery_date)
 
     try {
         // Atualizar quantidades de produtos no carrinho
@@ -1003,13 +1041,13 @@ app.post('/update-cart-and-checkout', async (req, res) => {
         }
 
         // Atualizar tipo de entrega, velocidade e valores de subtotal, shipping e total
-        const sqlUpdateDelivery = 'UPDATE carts SET delivery_type = ?, delivery_speed = ?, cart_subtotal = ?, cart_shipping_price = ?, cart_total = ? WHERE company_id = ?';
-        await executeQuery(sqlUpdateDelivery, [delivery_type, delivery_speed, cart_subtotal, cart_shipping_price, cart_total, companyId]);
+        const sqlUpdateDelivery = 'UPDATE carts SET delivery_type = ?, delivery_speed = ?, delivery_address_country = ?, delivery_address = ?, delivery_date = ?, cart_subtotal = ?, cart_shipping_price = ?, cart_total = ? WHERE company_id = ?';
+        await executeQuery(sqlUpdateDelivery, [delivery_type, delivery_speed, delivery_country, delivery_adress, delivery_DATE, cart_subtotal, cart_shipping_price, cart_total, companyId]);
 
         // Redirecionar para a página de checkout
         let line_items = [];
         for (let i = 0; i < productIds.length; i++) {
-            const quantity = parseInt(quantities[i], 10);
+            const total_quantity = total_orders[i];
             const priceInDollars = parseFloat(product_prices[i]);
             const priceInCents = Math.round(priceInDollars * 100);
             const product_name = product_names[i]
@@ -1022,7 +1060,7 @@ app.post('/update-cart-and-checkout', async (req, res) => {
                     },
                     unit_amount: priceInCents
                 },
-                quantity: quantity
+                quantity: total_quantity
             });
         }
 
@@ -1059,12 +1097,45 @@ app.post('/update-cart-and-checkout', async (req, res) => {
 });
 
 app.get('/complete', async (req, res) => {
-    const result = Promise.all([
-        stripe.checkout.sessions.retrieve(req.query.session_id, { expand: ['payment_intent.payment_method'] }),
-        stripe.checkout.sessions.listLineItems(req.query.session_id)
-    ])
-    const message = 'Your payment was successful';
-    res.redirect('http://localhost:3000')
+    const companyId = req.session.user.id;
+
+    try {
+        const removeFromCarts = 'SELECT delivery_date, cart_shipping_price, cart_total, delivery_address, delivery_address_country FROM carts WHERE company_id = ?';
+        const resultsFromCart = await executeQuery(removeFromCarts, [companyId]);
+
+        if (resultsFromCart.length > 0) {
+            // const buyer_company_id = resultsFromCart[0].company_id;
+            const order_delivery_date = resultsFromCart[0].delivery_date;
+            const delivery_price = resultsFromCart[0].cart_shipping_price;
+            const order_price_total = resultsFromCart[0].cart_total;
+            const order_delivery_address = resultsFromCart[0].delivery_address;
+            const order_delivery_address_country = resultsFromCart[0].delivery_address_country;
+
+            console.log(`buyer_company_id: ${companyId}`);
+            console.log(`order_delivery_date: ${order_delivery_date}`);
+            console.log(`delivery_price: ${delivery_price}`);
+            console.log(`order_price_total: ${order_price_total}`);
+            console.log(`order_delivery_address: ${order_delivery_address}`);
+            console.log(`order_delivery_address_country: ${order_delivery_address_country}`);
+
+            // const insertIntoOrders = 'INSERT INTO orders (buyer_company_id, order_delivery_date, order_status, delivery_price, order_price_total,) VALUES (?)';
+        }
+
+        
+        const result = Promise.all([
+            stripe.checkout.sessions.retrieve(req.query.session_id, { expand: ['payment_intent.payment_method'] }),
+            stripe.checkout.sessions.listLineItems(req.query.session_id)
+        ])
+
+        console.log(JSON.stringify(await result));
+
+        const message = 'Your payment was successful';
+        res.redirect('http://localhost:3000')
+
+    } catch (error) {
+        console.error('Erro ao efetuar as querys:', error);
+        res.json({ success: false, error: 'Erro ao efetuar as querys' });
+    }
 });
 
 

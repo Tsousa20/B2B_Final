@@ -1,3 +1,2 @@
-app.get('/checkout', (req, res) => {
-//     res.render('checkout')
-// })
+
+            console.log(`buyer_company_id: ${companyId}`);

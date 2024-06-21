@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 </head>
 <body>
+
     <div id="page" class="site page-cart">
 
         <aside class="site-off desktop-hide">
@@ -239,7 +241,7 @@
                                                 <tbody>
                                                     <% let subtotal = 0; %>
                                                     <% results6.forEach(result => { %>
-                                                        <% let itemSubtotal = result.price * result.quantity; %>
+                                                        <% let itemSubtotal = (result.price * result.min_order) * result.quantity; %>
                                                         <% subtotal += itemSubtotal; %>
                                                         <tr>
                                                             <td class="flexitem">
@@ -264,6 +266,7 @@
                                                                 </div>
                                                             </td>
                                                             <td><%= (result.min_order * result.quantity) %> un</td>
+                                                            <input type="hidden" name="total_orders[]" value="<%= (result.min_order * result.quantity) %>">
                                                             <td id="subtotal_item_<%= result.product_id %>"><%= itemSubtotal.toFixed(2) %> €</td>
                                                             <td><a href="#" class="item-remove" data-product-id="<%= result.product_id %>"><i class="ri-close-line"></i></a></td>
                                                             <td></td>
@@ -282,41 +285,44 @@
                                                     <div class="content">
                                                         <div class="delivery_type">
                                                             <div class="div-cart">
-                                                                <label for="delivery_type">Select Delivery Type</label>
-                                                                <select name="delivery_type" id="delivery_type">
-                                                                    <% const deliveryTypes = deliveryServices.reduce((acc, service) => {
-                                                                        if (!acc.includes(service.delivery_type)) {
-                                                                            acc.push(service.delivery_type);
-                                                                        }
-                                                                        return acc;
-                                                                    }, []); %>
-                                                                    <% deliveryTypes.forEach(type => { %>
-                                                                        <option value="<%= type %>"><%= type %></option>
-                                                                    <% }); %>
+                                                                <label for="delivery_country">Select Delivery Country</label>
+                                                                <select name="delivery_country" id="delivery_country">
                                                                 </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="delivery_type">
+                                                            <div class="div-cart">
+                                                                <label for="delivery_adress">Delivery Address</label>
+                                                                <input type="text" id="delivery_adress" name="delivery_adress" placeholder="Address" required>
                                                             </div>
                                                         </div>
 
                                                         <div class="delivery_speed">
                                                             <div class="div-cart">
                                                                 <label for="delivery_speed">Select Delivery Speed</label>
-                                                                <select name="delivery_speed" id="delivery_speed">
-                                                                    <% const deliverySpeeds = deliveryServices.reduce((acc, service) => {
-                                                                        if (!acc.includes(service.delivery_speed)) {
-                                                                            acc.push(service.delivery_speed);
-                                                                        }
-                                                                        return acc;
-                                                                    }, []); %>
-                                                                    <% deliverySpeeds.forEach(speed => { %>
-                                                                        <option value="<%= speed %>"><%= speed %></option>
-                                                                    <% }); %>
+                                                                <select name="delivery_speed" id="delivery_speed" required>
+                                                                    <option value="Standart">Standart</option>
+                                                                    <option value="Express">Express</option>
                                                                 </select>
                                                             </div>
                                                         </div>
+
+                                                        <div class="delivery_type">
+                                                            <div class="div-cart">
+                                                                <label for="delivery_date">Select Delivery Date</label>
+                                                                <input type="text" id="delivery_date" name="delivery_date" placeholder="Select a delivery date" required>
+                                                            </div>
+                                                        </div>
+
                                                         <div class="rate-options variant">
                                                             <p>
+                                                                <span id="delivery_type" name="delivery_type">Delivery Type: National</span>
+                                                                <input type="hidden" id="delivery_type_input" name="delivery_type" value="National">
+                                                                <label for="flat" class="circle"></label>
+                                                            </p>
+                                                            <p>
                                                                 <span id="delivery_price">Price: 0.00 €</span>
-                                                                <input type="radio" name="rate-option" id="flat" checked>
                                                                 <label for="flat" class="circle"></label>
                                                             </p>
                                                         </div>
@@ -545,26 +551,25 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.3.1/index.js"></script>
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-        const FtoShow = '.filter';
-        const Fpopup = document.querySelector(FtoShow);
-        const Ftrigger = document.querySelector('.filter-trigger');
+        document.addEventListener('DOMContentLoaded', function() {
+            const deliveryCountrySelect = document.getElementById('delivery_country');
 
-        Ftrigger.addEventListener('click', () => {
-            setTimeout(() => {
-                if(!Fpopup.classList.contains('show')){
-                    Fpopup.classList.add('show')
-                }
-            }, 250)
-        })
-
-        //auto close by click outside .filter
-        document.addEventListener('click', (e) => {
-            const isClosest = e.target.closest(FtoShow);
-            if(!isClosest && Fpopup.classList.contains('show')){
-                Fpopup.classList.remove('show')
-            }
-        })
+            fetch('/api/countries')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(country => {
+                        const option = document.createElement('option');
+                        option.value = country.name;
+                        option.textContent = country.name;
+                        deliveryCountrySelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar os países:', error);
+                });
+        });
     </script>
 </body>
 </html>

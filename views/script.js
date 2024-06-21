@@ -515,41 +515,54 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Adicionar automaticamente o preço de enetrega na página cart
 document.addEventListener('DOMContentLoaded', function() {
-    const deliveryTypeSelect = document.getElementById('delivery_type');
+    const deliveryTypeSpan = document.getElementById('delivery_type');
     const deliverySpeedSelect = document.getElementById('delivery_speed');
+    const deliveryCountrySelect = document.getElementById('delivery_country');
     const deliveryPriceSpan = document.getElementById('delivery_price');
     const shippingElement = document.getElementById('shipping');
     const shippingSpeedElement = document.getElementById('shipping-speed');
     const subtotalElement = document.getElementById('subtotal');
     const totalElement = document.getElementById('total');
+    const deliveryDateInput = document.getElementById('delivery_date');
+    
 
     // Campos ocultos
     const cartSubtotalInput = document.getElementById('cart_subtotal_input');
     const cartShippingPriceInput = document.getElementById('cart_shipping_price_input');
     const cartTotalInput = document.getElementById('cart_total_input');
+    const deliveryTypeInput = document.getElementById('delivery_type_input');
 
     function updateDeliveryPrice() {
-        const selectedType = deliveryTypeSelect.value;
         const selectedSpeed = deliverySpeedSelect.value;
+        const selectedCountry = deliveryCountrySelect.value;
 
         // Envia uma solicitação AJAX para obter o preço da entrega
-        fetch(`/get-delivery-price?type=${selectedType}&speed=${selectedSpeed}`)
+        fetch(`/get-delivery-price?speed=${selectedSpeed}&country=${selectedCountry}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     const price = data.price.toFixed(2);
-                    deliveryPriceSpan.textContent = `Price: €${data.price.toFixed(2)}`;
+                    deliveryPriceSpan.textContent = `Price: ${data.price.toFixed(2)} €`;
                     shippingElement.textContent = `${data.price.toFixed(2)} €`;
                     shippingSpeedElement.textContent = `(${data.speed})`;
+                    deliveryTypeSpan.textContent = `Delivery Type: ${data.deliveryType}`;
+
+                    const earliestDate = new Date(data.earliestDate);
+                    flatpickr(deliveryDateInput, {
+                        minDate: earliestDate,
+                        dateFormat: 'd-m-Y'
+                    });
 
                     // Atualizar campo oculto de shipping
                     cartShippingPriceInput.value = price;
+                    deliveryTypeInput.value = data.deliveryType;
 
                     updateTotal();
                 } else {
                     deliveryPriceSpan.textContent = 'Price: €0.00';
                     shippingElement.textContent = '0.00 €';
                     shippingSpeedElement.textContent = '(Standart)';
+                    deliveryTypeSpan.textContent = 'Delivery Type: Unknown';
 
                     // Atualizar campo oculto de shipping
                     cartShippingPriceInput.value = '0.00';
@@ -589,7 +602,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTotal();
     }
 
-    deliveryTypeSelect.addEventListener('change', updateDeliveryPrice);
+    deliveryCountrySelect.addEventListener('change', updateDeliveryPrice);
     deliverySpeedSelect.addEventListener('change', updateDeliveryPrice);
 
     updateDeliveryPrice();
