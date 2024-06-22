@@ -1098,36 +1098,81 @@ app.post('/update-cart-and-checkout', async (req, res) => {
 
 app.get('/complete', async (req, res) => {
     const companyId = req.session.user.id;
+    const paymentDate = new Date();
 
     try {
-        const removeFromCarts = 'SELECT delivery_date, cart_shipping_price, cart_total, delivery_address, delivery_address_country FROM carts WHERE company_id = ?';
-        const resultsFromCart = await executeQuery(removeFromCarts, [companyId]);
+        const getCartDetailsQuery = 'SELECT product_id, quantity, delivery_date, cart_shipping_price, cart_total, delivery_address, delivery_address_country FROM carts WHERE company_id = ?';
+        const cartDetails = await executeQuery(getCartDetailsQuery, [companyId]);
 
-        if (resultsFromCart.length > 0) {
-            // const buyer_company_id = resultsFromCart[0].company_id;
-            const order_delivery_date = resultsFromCart[0].delivery_date;
-            const delivery_price = resultsFromCart[0].cart_shipping_price;
-            const order_price_total = resultsFromCart[0].cart_total;
-            const order_delivery_address = resultsFromCart[0].delivery_address;
-            const order_delivery_address_country = resultsFromCart[0].delivery_address_country;
+        if (cartDetails.length > 0) {
+            const order_delivery_date = cartDetails[0].delivery_date;
+            const delivery_price = cartDetails[0].cart_shipping_price;
+            const order_price_total = cartDetails[0].cart_total;
+            const order_delivery_address = cartDetails[0].delivery_address;
+            const order_delivery_address_country = cartDetails[0].delivery_address_country;
 
-            console.log(`buyer_company_id: ${companyId}`);
-            console.log(`order_delivery_date: ${order_delivery_date}`);
-            console.log(`delivery_price: ${delivery_price}`);
-            console.log(`order_price_total: ${order_price_total}`);
-            console.log(`order_delivery_address: ${order_delivery_address}`);
-            console.log(`order_delivery_address_country: ${order_delivery_address_country}`);
+            const [stripeSession, lineItems] = await Promise.all([
+                stripe.checkout.sessions.retrieve(req.query.session_id, { expand: ['payment_intent.payment_method'] }),
+                stripe.checkout.sessions.listLineItems(req.query.session_id)
+            ])
+    
+            const paymentMethodType = stripeSession.payment_method_types[0];
+            const lastFourDigits = stripeSession.payment_intent.payment_method.card.last4;
+            const totalAmountPaid = stripeSession.amount_total / 100;
 
-            // const insertIntoOrders = 'INSERT INTO orders (buyer_company_id, order_delivery_date, order_status, delivery_price, order_price_total,) VALUES (?)';
+            // Obter os IDs dos produtos no carrinho
+            const productIds = cartDetails.map(item => item.product_id);
+
+            // Obter detalhes dos produtos na tabela products
+            const getProductDetailsQuery = 'SELECT id, company_id AS seller_company_id, price, min_order FROM products WHERE id IN (?)';
+            const productDetails = await executeQuery(getProductDetailsQuery, [productIds]);
+
+            const productMap = {};
+            productDetails.forEach(product => {
+                productMap[product.id] = {
+                    seller_company_id: product.seller_company_id,
+                    price: product.price,
+                    min_order: product.min_order
+                };
+            });
+
+            cartDetails.forEach(item => {
+                if (!productMap[item.product_id]) {
+                    console.error(`Produto com ID ${item.product_id} não encontrado no mapa de produtos.`);
+                }
+            });
+
+            const insertIntoOrdersQuery = 'INSERT INTO orders (buyer_company_id, order_date, order_delivery_date, order_status, delivery_price, order_price_total, order_delivery_address, order_delivery_address_country, payment_method, payment_method_lastFourDigits) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            const insertIntoOrders = await executeQuery(insertIntoOrdersQuery , [companyId, paymentDate, order_delivery_date, 'Pending', delivery_price, totalAmountPaid, order_delivery_address, order_delivery_address_country, paymentMethodType, lastFourDigits]);
+            
+            const orderId = insertIntoOrders.insertId;
+
+            const orderItemsValues = cartDetails.map(item => {
+                const product = productMap[item.product_id];
+                if (product) {
+                    const quantity = item.quantity * product.min_order;
+                    return [
+                        orderId, 
+                        item.product_id, 
+                        product.seller_company_id, 
+                        quantity, 
+                        product.price
+                    ];
+                } else {
+                    throw new Error(`Produto com ID ${item.product_id} não encontrado na tabela de produtos.`);
+                }
+            });
+
+            const insertIntoOrderItemsQuery = 'INSERT INTO orderitems (order_id, product_id, seller_company_id, quantity, product_unit_price) VALUES ?';
+            await executeQuery(insertIntoOrderItemsQuery, [orderItemsValues]);
+            
+            // Remover itens do carrinho
+            await executeQuery('DELETE FROM carts WHERE company_id = ?', [companyId]);
+        
         }
 
         
-        const result = Promise.all([
-            stripe.checkout.sessions.retrieve(req.query.session_id, { expand: ['payment_intent.payment_method'] }),
-            stripe.checkout.sessions.listLineItems(req.query.session_id)
-        ])
-
-        console.log(JSON.stringify(await result));
+        
 
         const message = 'Your payment was successful';
         res.redirect('http://localhost:3000')
