@@ -128,11 +128,16 @@
                         <div class="right">
                             <ul class="flexitem second-links">
                                 <li class="mobile-hide"><a href="#" id="showModalIcon">
-                                    <div class="icon-large"><i class="ri-user-line"></i></div>
+                                    <div class="icon-large">
+                                        <i class="ri-user-line"></i>
+                                        <% if (isAuthenticated) { %>
+                                            <div class="fly-item"><span class="item-number">I</span></div>
+                                        <% } %>
+                                    </div>
                                 </a></li>
 
+                                <% if (isAuthenticated) { %>
                                 <li class="iscart">
-                                    <% if (isAuthenticated) { %>
                                     <a href="#">
                                         <div class="icon-large">
                                             <i class="ri-shopping-cart-line"></i>
@@ -141,7 +146,7 @@
                                         
                                         <div class="icon-text">
                                             <div class="mini-text">Total</div>
-                                            <div class="cart-total"><%= cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2) %> €</div>
+                                            <div class="cart-total"><%= cartItems.reduce((acc, item) => acc + ((item.price * item.min_order)*item.quantity), 0).toFixed(2) %> €</div>
                                         </div>
                                     </a>
 
@@ -161,7 +166,7 @@
                                                             <p><a href="#"><%= item.product_name %></a></p>
                                                             <span class="price">
                                                                 <span><%= item.price.toFixed(2) %> €</span>
-                                                                <span class="fly-item"><span><%= item.quantity %>x</span>
+                                                                <span class="fly-item"><span><%= cartItems.reduce((acc, item) => acc + (item.quantity * item.min_order), 0) %> x</span>
                                                             </span>
                                                         </div>
                                                         <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
@@ -172,28 +177,18 @@
                                             <div class="cart-footer">
                                                 <div class="subtotal">
                                                     <p>Subtotal</p>
-                                                    <p><strong><%= cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0).toFixed(2) %> €</strong></p>
+                                                    <p><strong><%= cartItems.reduce((acc, item) => acc + ((item.price * item.min_order)*item.quantity), 0).toFixed(2) %> €</strong></p>
                                                 </div>
-                                                <div class="actions">
-                                                    <a href="/cart" class="primary-button">View Cart</a>
-                                                </div>
+                                                <% if (cartItems.length > 0) { %>
+                                                    <div class="actions">
+                                                        <a href="/cart" class="primary-button">View Cart</a>
+                                                    </div>
+                                                <% } %>
                                             </div>
                                         </div>
                                     </div>
-                                    <% } else{ %>
-                                    <a href="#">
-                                        <div class="icon-large">
-                                            <i class="ri-shopping-cart-line"></i>
-                                            <div class="fly-item"><span class="item-number">0</span></div>
-                                        </div>
-                                            
-                                        <div class="icon-text">
-                                            <div class="mini-text">Total</div>
-                                            <div class="cart-total">0 €</div>
-                                        </div>
-                                    </a>
-                                    <% } %>
                                 </li>
+                                <% } %>
                             </ul>
                         </div>
                     </div>

@@ -147,7 +147,7 @@ app.get('/', async (req, res) => {
         if (req.session.user) {
             const userId = req.session.user.id;
     
-            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img, p.min_order FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
             const cartItems = await executeQuery(cartQuery, [userId]);
     
             res.render('index', { isAuthenticated:true, results1, results2, totalProducts: results3[0].total_products, productsGroup1, productsGroup2, productsGroup3, results5, results6, results7, productBig, departments: departmentList, results10, cartItems });
@@ -390,7 +390,7 @@ app.get('/page-category/:id', async (req, res) => {
         if (req.session.user) {
             const userId = req.session.user.id;
             
-            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img, p.min_order FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
             const cartItems = await executeQuery(cartQuery, [userId]);
             
             res.render('page-category', { isAuthenticated:true, results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results7, results8, results9, results10, results11, results12, products, totalProducts2: total, DepartmentId: department_id, departmentDetails, departments: departmentList, results17, cartItems });
@@ -623,7 +623,7 @@ app.get('/page-sub_category/:id', async (req, res) => {
        if (req.session.user) {
             const userId = req.session.user.id;
         
-            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img, p.min_order FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
             const cartItems = await executeQuery(cartQuery, [userId]);
         
             res.render('page-sub_category', { isAuthenticated:true, results0, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, results8, results9, results10, results11, results12, products, totalProducts2: total, subDepartmentId: sub_department_id, departmentDetails, departments: departmentList, results17, cartItems });
@@ -832,7 +832,7 @@ app.get('/page-single/:id', async (req, res) => {
         if (req.session.user) {
             const userId = req.session.user.id;
             
-            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img, p.min_order FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
             const cartItems = await executeQuery(cartQuery, [userId]);
             
             res.render('page-single', { isAuthenticated:true, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, productDetails, results8, departments: departmentList, results10, cartItems });
