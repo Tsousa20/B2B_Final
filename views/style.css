@@ -1740,7 +1740,14 @@ form p{
     margin-bottom: 2em;
 }
 
-form :where(input,textarea){
+form :where(input){
+    line-height: 1;
+    padding: 1em;
+    border: 1px solid var(--border-color);
+    outline: 0;
+}
+
+form textarea{
     line-height: 1;
     padding: 1em;
     border: 1px solid var(--border-color);

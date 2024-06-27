@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div class="grid-container">
+        <!------- Header ------>
+        <header class="header">
+            <div class="menu-icon" onclick="openSidebar()">
+                <span class="material-icons-outlined">menu</span>
+            </div>
+            <div class="header-left">
+            </div>
+            <div class="header-right">
+                <span id="account-icon" class="material-icons-outlined" style="padding: 5px;">account_circle</span>
+                <span class="material-icons-outlined" style="padding: 5px;">logout</span>
+            </div>
+        </header>
+        <!------- End Header ------>
+
+        <!------- Sidebar ------>
+        <aside id="sidebar">
+            <div class="sidebar-title">
+                <div class="sidebar-brand">
+                    <span class="material-icons-outlined">inventory</span> D11's Inventory
+                </div>
+                <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+            </div>
+
+            <ul class="sidebar-list">
+                <li class="sidebar-list-item" data-target="dashboard">
+                    <span class="material-icons-outlined">dashboard</span> Dashboard
+                </li>
+                <li class="sidebar-list-item" data-target="inventory">
+                    <span class="material-icons-outlined">fact_check</span> Inventory
+                </li>
+                <li class="sidebar-list-item" data-target="purchase-orders">
+                    <span class="material-icons-outlined">add_shopping_cart</span> Purchase Orders
+                </li>
+                <li class="sidebar-list-item" data-target="sales-orders">
+                    <span class="material-icons-outlined">shopping_cart</span> Sales Orders
+                </li>
+                <li class="sidebar-list-item" data-target="service-quotes">
+                    <span class="material-symbols-outlined">request_quote</span> Service Quotes
+                </li>
+                <li class="sidebar-list-item" data-target="reports">
+                    <span class="material-icons-outlined">poll</span> Reports
+                </li>
+                <li class="sidebar-list-item" data-target="liked-products">
+                    <span class="material-symbols-outlined">favorite</span> Liked Products
+                </li>
+                <li class="sidebar-list-item" data-target="messages">
+                    <span class="material-symbols-outlined">sms</span> Messages
+                </li>
+            </ul>
+
+
+
+        </aside>
+        <!------- End Sidebar ------>
+
+        <!------- Main ------>
+        <main class="main-container">
+
+            <!----- Conteúdo da Secção DASHBOARD ----->
+            <div id="dashboard" class="main-content active">
+                <div class="main-title">
+                    <p class="font-weight-bold">DASHBOARD</p>
+                </div>
+
+                <div class="main-cards">
+
+                    <div class="card" data-target="inventory">
+                        <div class="card-inner">
+                            <p class="text-primary">PRODUCTS</p>
+                            <span class="material-icons-outlined text-color">inventory_2</span>
+                        </div>
+                        <span class="text-primary font-weight-bold"><%= totalProducts %></span>
+                    </div>
+
+                    <div class="card" data-target="purchase-orders">
+                        <div class="card-inner">
+                            <p class="text-primary">PURCHASE ORDERS</p>
+                            <span class="material-icons-outlined text-color">add_shopping_cart</span>
+                        </div>
+                        <span class="text-primary font-weight-bold"><%= totalOrders %></span>
+                    </div>
+
+                    <div class="card" data-target="sales-orders">
+                        <div class="card-inner">
+                            <p class="text-primary">SALES ORDERS</p>
+                            <span class="material-icons-outlined text-color">shopping_cart</span>
+                        </div>
+                        <span class="text-primary font-weight-bold"><%= totalSales %></span>
+                    </div>
+
+                    <div class="card" data-target="service-quotes">
+                        <div class="card-inner">
+                            <p class="text-primary">SERVICE QUOTES</p>
+                            <span class="material-symbols-outlined text-color">request_quote</span>
+                        </div>
+                        <span class="text-primary font-weight-bold">56</span>
+                    </div>
+                </div>
+
+                <div class="charts">
+                    <div class="charts-card">
+                        <p class="chart-title">Top 5 Products</p>
+                        <div id="bar-chart"></div>
+                    </div>
+
+                    <div class="charts-card">
+                        <p class="chart-title">Purchase and Sales Orders</p>
+                        <div id="area-chart"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!----- Conteúdo da Secção INVENTORY ----->
+            <div id="inventory" class="main-content">
+                <div class="main-title">
+                    <p class="font-weight-bold">INVENTORY</p>
+                </div>
+
+                <div class="card-content">
+                    <h3>List of Products</h3>
+                    <table border="1">
+                        <tr align="center">
+                            <th width="120" style="color: #294D61;">Img</th>
+                            <th width="120" style="color: #294D61">Name</th>
+                            <th width="120" style="color: #294D61">Ref.</th>
+                            <th width="120" style="color: #294D61">Stock</th>
+                            <th width="120" style="color: #294D61">Price</th>
+                            <th width="120" style="color: #294D61">Min. Order</th>
+                            <th width="150" style="color: #294D61;">Description</th>
+                        </tr>
+                        <% results4.forEach(product => { %>
+                            <tr align="center">
+                                <td><img class="object-cover" src="/<%= product.main_img %>" alt=""></td>
+                                <td><%= product.product_name %></td>
+                                <td>ola</td>
+                                <td><%= product.stock %></td>
+                                <td><%= product.price.toFixed(2) %> <%= product.price_symbol %></td>
+                                <td><%= product.min_order %></td>
+                                <td class="table-product-description"><%= product.product_description %></td>
+                                <td width="70"><button id="toggleEditProductFormButton" class="tableBtnEdit">Edit</button></td>
+                            </tr>
+                        <% }); %>
+                    </table>
+                    <div class="table-buttons-div">
+                        <button id="toggleDeleteProductFormButton" class="tableBtn">Delete Product</button>
+                        <button id="toggleAddProductFormButton" class="tableBtn">Add Product</button>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <h3>Products in Promotion</h3>
+                    <table border="1">
+                        <tr align="center">
+                            <th width="170" style="color: #294D61;">Img</th>
+                            <th width="170" style="color: #294D61">Name</th>
+                            <th width="170" style="color: #294D61">Ref.</th>
+                            <th width="170" style="color: #294D61">Price</th>
+                            <th width="170" style="color: #294D61">Promo. Price</th>
+                            <th width="170" style="color: #294D61">Discount %</th>
+                        </tr>
+                        <% results5.forEach(product => { %>
+                            <tr align="center">
+                                <td><img class="object-cover" src="/<%= product.main_img %>" alt=""></td>
+                                <td><%= product.product_name %></td>
+                                <td>ola</td>
+                                <td><%= product.price.toFixed(2) %> <%= product.price_symbol %></td>
+                                <td><%= product.promotion_price.toFixed(2) %> <%= product.price_symbol %></td>
+                                <td><%= product.discount_percentage %>%</td>
+                                <td><button id="toggleEditProductPromotion" class="tableBtnEdit">Edit</button></td>
+                            </tr>
+                        <% }); %>
+                    </table>
+                    <div class="table-buttons-div">
+                        <button id="toggleRemoveProductPromotion" class="tableBtn">Remove Promotion</button>
+                        <button id="toggleAddProductPromotion" class="tableBtn">Add Promotion</button>
+                    </div>
+                </div>
+
+                
+                
+                <div id="addProductForm" class="card-content" style="display: none;">
+                    <h3>Add Product Details</h3>
+
+                    <form action="#" enctype="multipart/form-data">
+                        <div class="input-group2">
+                            <div class="input-field-addProduct">
+                                <label for="product_name"><span class="material-icons-outlined">note_add</span>Name:</label>
+                                <input class="input-field" type="text" id="product_name" name="product_name" placeholder="Product Name" required>
+                            </div>
+                            
+                            <div class="input-field-addProduct"> 
+                                <label for="sub_department"><span class="material-icons-outlined">category</span>Select one sub-department:</label>
+                                <select name="sub_department" id="sub_department" required>
+                                    <option value="standart">Standart</option>
+                                    <option value="express">Express</option>
+                                </select>
+                            </div>
+
+                            <div class="input-field-addProduct">
+                                <label for="price"><span class="material-icons-outlined">monetization_on</span>Price:</label>
+                                <input class="input-field" type="number" id="price" name="price" placeholder="Price" min="0" step="0.5" required>
+                            </div>
+                            
+                            <div class="input-field-addProduct">
+                                <label for="price_symbol"><span class="material-icons-outlined">local_atm</span>Select a price symbol:</label>
+                                <select name="price_symbol" id="price_symbol" required>
+                                    <option value="€">€</option>
+                                    <option value="€ / kg">€ / kg</option>
+                                    <option value="€ / m">€ / m</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-field-addProduct">
+                                <label for="stock"><span class="material-icons-outlined">inventory</span>Stock:</label>
+                                <input class="input-field" type="number" id="stock" name="stock" placeholder="Stock" min="0" required>
+                            </div>
+                            
+                            <div class="input-field-addProduct">
+                                <label for="min_order"><span class="material-icons-outlined">production_quantity_limits</span>Minimal Order:</label>
+                                <input class="input-field" type="number" id="min_order" name="min_order" placeholder="Min. Order" min="1" required>
+                            </div>
+                            
+                            <div class="input-field-addProduct">
+                                <label for="main_img"><span class="material-icons-outlined">collections</span>Main Image:</label>
+                                <input class="input-field" type="file" name="main_img"  id="main_img"  required>
+                            </div>
+
+                            <div class="input-field-addProduct">
+                                <label for="img_2"><span class="material-icons-outlined">add_photo_alternate</span>Second Image:</label>
+                                <input class="input-field" type="file" name="img_2" id="img_2"  required>
+                            </div>
+
+                            <div class="input-field-addProduct">
+                                <label for="img_3"><span class="material-icons-outlined">add_photo_alternate</span>Third Image:</label>
+                                <input class="input-field" type="file" name="img_3" id="img_3" required>
+                            </div>
+
+                            <div class="input-field-addProduct">
+                                <label for="img_4"><span class="material-icons-outlined">add_photo_alternate</span>Fourth Image:</label>
+                                <input class="input-field" type="file" name="img_4" id="img_4" required>
+                            </div>
+
+                            <div class="input-field-addProduct">
+                                <label for="product_description"><span class="material-icons-outlined">description</span>Description:</label>
+                                <textarea id="product_description" name="product_description" placeholder="Description" style="flex: 100%;" required></textarea>
+                            </div>
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Add Product</button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div id="deleteProductForm" class="card-content" style="display: none;">
+                    <h3>Delete Products from Inventory</h3>
+
+                    <form action="#">
+                        <div class="input-group2">    
+                            <div class="input-field-addProduct"> 
+                                <label for="product_name"><span class="material-icons-outlined">note_add</span>Select the Product:</label>
+                                <select name="product_name" id="product_name" required>
+                                    <option value="standart">Standart</option>
+                                    <option value="express">Express</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-field-addProduct">
+                                <label for="ref"><span class="material-icons-outlined">inventory</span>Ref:</label>
+                                <input class="input-field" type="text" id="ref" name="ref" placeholder="Ref">
+                            </div>
+                        </div>
+
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Delete Product</button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div id="addProductPromotion" class="card-content" style="display: none;">
+
+                    <h3>Add a Promotion to a Product</h3>
+
+                    <form action="#">
+                        <div class="input-group2">    
+                            <div class="input-field-addProduct"> 
+                                <label for="product_name"><span class="material-icons-outlined">note_add</span>Select the Product:</label>
+                                <select name="product_name" id="product_name" required>
+                                    <option value="standart">Standart</option>
+                                    <option value="express">Express</option>
+                                </select>
+                            </div>
+                            
+                            <div id="promotion_price" class="input-field-addProduct">
+                                <label for="promotion_price"><span class="material-icons-outlined">monetization_on</span>Promotion Price:</label>
+                                <input class="input-field" type="number" id="promotion_price" name="promotion_price" placeholder="Price" min="0" step="0.5" required>
+                            </div>
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Add Promotion</button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div id="removeProductPromotion" class="card-content" style="display: none;">
+
+                    <h3>Remove Products from Promotion</h3>
+
+                    <form action="#">
+                        <div class="input-group2">    
+                            <div class="input-field-addProduct"> 
+                                <label for="product_name"><span class="material-icons-outlined">note_add</span>Select the Product:</label>
+                                <select name="product_name" id="product_name" required>
+                                    <option value="standart">Standart</option>
+                                    <option value="express">Express</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-field-addProduct">
+                                <label for="ref"><span class="material-icons-outlined">inventory</span>Ref:</label>
+                                <input class="input-field" type="text" id="ref" name="ref" placeholder="Ref">
+                            </div>
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Remove Promotion</button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div id="editTableProducts" class="card-content" style="display: none;">
+
+                    <h3>Edit Products from Inventoy</h3>
+
+                    <form action="#">
+                        <div class="input-group2" style="display: block;">    
+                            <div class="input-field-addProduct"> 
+                                <label for="field_to_edit"><span class="material-icons-outlined">note_add</span>What field do you want to edit?</label>
+                                <select name="field_to_edit" id="field_to_edit" required>
+                                    <option value="product_name">Name</option>
+                                    <option value="stock">Stock</option>
+                                    <option value="price">Price</option>
+                                    <option value="min_order">Min. Order</option>
+                                    <option value="description">Description</option>
+                                    <option value="main_img">Main Img</option>
+                                    <option value="img_2">Img 2</option>
+                                    <option value="img_3">Img 3</option>
+                                    <option value="img_4">Img 4</option>
+                                </select>
+                            </div>
+
+                            <div id="edit_product_name" class="input-field-addProduct hidden">
+                                <label for="product_name"><span class="material-icons-outlined">note_add</span>Name:</label>
+                                <input class="input-field" type="text" id="product_name" name="product_name" placeholder="Product Name" required>
+                            </div>
+                            
+                            <div id="edit_sub-department" class="input-field-addProduct hidden"> 
+                                <label for="sub-department"><span class="material-icons-outlined">category</span>Select one sub-department:</label>
+                                <select name="sub-department" id="sub-department" required>
+                                    <option value="standart">Standart</option>
+                                    <option value="express">Express</option>
+                                </select>
+                            </div>
+
+                            <div id="edit_price" class="input-field-addProduct hidden">
+                                <label for="price"><span class="material-icons-outlined">monetization_on</span>Price:</label>
+                                <input class="input-field" type="number" id="price" name="price" placeholder="Price" min="0" step="0.5" required>
+                            </div>
+                            
+                            <div id="edit_price_symbol" class="input-field-addProduct hidden">
+                                <label for="price_symbol"><span class="material-icons-outlined">local_atm</span>Select a price symbol:</label>
+                                <select name="sub-department" id="sub-department" required>
+                                    <option value="euros">€</option>
+                                    <option value="euros_kg">€ / kg</option>
+                                    <option value="euros_m">€ / m</option>
+                                </select>
+                            </div>
+                            
+                            <div id="edit_stock" class="input-field-addProduct hidden">
+                                <label for="stock"><span class="material-icons-outlined">inventory</span>Stock:</label>
+                                <input class="input-field" type="number" id="stock" name="stock" placeholder="Stock" min="0" required>
+                            </div>
+                            
+                            <div id="edit_min_order" class="input-field-addProduct hidden">
+                                <label for="min_order"><span class="material-icons-outlined">production_quantity_limits</span>Minimal Order:</label>
+                                <input class="input-field" type="number" id="min_order" name="min_order" placeholder="Min. Order" min="1" required>
+                            </div>
+                            
+                            <div id="edit_main_img" class="input-field-addProduct hidden">
+                                <label for="main_img"><span class="material-icons-outlined">collections</span>Main Image:</label>
+                                <input class="input-field" type="file" name="main_img" name="main_img" id="main_img"  required>
+                            </div>
+
+                            <div id="edit_img_2" class="input-field-addProduct hidden">
+                                <label for="img_2"><span class="material-icons-outlined">add_photo_alternate</span>Second Image:</label>
+                                <input class="input-field" type="file" name="img_2" name="img_2" id="img_2"  required>
+                            </div>
+
+                            <div id="edit_img_3" class="input-field-addProduct hidden">
+                                <label for="img_3"><span class="material-icons-outlined">add_photo_alternate</span>Third Image:</label>
+                                <input class="input-field" type="file" name="img_3" name="img_3" id="img_3" required>
+                            </div>
+
+                            <div id="edit_img_4" class="input-field-addProduct hidden">
+                                <label for="img_4"><span class="material-icons-outlined">add_photo_alternate</span>Fourth Image:</label>
+                                <input class="input-field" type="file" name="img_4" name="img_4" id="img_4" required>
+                            </div>
+
+                            <div id="edit_description" class="input-field-addProduct hidden">
+                                <label for="product_description"><span class="material-icons-outlined">description</span>Description:</label>
+                                <textarea id="product_description" name="product_description" placeholder="Description" style="flex: 100%;" required></textarea>
+                            </div>
+                            
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Edit Product</button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div id="editTableProductsPromotion" class="card-content" style="display: none;">
+
+                    <h3>Edit Promotion Price</h3>
+
+                    <form action="#">
+                        <div class="input-group2">    
+                            <div id="promotion_price" class="input-field-addProduct">
+                                <label for="promotion_price"><span class="material-icons-outlined">monetization_on</span>Promotion Price:</label>
+                                <input class="input-field" type="number" id="promotion_price" name="promotion_price" placeholder="Price" min="0" step="0.5" required>
+                            </div>                           
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Edit Product</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+
+            <!----- Conteúdo da Secção PURCHASE ORDERS----->
+            <div id="purchase-orders" class="main-content">
+                <div class="main-title">
+                    <p class="font-weight-bold">PURCHASE ORDERS</p>
+                </div>
+                <div class="card-content">
+                    <h3>Orders List</h3>
+                    <table border="1">
+                        <tr align="center">
+                            <th width="120" style="color: #294D61;">Order ID</th>
+                            <th width="120" style="color: #294D61">Price</th>
+                            <th width="120" style="color: #294D61">Date</th>
+                            <th width="120" style="color: #294D61">Status</th>
+                            <th width="120" style="color: #294D61">Delivery Price</th>
+                            <th width="120" style="color: #294D61">Delivery Address</th>
+                            <th width="120" style="color: #294D61">Payment Method</th>
+                            <th width="120" style="color: #294D61">Card</th>
+                        </tr>
+                        <tr align="center">
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td width="70"><button id="toggleViewTableOrderItems" class="tableBtnEdit">View</button></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="tableOrderItems" class="card-content" style="display: none;">
+                    <h3>Order Items</h3>
+                    <table border="1" align="center">
+                        <tr align="center">
+                            <th width="120" style="color: #294D61;">Order ID</th>
+                            <th width="120" style="color: #294D61">Img</th>
+                            <th width="120" style="color: #294D61">Ref</th>
+                            <th width="120" style="color: #294D61">Product</th>
+                            <th width="120" style="color: #294D61">Quantity</th>
+                            <th width="120" style="color: #294D61">Price</th>
+                            <th width="120" style="color: #294D61">Seller</th>
+                        </tr>
+                        <tr align="center">
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
+            <!----- Conteúdo da Secção SALES ORDERS ----->
+            <div id="sales-orders" class="main-content">
+                <div class="main-title">
+                    <p class="font-weight-bold">SALES ORDERS</p>
+                </div>
+                <div class="card-content">
+                    <h3>Sales List</h3>
+                    <table border="1">
+                        <tr align="center">
+                            <th width="120" style="color: #294D61;">Product Img</th>
+                            <th width="120" style="color: #294D61">Ref</th>
+                            <th width="120" style="color: #294D61">Product</th>
+                            <th width="120" style="color: #294D61">Price</th>
+                            <th width="120" style="color: #294D61">Quantity</th>
+                            <th width="120" style="color: #294D61">Date</th>
+                            <th width="120" style="color: #294D61">Buyer</th>
+                        </tr>
+                        <tr align="center">
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!----- Conteúdo da Secção SERVICE QUOTES ----->
+            <div id="service-quotes" class="main-content">
+                <div class="main-title">
+                    <p class="font-weight-bold">SERVICE QUOTES</p>
+                </div>
+                <!-- Conteúdo da seção Service Quotes -->
+            </div>
+
+            <!----- Conteúdo da Secção REPORTS ----->
+            <div id="reports" class="main-content">
+                <div class="main-title">
+                    <p class="font-weight-bold">REPORTS</p>
+                </div>
+                <div class="charts">
+                    <div class="charts-card">
+                        <p class="chart-title">Top 5 Products</p>
+                        <div id="bar-chart-reports"></div>
+                    </div>
+
+                    <div class="charts-card">
+                        <p class="chart-title">Purchase and Sales Orders</p>
+                        <div id="area-chart-reports"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!----- Conteúdo da Secção LIKED PRODUCTS ----->
+            <div id="liked-products" class="main-content">
+                <div class="main-title">
+                    <p class="font-weight-bold">LIKED PRODUCTS</p>
+                </div>
+                <div class="card-content">
+                    <h3>Liked Products List</h3>
+                    <table border="1">
+                        <tr align="center">
+                            <th width="120" style="color: #294D61;">Product Img</th>
+                            <th width="120" style="color: #294D61">Ref</th>
+                            <th width="120" style="color: #294D61">Product</th>
+                            <th width="120" style="color: #294D61">Price</th>
+                        </tr>
+                        <tr align="center">
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td>ola</td>
+                            <td width="70"><button class="tableBtnEdit">View</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!----- Conteúdo da Secção MESSAGES ----->
+            <div id="messages" class="main-content">
+                <div class="main-title">
+                    <p class="font-weight-bold">MESSAGES RECEIVED</p>
+                    <div class="table-buttons-div">
+                        <button id="newMessage" class="tableBtn">New<span class="material-icons-outlined" style="padding-left: 5px;">add</span></button>
+                    </div>
+                </div>
+
+                <div id="newMessageForm" class="card-content" style="display: none;">
+                    <div class="iconCloseProfileForms">
+                        <span id="closeFormNewMessage" class="material-icons-outlined">close</span>
+                    </div>
+                    <form action="#">
+                        <h3>New Message</h3>
+                        <div class="input-group2">
+                            <div class="input-field-addProduct">
+                                <label for="email"><span class="material-icons-outlined">email</span>To:</label>
+                                <input class="input-field" type="email" name="email" id="email" placeholder="company@email.com" required>
+                            </div>
+                            <div class="input-field-addProduct">
+                                <label for="title"><span class="material-icons-outlined">assignment_late</span>Title:</label>
+                                <input class="input-field" type="text" name="title" id="title" placeholder="Title" required>
+                            </div>
+                            <div class="input-field-addProduct">
+                                <label for="msg_content"><span class="material-icons-outlined">description</span>Message:</label>
+                                <textarea id="msg_content" name="msg_content" placeholder="Text" required></textarea>
+                            </div>
+                            <div class="btn-field-addProduct">
+                                <button type="submit" id="addProductBtn">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="cardMessageInfo" class="card-content-messages">
+                    <div class="message-h5">
+                        <h5>From: shshshgsgg</h5>
+                        <h5>Title: sjkddddddddd</h5>
+                        <h5>Date: 21/05/2024</h5>
+                        <h5 id="viewMessageIcon"><span class="material-icons-outlined">visibility</span></h5>
+                    </div>  
+                </div>
+
+                <div id="messageCard" class="card-content" style="display: none;">
+                    <div class="deleteMessage">
+                        <span id="closeMessageIcon" class="material-icons-outlined" style="padding: 10px;">close</span>
+                        <span class="material-icons-outlined" style="padding: 10px;">delete</span>
+                        <span id="replyMessageIcon" class="material-icons-outlined" style="padding: 10px;">reply</span>
+                    </div>
+                    <div class="message-h4">
+                        <h4>From: shshshgsggg</h4>
+                        <h4>Title: sjkddddddddd</h4>
+                        <h4>Date: 21/05/2024</h4>
+                    </div>
+                    <p>shshshdh</p>
+
+                    <form id="replyMessageForm" action="#" style="display: none; padding-top: 5px;">
+                        <div class="input-field-addProduct">
+                            <label for="replyMsg"><span class="material-icons-outlined">description</span>Reply to:</label>
+                            <textarea id="replyMsg" name="replyMsg" placeholder="Text" required></textarea>
+                        </div>
+                        <div class="table-buttons-div">
+                            <button type="submit" class="tableBtn">Send</button>
+                        </div>
+                    </form>
+                </div>
+
+
+
+
+                <div class="main-title">
+                    <p class="font-weight-bold">MESSAGES SENT</p>
+                </div>
+                <div id="cardMessageSentInfo" class="card-content-messages" style="background-color: #C5C6C7;">
+                    <div class="message-h5">
+                        <h5>To: shshshgsgg</h5>
+                        <h5>Title: sjkddddddddd</h5>
+                        <h5>Date: 21/05/2024</h5>
+                        <h5 id="viewMessageSentIcon"><span class="material-icons-outlined">visibility</span></h5>
+                    </div>  
+                </div>
+
+                <div id="messageSentCard" class="card-content" style="display: none;">
+                    <div class="deleteMessage">
+                        <span id="closeMessageSentIcon" class="material-icons-outlined">close</span>
+                    </div>
+                    <div class="message-h4">
+                        <h4>To: shshshgsggg</h4>
+                        <h4>Title: sjkddddddddd</h4>
+                        <h4>Date: 21/05/2024</h4>
+                    </div>
+                    <p>shshshdh</p>
+                </div>
+            </div>
+
+            <!----- Conteúdo da Secção PROFILE ----->
+            <div id="profile" class="main-content">
+                <div class="main-title">
+                    <p class="font-weight-bold">PROFILE</p>
+                </div>
+                <div class="card-content">
+                    <h3>Profile Details</h3>
+                    <div class="input-group2">
+                        <div class="input-field-addProduct">
+                            <p><span id="btnAlterImageForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Image:</p>
+                        </div>
+
+                        <div class="input-field-addProduct">
+                            <p><span id="btnAlterContactForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Contact:</p>
+                        </div>
+                            
+                        <div class="input-field-addProduct">
+                            <p><span id="btnAlterNameForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Name:</p>
+                        </div>
+                            
+                        <div class="input-field-addProduct">
+                            <p><span id="btnAlterAdressForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Address:</p>
+                        </div>
+                            
+                        <div class="input-field-addProduct">
+                            <p><span id="btnAlterEmailForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Email:</p>
+                        </div>
+
+                        <div class="input-field-addProduct">
+                            <p><span id="btnAlterPasswdForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Password:</p>
+                        </div>
+                            
+                        <div class="input-field-addProduct">
+                            <p><span id="btnAlterDescriptionForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Description:</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="alterImageForm" class="card-content" style="display: none;">
+                    <div class="iconCloseProfileForms">
+                        <span id="closeFormAlterImage" class="material-icons-outlined">close</span>
+                    </div>
+                    <form action="#" enctype="multipart/form-data">
+                        <h3>Alter Profile Main Image</h3>
+                        <div class="input-field-addProduct">
+                            <label for="main_img"><span class="material-icons-outlined">collections</span>Main Image:</label>
+                            <input class="input-field" type="file" name="main_img" name="main_img" id="main_img"  required>
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Alter Image</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="alterContactForm" class="card-content" style="display: none;">
+                    <div class="iconCloseProfileForms">
+                        <span id="closeFormAlterContact" class="material-icons-outlined">close</span>
+                    </div>
+                    <form action="#">
+                        <h3>Alter Profile Contact</h3>
+                        <div class="input-field-addProduct">
+                            <label for="contact"><span class="material-icons-outlined">phone</span>Contact:</label>
+                            <input class="input-field" type="tel" name="contact" id="contact" required>
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Alter Contact</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="alterNameForm" class="card-content" style="display: none;">
+                    <div class="iconCloseProfileForms">
+                        <span id="closeFormAlterName" class="material-icons-outlined">close</span>
+                    </div>
+                    <form action="#">
+                        <h3>Alter Profile Name</h3>
+                        <div class="input-field-addProduct">
+                            <label for="name"><span class="material-icons-outlined">note_add</span>Name:</label>
+                            <input class="input-field" type="text" name="name" id="name" required>
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Alter Name</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="alterAdressForm" class="card-content" style="display: none;">
+                    <div class="iconCloseProfileForms">
+                        <span id="closeFormAlterAdress" class="material-icons-outlined">close</span>
+                    </div>
+                    <form action="#">
+                        <h3>Alter Profile Adress</h3>
+                        <div class="input-field-addProduct">
+                            <label for="adress"><span class="material-icons-outlined">home</span>Adress:</label>
+                            <input class="input-field" type="text" name="adress" id="adress" required>
+                        </div>
+                        <div class="input-field-addProduct">
+                            <label for="adress_country"><span class="material-icons-outlined">home</span>Adress Country:</label>
+                            <select name="adress_country" id="adress_country" required>
+                            </select>
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Alter Adress</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="alterEmailForm" class="card-content" style="display: none;">
+                    <div class="iconCloseProfileForms">
+                        <span id="closeFormAlterEmail" class="material-icons-outlined">close</span>
+                    </div>
+                    <form action="#">
+                        <h3>Alter Profile Email</h3>
+                        <div class="input-field-addProduct">
+                            <label for="email"><span class="material-icons-outlined">email</span>Email:</label>
+                            <input class="input-field" type="email" name="email" id="email" required>
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Alter Email</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="alterDescriptionForm" class="card-content" style="display: none;">
+                    <div class="iconCloseProfileForms">
+                        <span id="closeFormAlterDescription" class="material-icons-outlined">close</span>
+                    </div>
+                    <form action="#">
+                        <h3>Alter Profile Description</h3>
+                        <div class="input-field-addProduct">
+                            <label for="description"><span class="material-icons-outlined">description</span>Description:</label>
+                            <textarea id="description" name="description" placeholder="Description" required></textarea>
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Alter Description</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="alterPasswdForm" class="card-content" style="display: none;">
+                    <div class="iconCloseProfileForms">
+                        <span id="closeFormAlterPasswd" class="material-icons-outlined">close</span>
+                    </div>
+                    <form action="#">
+                        <h3>Alter Profile Password</h3>
+                        <div class="input-field-addProduct">
+                            <label for="name"><span class="material-icons-outlined">lock</span>New Password:</label>
+                            <input class="input-field" type="password" name="password" id="password" required>
+                        </div>
+                        <div class="input-field-addProduct">
+                            <label for="name"><span class="material-icons-outlined">lock</span>Check Password:</label>
+                            <input class="input-field" type="password" name="password" id="password" required>
+                        </div>
+                        <div class="btn-field-addProduct">
+                            <button type="submit" id="addProductBtn">Alter Password</button>
+                        </div>
+                    </form>
+                </div>
+
+                
+            </div>
+
+            
+        </main>
+        <!------- End Main ------>
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.49.1/apexcharts.min.js"></script>
+    <script src="scripts-admin/admin-script.js"></script>
+    <script src="scripts-admin/inventory.js"></script>
+    <script src="scripts-admin/purchase-orders.js"></script>
+    <script src="scripts-admin/messages.js"></script>
+    <script src="scripts-admin/profile.js"></script>
+    <script src="scripts-admin/reports.js"></script>
+    <script>
+        // BAR CHART
+
+        var barChartOptions = {
+            series: [{
+                data: [10, 8, 6, 4, 2]
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
+                toolbar:{
+                    show: false
+                },
+            },
+            colors: [
+                "#3BBA9C",
+                "#294D61",
+            ],
+            plotOptions: {
+                bar: {
+                    distributed: true,
+                    borderRadius: 4,
+                    borderRadiusApplication: 'end',
+                    horizontal: false,
+                    columnWidth: '40%',
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            legend: {
+                show: false
+            },
+            xaxis: {
+                categories: ["Lpatop", "Phone", "Monitor", "Headphones", "Camera"],
+            },
+            yaxis: {
+                title: {
+                    text: "Count"
+                }
+            }
+        };
+
+        var barChart = new ApexCharts(document.querySelector("#bar-chart"), barChartOptions);
+        barChart.render();
+
+        // AREA CHART
+
+        var areaChartOptions = {
+            series: [{
+                name: 'Purchase Orders',
+                data: [31, 40, 28, 51, 42, 109, 100]
+            }, {
+                name: 'Sales Orders',
+                data: [11, 32, 45, 32, 34, 52, 41]
+            }],
+            chart: {
+                height: 350,
+                type: 'area',
+                toolbar: {
+                    show: false,
+                },
+            },
+            colors: ["#294D61", "#3BBA9C"],
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            labels: ['Jan', 'Feb','Mar','Apr','May','Jun','Jul'],
+            markers: {
+                size: 0
+            },
+            yaxis: [
+                {
+                    title: {
+                        text: 'Purchase Orders',
+                    },
+                },
+                {
+                    opposite: true,
+                    title: {
+                        text: 'Sales Orders',
+                    },
+                },
+            ],
+            tooltip: {
+                shared: true,
+                intersect: false,
+            }
+        };
+
+        var areaChart = new ApexCharts(document.querySelector("#area-chart"), areaChartOptions);
+        areaChart.render();
+    </script>
+</body>
+</html>

@@ -858,15 +858,6 @@ function executeQuery(query, params = []) {
 }
 
 
-
-//************ page-offer routes *********
-app.get('/page-offer', async (req, res) => {
-    res.render('page-offer')
-})
-
-
-
-
 //************ cart routes *********
 app.get('/cart', checkSession, async (req, res) => {
     try {
@@ -1345,10 +1336,81 @@ app.post('/login', async (req, res) => {
 
 
 
-//************ checkout routes *********
-// app.get('/checkout', (req, res) => {
-//     res.render('checkout')
-// })
+//************ admin-dashboard routes ***********
+app.get('/dashboard', upload.single('main_img'), upload.single('img_2'), upload.single('img_3'), upload.single('img_4'), (req, res) => {
+    try {
+
+        const companyId = 4;
+
+        // Primeira Query -> vai buscar o numero de produtos para o card 1
+        const query1 = 'SELECT COUNT(*) AS total_products FROM products WHERE company_id = ?';
+        const results1 = await executeQuery(query1, [companyId]);
+        totalProducts = results1[0].total_products;
+
+        // Segunda Query -> vai buscar o numero de encomendas para o card 2
+        const query2 = 'SELECT COUNT(*) AS total_orders FROM orders WHERE buyer_company_id = ?';
+        const results2 = await executeQuery(query2, [companyId]);
+        totalOrders = results2[0].total_orders;
+
+        // Terceira Query -> vai buscar o numero de vendas para o card 3
+        const query3 = 'SELECT COUNT(*) AS total_sales FROM orderitems WHERE seller_company_id = ?';
+        const results3 = await executeQuery(query3, [companyId]);
+        totalSales = results3[0].total_sales;
+
+        // Quarta Query -> vai buscar a lista de produtos para a secção inventory
+        const query4 = 'SELECT * FROM products WHERE company_id = ?';
+        const results4 = await executeQuery(query4, [companyId]);
+
+        // Quinta Query -> vai buscar a lista de produtos que estão em promoção para a secção inventory
+        const query5 = 'SELECT * FROM products WHERE company_id = ? AND is_promotion = 1';
+        const results5 = await executeQuery(query5, [companyId]);
+
+        
+
+        res.render('admin-page', { totalProducts, totalOrders, totalSales, results4, results5 });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao processar as queries.');
+    }
+})
+
+app.post('/addNewProduct', async (req, res) => {
+    const { product_name, sub_department, price, price_symbol, stock, min_order, product_description } = req.body;
+    const companyId = 1;
+    const main_img = req.file ? req.file.filename : '';
+    const img_2 = req.file ? req.file.filename : '';
+    const img_3 = req.file ? req.file.filename : '';
+    const img_4 = req.file ? req.file.filename : '';
+
+        
+    // Verificar se já existem produtos com o mesmo product_name
+    const checkDuplicatesQuery = 'SELECT * FROM products WHERE product_name = ?';
+    const checkDuplicatesValues = [product_name];
+
+    executeQuery(checkDuplicatesQuery, checkDuplicatesValues)
+        .then(results => {
+            if(results.lenght > 0){
+                const message = "There is already a product with that name."
+                res.status(400).json({ success: false, message });
+            } else {
+                const insertQuery = 'INSERT INTO products ( product_name, product_description, price, stock, min_order, company_id, sub_department_id, main_img, img_2, img_3, img_4, price_symbol, is_promotion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                const insertValues = [product_name, product_description, price, stock, min_order, companyId, sub_department, main_img, img_2, img_3, img_4, price_symbol, 0]
+            }
+        })
+
+})
+
+function executeQuery(query, params = []) {
+    return new Promise((resolve, reject) => {
+        connection.query(query, params, (error, results, fields) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
 
 
 //escutar os request
