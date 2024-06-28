@@ -41,28 +41,44 @@ document.getElementById('toggleRemoveProductPromotion').addEventListener('click'
     }
 });
 
-document.getElementById('toggleEditProductFormButton').addEventListener('click', function() {
-    var form = document.getElementById('editTableProducts');
 
-    if (form.style.display === 'none') {
-        form.style.display = 'block';
-        form.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        form.style.display = 'none';
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleciona todos os botões de edição
+    const editButtons = document.querySelectorAll('.tableBtnEdit');
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+
+            // Mostra o formulário de edição
+            const form = document.getElementById('editTableProducts');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+                form.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                form.style.display = 'none';
+            }
+        });
+    });
 });
 
-document.getElementById('toggleEditProductPromotion').addEventListener('click', function() {
-    var form = document.getElementById('editTableProductsPromotion');
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleciona todos os botões de edição
+    const editButtons = document.querySelectorAll('.tableBtnEditPromo');
 
-    if (form.style.display === 'none') {
-        form.style.display = 'block';
-        form.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        form.style.display = 'none';
-    }
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+
+            // Mostra o formulário de edição
+            const form = document.getElementById('editTableProductsPromotion');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+                form.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                form.style.display = 'none';
+            }
+        });
+    });
 });
-
 
 
 // EDIT FORM

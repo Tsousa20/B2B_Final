@@ -1,1 +1,1 @@
-
+/deleteProduct

@@ -1337,10 +1337,10 @@ app.post('/login', async (req, res) => {
 
 
 //************ admin-dashboard routes ***********
-app.get('/dashboard', upload.single('main_img'), upload.single('img_2'), upload.single('img_3'), upload.single('img_4'), (req, res) => {
+app.get('/dashboard', async (req, res) => {
     try {
 
-        const companyId = 4;
+        const companyId = 2;
 
         // Primeira Query -> vai buscar o numero de produtos para o card 1
         const query1 = 'SELECT COUNT(*) AS total_products FROM products WHERE company_id = ?';
@@ -1365,40 +1365,195 @@ app.get('/dashboard', upload.single('main_img'), upload.single('img_2'), upload.
         const query5 = 'SELECT * FROM products WHERE company_id = ? AND is_promotion = 1';
         const results5 = await executeQuery(query5, [companyId]);
 
+        // Sexta Query -> vai buscar a lista de sub-departamentos para o form addProduct
+        const query6 = 'SELECT id, name_sub_depart FROM sub_departments';
+        const results6 = await executeQuery(query6);
+
+        // Setima Query -> vai buscar a lista de produtos para o form deleteProduct
+        const query7 = 'SELECT id, product_name, product_reference FROM products WHERE company_id = ?';
+        const results7 = await executeQuery(query7, [companyId]);
+
+        // Oitava Query -> vai buscar a lista de encomendas
+        const query8 = 'SELECT *, DATE_FORMAT(order_date, "%a %b %d %Y %H:%i:%s") AS formatted_order_date, DATE_FORMAT(STR_TO_DATE(order_delivery_date, "%Y-%d-%m"), "%a %b %d %Y") AS formatted_delivery_date FROM orders WHERE buyer_company_id = ?';
+        const results8 = await executeQuery(query8, [companyId]);
+
+        // Nona Query -> vai buscar a lista vendas 
+        const query9 = 'SELECT p.main_img AS img, p.product_reference AS ref, p.product_name AS product, oi.product_unit_price AS price, oi.quantity, DATE_FORMAT(o.order_date, "%a %b %d %Y %H:%i:%s") AS sale_date, c.company_name AS buyer FROM orderitems oi INNER JOIN products p ON oi.product_id = p.id INNER JOIN orders o ON oi.order_id = o.order_id INNER JOIN companies c ON o.buyer_company_id = c.id WHERE p.company_id = ? ORDER BY o.order_date DESC';
+        const results9 = await executeQuery(query9, [companyId]);
+
         
 
-        res.render('admin-page', { totalProducts, totalOrders, totalSales, results4, results5 });
+        
+
+        res.render('admin-page', { totalProducts, totalOrders, totalSales, results4, results5, results6, results7, results8, results9 });
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro ao processar as queries.');
     }
-})
+});
 
-app.post('/addNewProduct', async (req, res) => {
-    const { product_name, sub_department, price, price_symbol, stock, min_order, product_description } = req.body;
-    const companyId = 1;
-    const main_img = req.file ? req.file.filename : '';
-    const img_2 = req.file ? req.file.filename : '';
-    const img_3 = req.file ? req.file.filename : '';
-    const img_4 = req.file ? req.file.filename : '';
+// Função para gerar uma referência única de produto
+async function generateUniqueProductReference(subDepartment) {
+    const prefix = subDepartment.substring(0, 2).toUpperCase();
+    let uniqueReference = '';
 
+    while (true) {
+        const randomDigits = Math.floor(100000 + Math.random() * 900000).toString();
+        uniqueReference = `${prefix}-${randomDigits}`;
         
-    // Verificar se já existem produtos com o mesmo product_name
-    const checkDuplicatesQuery = 'SELECT * FROM products WHERE product_name = ?';
-    const checkDuplicatesValues = [product_name];
+        const checkReferenceQuery = 'SELECT * FROM products WHERE product_reference = ?';
+        const results = await executeQuery(checkReferenceQuery, [uniqueReference]);
 
-    executeQuery(checkDuplicatesQuery, checkDuplicatesValues)
-        .then(results => {
-            if(results.lenght > 0){
-                const message = "There is already a product with that name."
-                res.status(400).json({ success: false, message });
-            } else {
-                const insertQuery = 'INSERT INTO products ( product_name, product_description, price, stock, min_order, company_id, sub_department_id, main_img, img_2, img_3, img_4, price_symbol, is_promotion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-                const insertValues = [product_name, product_description, price, stock, min_order, companyId, sub_department, main_img, img_2, img_3, img_4, price_symbol, 0]
-            }
-        })
+        if (results.length === 0) {
+            break; // Se a referência for única, saia do loop
+        }
+    }
 
-})
+    return uniqueReference;
+}
+
+// Função para obter o nome do subdepartamento pelo ID
+async function getSubDepartmentNameById(subDepartmentId) {
+    const query = 'SELECT name_sub_depart FROM sub_departments WHERE id = ?';
+    const results = await executeQuery(query, [subDepartmentId]);
+    if (results.length > 0) {
+        return results[0].name_sub_depart;
+    } else {
+        throw new Error('Sub-department not found');
+    }
+}
+
+app.post('/addNewProduct', upload.fields([{ name: 'main_img' }, { name: 'img_2' }, { name: 'img_3' }, { name: 'img_4' }]), async (req, res) => {
+    const { product_name, sub_department, price, price_symbol, stock, min_order, product_description } = req.body;
+    const companyId = 4;
+    const main_img = req.files['main_img'] ? req.files['main_img'][0].filename : '';
+    const img_2 = req.files['img_2'] ? req.files['img_2'][0].filename : '';
+    const img_3 = req.files['img_3'] ? req.files['img_3'][0].filename : '';
+    const img_4 = req.files['img_4'] ? req.files['img_4'][0].filename : '';
+
+    try {
+
+        // Verificar se já existem produtos com o mesmo product_name
+        const checkDuplicatesQuery = 'SELECT * FROM products WHERE product_name = ?';
+        const checkDuplicatesValues = [product_name];
+
+        const results = await executeQuery(checkDuplicatesQuery, checkDuplicatesValues);
+
+        if (results.length > 0) {
+            const message = "There is already a product with that name.";
+            res.status(400).json({ success: false, message });
+
+        } else {
+
+            // Obter o nome do subdepartamento pelo ID
+            const subDepartmentName = await getSubDepartmentNameById(sub_department);
+
+            // Gerar a referência do produto
+            const product_reference = await generateUniqueProductReference(subDepartmentName);
+
+            const insertQuery = 'INSERT INTO products (product_name, product_description, price, stock, min_order, company_id, sub_department_id, main_img, img_2, img_3, img_4, price_symbol, is_promotion, product_reference) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            const insertValues = [product_name, product_description, price, stock, min_order, companyId, sub_department, main_img, img_2, img_3, img_4, price_symbol, 0, product_reference];
+            await executeQuery(insertQuery, insertValues);
+
+            res.status(200).json({ success: true, message: 'Product added successfully.' });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+
+});
+
+app.post('/deleteProduct', async (req, res) => {
+    const  { productId } = req.body;
+    companyId = 4;
+    console.log(`productId: ${productId}`);
+
+    try {
+        const deleteQuery = 'DELETE FROM products WHERE id = ?';
+        await executeQuery(deleteQuery, [productId]);
+        res.status(200).json({ success: true, message: 'Product successfully deleted.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.post('/editProduct', async (req, res) => {
+    const { productId, field, value } = req.body;
+    console.log(`productId: ${productId}`);
+    console.log(`field: ${field}`);
+    console.log(`value: ${value}`);
+
+    try {
+        // const updateQuery = `UPDATE products SET ${field} = ? WHERE id = ?`;
+        // await executeQuery(updateQuery, [value, productId]);
+        res.status(200).json({ success: true, message: 'Product successfully updated.' });
+    } catch (error) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.post('/addPromotion', async (req, res) => {
+    const { productId, promotion_price } = req.body;
+    console.log(`productId: ${productId}`);
+    console.log(`price: ${promotion_price}`);
+
+    try {
+
+        const queryNormalPrice = 'SELECT price FROM products WHERE id = ?';
+        const resultsPrice = await executeQuery(queryNormalPrice, [productId]);
+        const normal_price = resultsPrice[0].price;
+
+        // Calcular a diferença percentual
+        const percentage_difference = Math.round(((normal_price - promotion_price) / normal_price) * 100);
+
+        console.log(`price: ${normal_price}`);
+        console.log(`discount_percentage: ${percentage_difference}`);
+
+        const updateQuery = 'UPDATE products SET is_promotion = ?, promotion_price = ?, discount_percentage = ? WHERE id = ?';
+        await executeQuery(updateQuery, [1, promotion_price, percentage_difference, productId]);
+
+
+        res.status(200).json({ success: true, message: 'Promotion added successfully.' });
+    } catch (error) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.post('/removePromotion', async (req, res) => {
+    const  { productId } = req.body;
+
+    try {
+
+        const removeQuery = 'UPDATE products SET is_promotion = ?, promotion_price = ?, discount_percentage = ? WHERE id = ?';
+        await executeQuery(removeQuery, [0, 0.00, 0, productId]);
+
+
+        res.status(200).json({ success: true, message: 'Product successfully deleted.' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.get('/order/items/:orderId', async (req, res) => {
+    const { orderId } = req.params;
+    console.log(`order_id: ${orderId}`);
+
+    try {
+        // Query para obter os itens da ordem com base na order_id
+        const query = 'SELECT oi.order_id, p.main_img AS img, p.product_reference AS ref, p.product_name AS product, oi.quantity, oi.product_unit_price AS price, c.company_name AS seller FROM orderitems oi INNER JOIN products p ON oi.product_id = p.id INNER JOIN companies c ON oi.seller_company_id = c.id WHERE oi.order_id = ?';
+        const orderItems = await executeQuery(query, [orderId]);
+
+        res.json(orderItems); // Envie os itens da ordem como JSON para o front-end
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Erro ao buscar itens da ordem.' });
+    }
+});
 
 function executeQuery(query, params = []) {
     return new Promise((resolve, reject) => {
@@ -1410,7 +1565,7 @@ function executeQuery(query, params = []) {
             }
         });
     });
-}
+};
 
 
 //escutar os request
