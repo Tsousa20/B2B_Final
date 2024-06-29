@@ -1,1 +1,1 @@
-/deleteProduct
+/page-single/:id

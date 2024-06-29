@@ -560,13 +560,15 @@
                             <th width="120" style="color: #294D61">Product</th>
                             <th width="120" style="color: #294D61">Price</th>
                         </tr>
-                        <tr align="center">
-                            <td>ola</td>
-                            <td>ola</td>
-                            <td>ola</td>
-                            <td>ola</td>
-                            <td width="70"><button class="tableBtnEdit">View</button></td>
-                        </tr>
+                        <% results10.forEach(product => { %>
+                            <tr align="center">
+                                <td><img class="object-cover" src="/assets/empresas_img/<%= product.image %>" alt=""></td>
+                                <td><%= product.reference %></td>
+                                <td><%= product.name %></td>
+                                <td><%= product.price.toFixed(2) %>€</td>
+                                <td width="70"><button class="tableBtnView" data-product-id="<%= product.id %>">View</button></td>
+                            </tr>
+                        <% }); %>
                     </table>
                 </div>
             </div>
@@ -584,12 +586,12 @@
                     <div class="iconCloseProfileForms">
                         <span id="closeFormNewMessage" class="material-icons-outlined">close</span>
                     </div>
-                    <form action="#">
+                    <form id="sendMessageForm" action="/sendeMessage" method="POST">
                         <h3>New Message</h3>
                         <div class="input-group2">
                             <div class="input-field-addProduct">
-                                <label for="email"><span class="material-icons-outlined">email</span>To:</label>
-                                <input class="input-field" type="email" name="email" id="email" placeholder="company@email.com" required>
+                                <label for="company_name"><span class="material-icons-outlined">contact_page</span>To:</label>
+                                <input class="input-field" type="text" name="company_name" id="company_name" placeholder="Company Name" required>
                             </div>
                             <div class="input-field-addProduct">
                                 <label for="title"><span class="material-icons-outlined">assignment_late</span>Title:</label>
@@ -606,15 +608,16 @@
                     </form>
                 </div>
 
-                <div id="cardMessageInfo" class="card-content-messages">
-                    <div class="message-h5">
-                        <h5>From: shshshgsgg</h5>
-                        <h5>Title: sjkddddddddd</h5>
-                        <h5>Date: 21/05/2024</h5>
-                        <h5 id="viewMessageIcon"><span class="material-icons-outlined">visibility</span></h5>
-                    </div>  
-                </div>
-
+                <% results11.forEach(message => { %>
+                    <div class="card-content-messages">
+                        <div class="message-h5">
+                            <h5>From: <%= message.sender %></h5>
+                            <h5>Title: <%= message.title %></h5>
+                            <h5>Date: <%= message.formatted_message_date %></h5>
+                            <h5 class="viewMessageIcon" data-message-id="<%= message.message_id %>" data-message-title="<%= message.title %>" data-message-recipient-id="<%= message.recipient_id %>"><span class="material-icons-outlined">visibility</span></h5>
+                        </div>  
+                    </div>
+                <% }); %>
                 <div id="messageCard" class="card-content" style="display: none;">
                     <div class="deleteMessage">
                         <span id="closeMessageIcon" class="material-icons-outlined" style="padding: 10px;">close</span>
@@ -622,13 +625,15 @@
                         <span id="replyMessageIcon" class="material-icons-outlined" style="padding: 10px;">reply</span>
                     </div>
                     <div class="message-h4">
-                        <h4>From: shshshgsggg</h4>
-                        <h4>Title: sjkddddddddd</h4>
-                        <h4>Date: 21/05/2024</h4>
+                        <h4>From: </h4>
+                        <h4>Title: </h4>
+                        <h4>Date: </h4>
                     </div>
-                    <p>shshshdh</p>
+                    <p></p>
 
-                    <form id="replyMessageForm" action="#" style="display: none; padding-top: 5px;">
+                    <form id="replyMessageForm" action="/replyMessage" method="POST" style="display: none; padding-top: 5px;">
+                        <input type="hidden" id="replyRecipientId" name="replyRecipientId">
+                        <input type="hidden" id="replyOriginalTitle" name="replyOriginalTitle">
                         <div class="input-field-addProduct">
                             <label for="replyMsg"><span class="material-icons-outlined">description</span>Reply to:</label>
                             <textarea id="replyMsg" name="replyMsg" placeholder="Text" required></textarea>
@@ -645,14 +650,16 @@
                 <div class="main-title">
                     <p class="font-weight-bold">MESSAGES SENT</p>
                 </div>
-                <div id="cardMessageSentInfo" class="card-content-messages" style="background-color: #C5C6C7;">
-                    <div class="message-h5">
-                        <h5>To: shshshgsgg</h5>
-                        <h5>Title: sjkddddddddd</h5>
-                        <h5>Date: 21/05/2024</h5>
-                        <h5 id="viewMessageSentIcon"><span class="material-icons-outlined">visibility</span></h5>
-                    </div>  
-                </div>
+                <% results12.forEach(message => { %>
+                    <div class="card-content-messages" style="background-color: #C5C6C7;">
+                        <div class="message-h5">
+                            <h5>To: <%= message.recipient %></h5>
+                            <h5>Title: <%= message.title %></h5>
+                            <h5>Date: <%= message.formatted_message_date %></h5>
+                            <h5 class="viewMessageSentIcon" data-message-id="<%= message.message_id %>"><span class="material-icons-outlined">visibility</span></h5>
+                        </div>  
+                    </div>
+                <% }); %>
 
                 <div id="messageSentCard" class="card-content" style="display: none;">
                     <div class="deleteMessage">
@@ -841,6 +848,7 @@
     <script src="scripts-admin/messages.js"></script>
     <script src="scripts-admin/profile.js"></script>
     <script src="scripts-admin/reports.js"></script>
+    <script src="scripts-admin/likedProducts.js"></script>
     <script>
         //AddProductForm
         document.addEventListener('DOMContentLoaded', function() {

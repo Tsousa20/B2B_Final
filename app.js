@@ -1381,11 +1381,19 @@ app.get('/dashboard', async (req, res) => {
         const query9 = 'SELECT p.main_img AS img, p.product_reference AS ref, p.product_name AS product, oi.product_unit_price AS price, oi.quantity, DATE_FORMAT(o.order_date, "%a %b %d %Y %H:%i:%s") AS sale_date, c.company_name AS buyer FROM orderitems oi INNER JOIN products p ON oi.product_id = p.id INNER JOIN orders o ON oi.order_id = o.order_id INNER JOIN companies c ON o.buyer_company_id = c.id WHERE p.company_id = ? ORDER BY o.order_date DESC';
         const results9 = await executeQuery(query9, [companyId]);
 
+        //Decima Query -> vai buscar a lista de liked products
+        const query10 = 'SELECT p.id AS id, p.main_img AS image, p.product_reference AS reference, p.product_name AS name, p.price AS price FROM liked_products lp JOIN products p ON lp.product_id = p.id WHERE lp.company_id = ?';
+        const results10 = await executeQuery(query10, [companyId])
         
+        // Décima Primeira Query -> vai buscar a lista de mensagens
+        const query11 = 'SELECT m.message_id, m.title, m.content, DATE_FORMAT(m.message_date, "%a %b %d %Y") AS formatted_message_date, m.is_read, c.company_name AS sender FROM messages m JOIN companies c ON m.sender_id = c.id WHERE m.recipient_id = ? ORDER BY m.message_date DESC';
+        const results11 = await executeQuery(query11, [companyId]);
 
-        
+        //Decima Segunda Query -> vai buscar a lista de mensagens enviadas
+        const query12 = 'SELECT m.message_id, m.title, m.content, DATE_FORMAT(m.message_date, "%a %b %d %Y") AS formatted_message_date, m.is_read, c.company_name AS recipient FROM messages m JOIN companies c ON m.recipient_id = c.id WHERE m.sender_id = ? ORDER BY m.message_date DESC';
+        const results12 = await executeQuery(query12, [companyId]);
 
-        res.render('admin-page', { totalProducts, totalOrders, totalSales, results4, results5, results6, results7, results8, results9 });
+        res.render('admin-page', { totalProducts, totalOrders, totalSales, results4, results5, results6, results7, results8, results9, results10, results11, results12 });
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro ao processar as queries.');
@@ -1548,10 +1556,95 @@ app.get('/order/items/:orderId', async (req, res) => {
         const query = 'SELECT oi.order_id, p.main_img AS img, p.product_reference AS ref, p.product_name AS product, oi.quantity, oi.product_unit_price AS price, c.company_name AS seller FROM orderitems oi INNER JOIN products p ON oi.product_id = p.id INNER JOIN companies c ON oi.seller_company_id = c.id WHERE oi.order_id = ?';
         const orderItems = await executeQuery(query, [orderId]);
 
-        res.json(orderItems); // Envie os itens da ordem como JSON para o front-end
+        res.json(orderItems); 
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Erro ao buscar itens da ordem.' });
+    }
+});
+
+app.post('/addLikedProducts', async (req, res) => {
+    const { productId } = req.body;
+    companyId = 2;
+
+    console.log(`productId: ${productId}`);
+
+    try {
+        
+        const LikedQuery = 'INSERT INTO liked_products (product_id, company_id) VALUES (?, ?)';
+        await executeQuery(LikedQuery, [productId, companyId]);
+
+        res.status(200).json({ success: true, message: 'Product added to your Liked Products List!' });
+    } catch (error) {
+        console.error(err);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.get('/message/:messageId', async (req, res) => {
+    const { messageId } = req.params;
+    console.log(`Message ID: ${messageId}`);
+
+    try {
+        
+        const query = 'SELECT m.message_id, m.sender_id, sender.company_name AS sender_name, m.title, DATE_FORMAT(m.message_date, "%a %b %d %Y") AS formatted_message_date, m.content, recipient.company_name AS recipient_name FROM messages m JOIN companies sender ON m.sender_id = sender.id JOIN companies recipient ON m.recipient_id = recipient.id WHERE m.message_id = ?';
+        const messageDetails = await executeQuery(query, [messageId]);
+
+        if (messageDetails.length === 0) {
+            return res.status(404).json({ success: false, message: 'Mensagem não encontrada.' });
+        }
+
+        res.json(messageDetails[0]); // Retorna os detalhes da mensagem em formato JSON
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Erro ao buscar detalhes da mensagem.' });
+    }
+});
+
+
+app.post('/replyMessage', async (req, res) => {
+    const { replyMsg, replyRecipientId, replyOriginalTitle } = req.body;
+    const companyId = 2;
+
+    console.log(`replyMsg: ${replyMsg}`);
+    console.log(`replyRecipientId: ${replyRecipientId}`);
+    console.log(`replyOriginalTitle: ${replyOriginalTitle}`);
+
+    try {
+        // Insere a mensagem de resposta na tabela messages
+        // const query = 'INSERT INTO messages (sender_id, recipient_id, title, content) VALUES (?, ?, ?, ?)';
+        // await executeQuery(query, [companyId, replyRecipientId, replyOriginalTitle, replyMsg]);
+
+        res.status(200).json({ success: true, message: 'Message replied successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Failed to reply message' });
+    }
+});
+
+app.post('/sendMessage', async (req, res) => {
+    const { company_name, title, msg_content } = req.body;
+    const senderId = 2;
+
+    try {
+        // Verifica se a empresa existe com o nome fornecido
+        const checkCompanyQuery = 'SELECT id FROM companies WHERE company_name = ?';
+        const companyResult = await executeQuery(checkCompanyQuery, [company_name]);
+
+        if (companyResult.length === 0) {
+            return res.status(404).json({ success: false, message: 'Company not found' });
+        }
+
+        const companyId = companyResult[0].id;
+
+        // Insere a mensagem na tabela messages
+        const sendMessageQuery = 'INSERT INTO messages (sender_id, recipient_id, title, content, message_date) VALUES (?, ?, ?, ?, NOW())';
+        await executeQuery(sendMessageQuery, [senderId, companyId, title, msg_content]);
+
+        res.status(200).json({ success: true, message: 'Message sent successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Failed to send message' });
     }
 });
 
