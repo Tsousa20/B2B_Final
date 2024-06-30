@@ -21,7 +21,7 @@
             </div>
             <div class="header-right">
                 <span id="account-icon" class="material-icons-outlined" style="padding: 5px;">account_circle</span>
-                <span class="material-icons-outlined" style="padding: 5px;">logout</span>
+                <span id="out-icon" class="material-icons-outlined" style="padding: 5px;">logout</span>
             </div>
         </header>
         <!------- End Header ------>
@@ -47,9 +47,6 @@
                 </li>
                 <li class="sidebar-list-item" data-target="sales-orders">
                     <span class="material-icons-outlined">shopping_cart</span> Sales Orders
-                </li>
-                <li class="sidebar-list-item" data-target="service-quotes">
-                    <span class="material-symbols-outlined">request_quote</span> Service Quotes
                 </li>
                 <li class="sidebar-list-item" data-target="reports">
                     <span class="material-icons-outlined">poll</span> Reports
@@ -684,33 +681,36 @@
                 <div class="card-content">
                     <h3>Profile Details</h3>
                     <div class="input-group2">
-                        <div class="input-field-addProduct">
-                            <p><span id="btnAlterImageForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Image:</p>
-                        </div>
+                        <% results14.forEach(result => { %>
+                            <div class="input-field-addProduct">
+                                <p><span id="btnAlterNameForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Name: <%= result.company_name %></p>
+                            </div>
 
-                        <div class="input-field-addProduct">
-                            <p><span id="btnAlterContactForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Contact:</p>
-                        </div>
-                            
-                        <div class="input-field-addProduct">
-                            <p><span id="btnAlterNameForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Name:</p>
-                        </div>
-                            
-                        <div class="input-field-addProduct">
-                            <p><span id="btnAlterAdressForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Address:</p>
-                        </div>
-                            
-                        <div class="input-field-addProduct">
-                            <p><span id="btnAlterEmailForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Email:</p>
-                        </div>
+                            <div class="input-field-addProduct">
+                                <p><span id="btnAlterContactForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Contact: <%= result.contact %></p>
+                            </div>
+                                
+                                
+                            <div class="input-field-addProduct">
+                                <p><span id="btnAlterAdressForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Address: <%= result.adress %></p>
+                            </div>
+                                
+                            <div class="input-field-addProduct">
+                                <p><span id="btnAlterEmailForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Email: <%= result.email %></p>
+                            </div>
 
-                        <div class="input-field-addProduct">
-                            <p><span id="btnAlterPasswdForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Password:</p>
-                        </div>
-                            
-                        <div class="input-field-addProduct">
-                            <p><span id="btnAlterDescriptionForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Description:</p>
-                        </div>
+                            <div class="input-field-addProduct">
+                                <p><span id="btnAlterDescriptionForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Description: <%= result.company_description %></p>
+                            </div>
+
+                            <div class="input-field-addProduct">
+                                <p><span id="btnAlterPasswdForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Password: *****</p>
+                            </div>
+
+                            <div class="input-field-addProduct">
+                                <p><span id="btnAlterImageForm" class="material-icons-outlined" style="padding-right: 10px;">edit</span>Image: <img style="margin-left: 30px; margin-top: 30px;" class="object-cover" src="/assets/empresas_img/<%= result.main_img %>" alt=""></p>
+                            </div>
+                        <% }); %>
                     </div>
                 </div>
 
@@ -718,11 +718,11 @@
                     <div class="iconCloseProfileForms">
                         <span id="closeFormAlterImage" class="material-icons-outlined">close</span>
                     </div>
-                    <form action="#" enctype="multipart/form-data">
+                    <form id="editImageForm" action="/editProfileImage" method="POST" enctype="multipart/form-data">
                         <h3>Alter Profile Main Image</h3>
                         <div class="input-field-addProduct">
                             <label for="main_img"><span class="material-icons-outlined">collections</span>Main Image:</label>
-                            <input class="input-field" type="file" name="main_img" name="main_img" id="main_img"  required>
+                            <input class="input-field" type="file" name="main_img" id="main_img" required>
                         </div>
                         <div class="btn-field-addProduct">
                             <button type="submit" class="addProductBtn">Alter Image</button>
@@ -734,7 +734,7 @@
                     <div class="iconCloseProfileForms">
                         <span id="closeFormAlterContact" class="material-icons-outlined">close</span>
                     </div>
-                    <form action="#">
+                    <form id="editContactForm" action="/editProfileContact" method="POST">
                         <h3>Alter Profile Contact</h3>
                         <div class="input-field-addProduct">
                             <label for="contact"><span class="material-icons-outlined">phone</span>Contact:</label>
@@ -750,7 +750,7 @@
                     <div class="iconCloseProfileForms">
                         <span id="closeFormAlterName" class="material-icons-outlined">close</span>
                     </div>
-                    <form action="#">
+                    <form id="editNameForm" action="/editProfileName" method="POST">
                         <h3>Alter Profile Name</h3>
                         <div class="input-field-addProduct">
                             <label for="name"><span class="material-icons-outlined">note_add</span>Name:</label>
@@ -766,16 +766,11 @@
                     <div class="iconCloseProfileForms">
                         <span id="closeFormAlterAdress" class="material-icons-outlined">close</span>
                     </div>
-                    <form action="#">
+                    <form id="editAdressForm" action="/editProfileAdress" method="POST">
                         <h3>Alter Profile Adress</h3>
                         <div class="input-field-addProduct">
                             <label for="adress"><span class="material-icons-outlined">home</span>Adress:</label>
                             <input class="input-field" type="text" name="adress" id="adress" required>
-                        </div>
-                        <div class="input-field-addProduct">
-                            <label for="adress_country"><span class="material-icons-outlined">home</span>Adress Country:</label>
-                            <select name="adress_country" id="adress_country" required>
-                            </select>
                         </div>
                         <div class="btn-field-addProduct">
                             <button type="submit" class="addProductBtn">Alter Adress</button>
@@ -787,7 +782,7 @@
                     <div class="iconCloseProfileForms">
                         <span id="closeFormAlterEmail" class="material-icons-outlined">close</span>
                     </div>
-                    <form action="#">
+                    <form id="editEmailForm" action="/editProfileEmail" method="POST">
                         <h3>Alter Profile Email</h3>
                         <div class="input-field-addProduct">
                             <label for="email"><span class="material-icons-outlined">email</span>Email:</label>
@@ -803,7 +798,7 @@
                     <div class="iconCloseProfileForms">
                         <span id="closeFormAlterDescription" class="material-icons-outlined">close</span>
                     </div>
-                    <form action="#">
+                    <form id="editDescriptionForm" action="/editProfileDescription" method="POST">
                         <h3>Alter Profile Description</h3>
                         <div class="input-field-addProduct">
                             <label for="description"><span class="material-icons-outlined">description</span>Description:</label>
@@ -819,15 +814,15 @@
                     <div class="iconCloseProfileForms">
                         <span id="closeFormAlterPasswd" class="material-icons-outlined">close</span>
                     </div>
-                    <form action="#">
+                    <form id="editPasswordForm" action="/editProfilePassword" method="POST">
                         <h3>Alter Profile Password</h3>
                         <div class="input-field-addProduct">
-                            <label for="name"><span class="material-icons-outlined">lock</span>New Password:</label>
-                            <input class="input-field" type="password" name="password" id="password" required>
+                            <label for="new_password"><span class="material-icons-outlined">lock</span>New Password:</label>
+                            <input class="input-field" type="password" name="new_password" id="new_password" required>
                         </div>
                         <div class="input-field-addProduct">
-                            <label for="name"><span class="material-icons-outlined">lock</span>Check Password:</label>
-                            <input class="input-field" type="password" name="password" id="password" required>
+                            <label for="confirm_password"><span class="material-icons-outlined">lock</span>Check Password:</label>
+                            <input class="input-field" type="password" name="confirm_password" id="confirm_password" required>
                         </div>
                         <div class="btn-field-addProduct">
                             <button type="submit" class="addProductBtn">Alter Password</button>
@@ -993,48 +988,58 @@
 
 
         // BAR CHART
-        var barChartOptions = {
-            series: [{
-                data: [10, 8, 6, 4, 2]
-            }],
-            chart: {
-                type: 'bar',
-                height: 350,
-                toolbar:{
-                    show: false
-                },
-            },
-            colors: [
-                "#3BBA9C",
-                "#294D61",
-            ],
-            plotOptions: {
-                bar: {
-                    distributed: true,
-                    borderRadius: 4,
-                    borderRadiusApplication: 'end',
-                    horizontal: false,
-                    columnWidth: '40%',
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            legend: {
-                show: false
-            },
-            xaxis: {
-                categories: ["Lpatop", "Phone", "Monitor", "Headphones", "Camera"],
-            },
-            yaxis: {
-                title: {
-                    text: "Count"
-                }
-            }
-        };
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/top-products')
+                .then(response => response.json())
+                .then(data => {
+                    const categories = data.map(item => item.product_name);
+                    const salesData = data.map(item => item.sales_count);
 
-        var barChart = new ApexCharts(document.querySelector("#bar-chart"), barChartOptions);
-        barChart.render();
+                    const barChartOptions = {
+                        series: [{
+                            data: salesData
+                        }],
+                        chart: {
+                            type: 'bar',
+                            height: 350,
+                            toolbar: {
+                                show: false
+                            },
+                        },
+                        colors: [
+                            "#3BBA9C",
+                            "#294D61",
+                        ],
+                        plotOptions: {
+                            bar: {
+                                distributed: true,
+                                borderRadius: 4,
+                                borderRadiusApplication: 'end',
+                                horizontal: false,
+                                columnWidth: '40%',
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        legend: {
+                            show: false
+                        },
+                        xaxis: {
+                            categories: categories,
+                        },
+                        yaxis: {
+                            title: {
+                                text: "Sales"
+                            }
+                        }
+                    };
+
+                    const barChart = new ApexCharts(document.querySelector("#bar-chart"), barChartOptions);
+                    barChart.render();
+                })
+                .catch(error => console.error('Error fetching top products:', error));
+        });
 
         // AREA CHART
 

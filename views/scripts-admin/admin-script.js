@@ -56,3 +56,7 @@ function closeSidebar(){
         sidebarOpen = false;
     }
 };
+
+document.getElementById('out-icon').addEventListener('click', function() {
+    window.location.href = '/';
+});

@@ -1337,10 +1337,10 @@ app.post('/login', async (req, res) => {
 
 
 //************ admin-dashboard routes ***********
-app.get('/dashboard', async (req, res) => {
+app.get('/dashboard', checkSession, async (req, res) => {
     try {
 
-        const companyId = 4;
+        const companyId = req.session.user.id;
 
         //Query Zero -> vai buscar o nome da empresa
         const query0 = 'SELECT company_name FROM companies WHERE id = ?';
@@ -1386,7 +1386,7 @@ app.get('/dashboard', async (req, res) => {
         const query9 = 'SELECT p.main_img AS img, p.product_reference AS ref, p.product_name AS product, oi.product_unit_price AS price, oi.quantity, DATE_FORMAT(o.order_date, "%a %b %d %Y %H:%i:%s") AS sale_date, c.company_name AS buyer FROM orderitems oi INNER JOIN products p ON oi.product_id = p.id INNER JOIN orders o ON oi.order_id = o.order_id INNER JOIN companies c ON o.buyer_company_id = c.id WHERE p.company_id = ? ORDER BY o.order_date DESC';
         const results9 = await executeQuery(query9, [companyId]);
 
-        //Decima Query -> vai buscar a lista de liked products
+        // Decima Query -> vai buscar a lista de liked products
         const query10 = 'SELECT p.id AS id, p.main_img AS image, p.product_reference AS reference, p.product_name AS name, p.price AS price FROM liked_products lp JOIN products p ON lp.product_id = p.id WHERE lp.company_id = ?';
         const results10 = await executeQuery(query10, [companyId])
         
@@ -1394,16 +1394,20 @@ app.get('/dashboard', async (req, res) => {
         const query11 = 'SELECT m.message_id, m.title, m.content, DATE_FORMAT(m.message_date, "%a %b %d %Y") AS formatted_message_date, m.is_read, c.company_name AS sender FROM messages m JOIN companies c ON m.sender_id = c.id WHERE m.recipient_id = ? ORDER BY m.message_date DESC';
         const results11 = await executeQuery(query11, [companyId]);
 
-        //Decima Segunda Query -> vai buscar a lista de mensagens enviadas
+        // Decima Segunda Query -> vai buscar a lista de mensagens enviadas
         const query12 = 'SELECT m.message_id, m.title, m.content, DATE_FORMAT(m.message_date, "%a %b %d %Y") AS formatted_message_date, m.is_read, c.company_name AS recipient FROM messages m JOIN companies c ON m.recipient_id = c.id WHERE m.sender_id = ? ORDER BY m.message_date DESC';
         const results12 = await executeQuery(query12, [companyId]);
 
-        // Terceira Query -> vai buscar o numero de vendas para o card 3
+        // Decima Terceira Query -> vai buscar o numero de vendas para o card 3
         const query13 = 'SELECT COUNT(*) AS total_messages FROM messages WHERE recipient_id = ? AND is_read = 0';
         const results13 = await executeQuery(query13, [companyId]);
         totalMessages = results13[0].total_messages;
 
-        res.render('admin-page', { totalProducts, totalOrders, totalSales, totalMessages, companyName, results4, results5, results6, results7, results8, results9, results10, results11, results12 });
+        // Decima Quarta Query -> vai buscar a lista de produtos para a secção inventory
+        const query14 = 'SELECT * FROM companies WHERE id = ?';
+        const results14 = await executeQuery(query14, [companyId]);
+
+        res.render('admin-page', { totalProducts, totalOrders, totalSales, totalMessages, companyName, results4, results5, results6, results7, results8, results9, results10, results11, results12, results14 });
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro ao processar as queries.');
@@ -1443,7 +1447,7 @@ async function getSubDepartmentNameById(subDepartmentId) {
 
 app.post('/addNewProduct', upload.fields([{ name: 'main_img' }, { name: 'img_2' }, { name: 'img_3' }, { name: 'img_4' }]), async (req, res) => {
     const { product_name, sub_department, price, price_symbol, stock, min_order, product_description } = req.body;
-    const companyId = 4;
+    const companyId = req.session.user.id;
     const main_img = req.files['main_img'] ? req.files['main_img'][0].filename : '';
     const img_2 = req.files['img_2'] ? req.files['img_2'][0].filename : '';
     const img_3 = req.files['img_3'] ? req.files['img_3'][0].filename : '';
@@ -1484,7 +1488,7 @@ app.post('/addNewProduct', upload.fields([{ name: 'main_img' }, { name: 'img_2' 
 
 app.post('/deleteProduct', async (req, res) => {
     const  { productId } = req.body;
-    companyId = 4;
+    companyId = req.session.user.id;
     console.log(`productId: ${productId}`);
 
     try {
@@ -1499,9 +1503,7 @@ app.post('/deleteProduct', async (req, res) => {
 
 app.post('/editProduct', async (req, res) => {
     const { productId, field_to_edit, value } = req.body;
-    console.log(`productId: ${productId}`);
-    console.log(`field: ${field_to_edit}`);
-    console.log(`value: ${value}`);
+
 
     if (!productId || !field_to_edit || !value) {
         return res.status(400).json({ success: false, message: 'Missing required fields' });
@@ -1519,8 +1521,7 @@ app.post('/editProduct', async (req, res) => {
 
 app.post('/editPromotionPrice', async (req, res) => {
     const { productId, promotionPrice } = req.body;
-    console.log(`productId: ${productId}`);
-    console.log(`promoton_price: ${promotionPrice}`);
+
     
     try {
         const queryNormalPrice = 'SELECT price FROM products WHERE id = ?';
@@ -1545,8 +1546,7 @@ app.post('/editPromotionPrice', async (req, res) => {
 
 app.post('/addPromotion', async (req, res) => {
     const { productId, promotion_price } = req.body;
-    console.log(`productId: ${productId}`);
-    console.log(`price: ${promotion_price}`);
+
 
     try {
 
@@ -1589,7 +1589,6 @@ app.post('/removePromotion', async (req, res) => {
 
 app.get('/order/items/:orderId', async (req, res) => {
     const { orderId } = req.params;
-    console.log(`order_id: ${orderId}`);
 
     try {
         // Query para obter os itens da ordem com base na order_id
@@ -1605,7 +1604,7 @@ app.get('/order/items/:orderId', async (req, res) => {
 
 app.post('/addLikedProducts', async (req, res) => {
     const { productId } = req.body;
-    companyId = 2;
+    companyId = req.session.user.id;
 
     console.log(`productId: ${productId}`);
 
@@ -1641,10 +1640,9 @@ app.get('/message/:messageId', async (req, res) => {
     }
 });
 
-
 app.post('/replyMessage', async (req, res) => {
     const { replyMsg, replyRecipientId, replyOriginalTitle } = req.body;
-    const senderId = 2;
+    const senderId = req.session.user.id;
 
     console.log(`replyMsg: ${replyMsg}`);
     console.log(`replyRecipientId: ${replyRecipientId}`);
@@ -1664,7 +1662,7 @@ app.post('/replyMessage', async (req, res) => {
 
 app.post('/sendMessage', async (req, res) => {
     const { company_name, title, msg_content } = req.body;
-    const senderId = 2;
+    const senderId = req.session.user.id;
 
     try {
         // Verifica se a empresa existe com o nome fornecido
@@ -1699,6 +1697,176 @@ app.post('/markAsRead/:messageId', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Failed to mark message as read' });
+    }
+});
+
+app.post('/editProfileName', async (req, res) => {
+    const { name } = req.body;
+    const companyId = req.session.user.id;
+
+    console.log(`Name: ${name}`);
+
+    try {
+
+        const updateQuery = `UPDATE companies SET company_name = ? WHERE id = ?`;
+        await executeQuery(updateQuery, [name, companyId]);
+
+        res.status(200).json({ success: true, message: 'Profile name successfully updated.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.post('/editProfileContact', async (req, res) => {
+    const { contact } = req.body;
+    const companyId = req.session.user.id;
+
+    console.log(`Contact: ${contact}`);
+
+    try {
+
+        const updateQuery = `UPDATE companies SET contact = ? WHERE id = ?`;
+        await executeQuery(updateQuery, [contact, companyId]);
+
+        res.status(200).json({ success: true, message: 'Profile contact successfully updated.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.post('/editProfileAdress', async (req, res) => {
+    const { adress } = req.body;
+    const companyId = req.session.user.id;
+
+    console.log(`Contact: ${adress}`);
+
+    try {
+
+        const updateQuery = `UPDATE companies SET adress = ? WHERE id = ?`;
+        await executeQuery(updateQuery, [adress, companyId]);
+
+        res.status(200).json({ success: true, message: 'Profile adress successfully updated.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.post('/editProfileEmail', async (req, res) => {
+    const { email } = req.body;
+    const companyId = req.session.user.id;
+
+    console.log(`Contact: ${email}`);
+
+    try {
+
+        const updateQuery = `UPDATE companies SET email = ? WHERE id = ?`;
+        await executeQuery(updateQuery, [email, companyId]);
+
+        res.status(200).json({ success: true, message: 'Profile email successfully updated.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.post('/editProfileDescription', async (req, res) => {
+    const { description } = req.body;
+    const companyId = req.session.user.id;
+
+    console.log(`Contact: ${description}`);
+
+    try {
+
+        const updateQuery = `UPDATE companies SET company_description = ? WHERE id = ?`;
+        await executeQuery(updateQuery, [description, companyId]);
+
+        res.status(200).json({ success: true, message: 'Profile description successfully updated.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.post('/editProfilePassword', async (req, res) => {
+    const { new_password } = req.body;
+    const companyId = req.session.user.id;
+
+    console.log(`Contact: ${new_password}`);
+
+    try {
+
+        const getUserQuery = 'SELECT passwrd FROM companies WHERE id = ?';
+        const company = await executeQuery(getUserQuery, [companyId]);
+
+        const storedPassword = company[0].passwrd;
+
+        const isSamePassword = await bcrypt.compare(new_password, storedPassword);
+        if (isSamePassword) {
+            return res.status(400).json({ success: false, message: 'New password must be different from the current password' });
+        }
+
+        const hashedPassword = await bcrypt.hash(new_password, 10);
+
+        const updateQuery = `UPDATE companies SET passwrd = ? WHERE id = ?`;
+        await executeQuery(updateQuery, [hashedPassword, companyId]);
+
+        res.status(200).json({ success: true, message: 'Password successfully updated.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.post('/editProfileImage', upload.fields([{ name: 'main_img' }]), async (req, res) => {
+    const main_img = req.files['main_img'] ? req.files['main_img'][0].filename : '';
+    const companyId = req.session.user.id;
+
+    console.log(`img: ${main_img}`);
+
+
+    try {
+
+        const updateQuery = `UPDATE companies SET main_img = ? WHERE id = ?`;
+        await executeQuery(updateQuery, [main_img, companyId]);
+
+        res.status(200).json({ success: true, message: 'Profile image successfully updated.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.get('/top-products', async (req, res) => {
+    const companyId = req.session.user.id;
+
+    const topProductsQuery = 'SELECT product_id, COUNT(*) AS sales_count FROM orderitems WHERE seller_company_id = ? GROUP BY product_id ORDER BY sales_count DESC LIMIT 5';
+    const topProductsResults = await executeQuery(topProductsQuery, [companyId]);
+
+    if (topProductsResults.length > 0) {
+        const productIds = topProductsResults.map(result => result.product_id);
+
+        // Query para obter os nomes dos produtos
+        const productNamesQuery = 'SELECT id, product_name FROM products WHERE id IN (?)';
+        const productNamesResults = await executeQuery(productNamesQuery, [productIds]);
+
+        const productNamesMap = productNamesResults.reduce((map, product) => {
+            map[product.id] = product.product_name;
+            return map;
+        }, {});
+
+        const topProducts = topProductsResults.map(result => ({
+            product_id: result.product_id,
+            product_name: productNamesMap[result.product_id],
+            sales_count: result.sales_count
+        }));
+
+        res.json(topProducts);
+
+    } else {
+        res.json([]);
     }
 });
 

@@ -1,1 +1,1 @@
-formatted_message_date
+const hashedPassword = await bcrypt.hash(new_password, 10);
