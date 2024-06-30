@@ -857,6 +857,128 @@ function executeQuery(query, params = []) {
     });
 }
 
+//************ page-company routes ***********
+app.get('/page-company/:id', async (req, res) => {
+    try {
+
+        // Id do produto selecionado
+        const companyId = req.params.id;
+
+        // Primeira Query -> Vai buscar todos os deartamentos para a navbar superior
+        const query1 = 'SELECT * FROM departments';
+        const results1 = await executeQuery(query1);
+ 
+        // Segunda Query -> Vai buscar empresas para a navbar superior
+        const query2 = 'SELECT company_name FROM companies ORDER BY RAND() LIMIT 9';
+        const results2 = await executeQuery(query2);
+ 
+        // Terceira Query -> Conta o numero de produtos para o menu lateral
+        const query3 = 'SELECT COUNT(*) AS total_products FROM products';
+        const results3 = await executeQuery(query3);
+
+        // Quarta query -> Vai buscar produtos para os banners
+        const query4 = 'SELECT p.* FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 2 ORDER BY RAND() LIMIT 5';
+        const results4 = await executeQuery(query4);
+
+        // Quinta query -> Vai buscar produtos para os banners
+        const query5 = 'SELECT p.* FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 3 ORDER BY RAND() LIMIT 5';
+        const results5 = await executeQuery(query5);
+
+        // Sexta query -> Vai buscar produtos para os banners
+        const query6 = 'SELECT p.* FROM products p JOIN sub_departments sd ON p.sub_department_id = sd.id JOIN departments d ON sd.department_id = d.id WHERE d.id = 6 ORDER BY RAND() LIMIT 5';
+        const results6 = await executeQuery(query6);
+
+        const query7 = 'SELECT company_name FROM companies WHERE id = ?';
+        const results7 = await executeQuery(query7, [companyId]);
+        const companyName = results7[0].company_name;
+
+        const queryDetails = 'SELECT * FROM companies WHERE id = ?';
+        const resultsDetails = await executeQuery(queryDetails, [companyId]);
+
+        const query = 'SELECT p.*, d.name_depart FROM products p INNER JOIN sub_departments sd ON p.sub_department_id = sd.id INNER JOIN departments d ON sd.department_id = d.id WHERE p.company_id = ?';
+        const products = await executeQuery(query, [companyId]);
+    
+        
+
+        const query8 = 'SELECT p.*, c.company_name FROM products p JOIN companies c ON p.company_id = c.id WHERE p.company_id = ?';
+        const results8 = await executeQuery(query8, [companyId]);
+
+        results8.forEach(product => {
+            product.formatted_price = product.price.toFixed(2);
+            if (product.is_promotion) {
+                product.formatted_promotion_price = product.promotion_price.toFixed(2);
+            }
+        });
+
+
+        // Nona query -> vai buscar os departamentos e sub-departamentos para o menu lateral
+        const query9 = 'SELECT d.id AS department_id, d.name_depart AS department_name, d.icon_depart AS icon_depart, sd.id AS sub_department_id, sd.name_sub_depart AS sub_department_name FROM departments d LEFT JOIN sub_departments sd ON d.id = sd.department_id';
+        const results9 = await executeQuery(query9);
+
+        // Agrupar os resultados por departamento
+        const departments = results9.reduce((acc, row) => {
+            const { department_id, department_name, icon_depart, sub_department_id, sub_department_name } = row;
+            if (!acc[department_id]) {
+                acc[department_id] = {
+                    id: department_id,
+                    name: department_name,
+                    icon: icon_depart,
+                    subDepartments: []
+                };
+            }
+            if (sub_department_id) {
+                acc[department_id].subDepartments.push({
+                    id: sub_department_id,
+                    name: sub_department_name
+                });
+            }
+            return acc;
+        }, {});
+
+        const departmentList = Object.values(departments);
+
+        // Decima Query -> vai buscar os sub-departamentos para o nav superior
+        const query10 = 'SELECT * FROM sub_departments ORDER BY RAND() LIMIT 9';
+        const results10 = await executeQuery(query10);
+
+        // Cart Query -> Vai buscar os itens do carrinho do cliente
+        if (req.session.user) {
+            const userId = req.session.user.id;
+            
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img, p.min_order FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartItems = await executeQuery(cartQuery, [userId]);
+            
+            res.render('page-company', { isAuthenticated:true, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, companyName, results8, departments: departmentList, results10, companyDetails: resultsDetails[0], products, cartItems });
+        } else {
+            res.render('page-company', { isAuthenticated:false, results1, results2, totalProducts: results3[0].total_products, results4, results5, results6, companyName, results8, departments: departmentList, results10, companyDetails: resultsDetails[0], products });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao processar as queries.');
+    }
+})
+
+app.post('/send-Message', async (req, res) => {
+    const { company_name, title, msg_content } = req.body;
+    const senderId = req.session.user.id;
+
+    console.log(`company_name: ${company_name}`);
+    console.log(`title: ${title}`);
+    console.log(`msg_contente: ${msg_content}`);
+
+    try {
+
+        // Insere a mensagem na tabela messages
+        const sendMessageQuery = 'INSERT INTO messages (sender_id, recipient_id, title, content, message_date) VALUES (?, ?, ?, ?, NOW())';
+        await executeQuery(sendMessageQuery, [senderId, company_name, title, msg_content]);
+
+        res.status(200).json({ success: true, message: 'Message sent successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Failed to send message' });
+    }
+});
+
 
 //************ cart routes *********
 app.get('/cart', checkSession, async (req, res) => {
@@ -1869,6 +1991,7 @@ app.get('/top-products', async (req, res) => {
         res.json([]);
     }
 });
+
 
 //************ about routes ***********
 app.get('/about', async (req, res) => {

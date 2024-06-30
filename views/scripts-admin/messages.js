@@ -143,17 +143,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
 });
 
-//REPLY FORM
-// document.getElementById('replyMessageIcon').addEventListener('click', function() {
-//     var form = document.getElementById('replyMessageForm');
-
-//     if (form.style.display === 'none' || form.style.display === '') {
-//         form.style.display = 'block';
-//         form.scrollIntoView({ behavior: 'smooth' });
-//     } else {
-//         form.style.display = 'none';
-//     }
-// });
 
 //NEW MESSAGE
 document.getElementById('newMessage').addEventListener('click', function() {
