@@ -1340,7 +1340,12 @@ app.post('/login', async (req, res) => {
 app.get('/dashboard', async (req, res) => {
     try {
 
-        const companyId = 2;
+        const companyId = 4;
+
+        //Query Zero -> vai buscar o nome da empresa
+        const query0 = 'SELECT company_name FROM companies WHERE id = ?';
+        const results0 = await executeQuery(query0, [companyId]);
+        companyName = results0[0].company_name;
 
         // Primeira Query -> vai buscar o numero de produtos para o card 1
         const query1 = 'SELECT COUNT(*) AS total_products FROM products WHERE company_id = ?';
@@ -1393,7 +1398,12 @@ app.get('/dashboard', async (req, res) => {
         const query12 = 'SELECT m.message_id, m.title, m.content, DATE_FORMAT(m.message_date, "%a %b %d %Y") AS formatted_message_date, m.is_read, c.company_name AS recipient FROM messages m JOIN companies c ON m.recipient_id = c.id WHERE m.sender_id = ? ORDER BY m.message_date DESC';
         const results12 = await executeQuery(query12, [companyId]);
 
-        res.render('admin-page', { totalProducts, totalOrders, totalSales, results4, results5, results6, results7, results8, results9, results10, results11, results12 });
+        // Terceira Query -> vai buscar o numero de vendas para o card 3
+        const query13 = 'SELECT COUNT(*) AS total_messages FROM messages WHERE recipient_id = ? AND is_read = 0';
+        const results13 = await executeQuery(query13, [companyId]);
+        totalMessages = results13[0].total_messages;
+
+        res.render('admin-page', { totalProducts, totalOrders, totalSales, totalMessages, companyName, results4, results5, results6, results7, results8, results9, results10, results11, results12 });
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro ao processar as queries.');
@@ -1488,10 +1498,14 @@ app.post('/deleteProduct', async (req, res) => {
 });
 
 app.post('/editProduct', async (req, res) => {
-    const { productId, field, value } = req.body;
+    const { productId, field_to_edit, value } = req.body;
     console.log(`productId: ${productId}`);
-    console.log(`field: ${field}`);
+    console.log(`field: ${field_to_edit}`);
     console.log(`value: ${value}`);
+
+    if (!productId || !field_to_edit || !value) {
+        return res.status(400).json({ success: false, message: 'Missing required fields' });
+    }
 
     try {
         // const updateQuery = `UPDATE products SET ${field} = ? WHERE id = ?`;
@@ -1499,6 +1513,32 @@ app.post('/editProduct', async (req, res) => {
         res.status(200).json({ success: true, message: 'Product successfully updated.' });
     } catch (error) {
         console.error(err);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+app.post('/editPromotionPrice', async (req, res) => {
+    const { productId, promotionPrice } = req.body;
+    console.log(`productId: ${productId}`);
+    console.log(`promoton_price: ${promotionPrice}`);
+    
+    try {
+        const queryNormalPrice = 'SELECT price FROM products WHERE id = ?';
+        const resultsPrice = await executeQuery(queryNormalPrice, [productId]);
+        const normal_price = resultsPrice[0].price;
+
+        // Calcular a diferença percentual
+        const percentage_difference = Math.round(((normal_price - promotionPrice) / normal_price) * 100);
+
+        console.log(`price: ${normal_price}`);
+        console.log(`discount_percentage: ${percentage_difference}`);
+
+        const updateQuery = `UPDATE products SET promotion_price = ?, discount_percentage = ? WHERE id = ?`;
+        await executeQuery(updateQuery, [promotionPrice, percentage_difference, productId]);
+
+        res.status(200).json({ success: true, message: 'Promotion price successfully updated.' });
+    } catch (error) {
+        console.error(error);
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 });
@@ -1604,7 +1644,7 @@ app.get('/message/:messageId', async (req, res) => {
 
 app.post('/replyMessage', async (req, res) => {
     const { replyMsg, replyRecipientId, replyOriginalTitle } = req.body;
-    const companyId = 2;
+    const senderId = 2;
 
     console.log(`replyMsg: ${replyMsg}`);
     console.log(`replyRecipientId: ${replyRecipientId}`);
@@ -1612,8 +1652,8 @@ app.post('/replyMessage', async (req, res) => {
 
     try {
         // Insere a mensagem de resposta na tabela messages
-        // const query = 'INSERT INTO messages (sender_id, recipient_id, title, content) VALUES (?, ?, ?, ?)';
-        // await executeQuery(query, [companyId, replyRecipientId, replyOriginalTitle, replyMsg]);
+        const query = 'INSERT INTO messages (sender_id, recipient_id, title, content) VALUES (?, ?, ?, ?)';
+        await executeQuery(query, [senderId, replyRecipientId, replyOriginalTitle, replyMsg]);
 
         res.status(200).json({ success: true, message: 'Message replied successfully' });
     } catch (error) {
@@ -1647,6 +1687,25 @@ app.post('/sendMessage', async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to send message' });
     }
 });
+
+app.post('/markAsRead/:messageId', async (req, res) => {
+    const { messageId } = req.params;
+
+    try {
+        const query = 'UPDATE messages SET is_read = ? WHERE message_id = ?';
+        await executeQuery(query, [1, messageId]);
+
+        res.status(200).json({ success: true, message: 'Message marked as read' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Failed to mark message as read' });
+    }
+});
+
+//************ about routes ***********
+app.get('/about', async (req, res) => {
+    res.render('about');
+})
 
 function executeQuery(query, params = []) {
     return new Promise((resolve, reject) => {

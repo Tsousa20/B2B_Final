@@ -30,7 +30,7 @@
         <aside id="sidebar">
             <div class="sidebar-title">
                 <div class="sidebar-brand">
-                    <span class="material-icons-outlined">inventory</span> D11's Inventory
+                    <span class="material-icons-outlined">inventory</span> <%= companyName %>
                 </div>
                 <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
             </div>
@@ -81,7 +81,7 @@
                     <div class="card" data-target="inventory">
                         <div class="card-inner">
                             <p class="text-primary">PRODUCTS</p>
-                            <span class="material-icons-outlined text-color">inventory_2</span>
+                            <span class="material-icons-outlined text-color">fact_check</span>
                         </div>
                         <span class="text-primary font-weight-bold"><%= totalProducts %></span>
                     </div>
@@ -102,12 +102,12 @@
                         <span class="text-primary font-weight-bold"><%= totalSales %></span>
                     </div>
 
-                    <div class="card" data-target="service-quotes">
+                    <div class="card" data-target="messages">
                         <div class="card-inner">
-                            <p class="text-primary">SERVICE QUOTES</p>
-                            <span class="material-symbols-outlined text-color">request_quote</span>
+                            <p class="text-primary">MESSAGES</p>
+                            <span class="material-symbols-outlined text-color">sms</span>
                         </div>
-                        <span class="text-primary font-weight-bold">56</span>
+                        <span class="text-primary font-weight-bold"><%= totalMessages %></span>
                     </div>
                 </div>
 
@@ -143,7 +143,7 @@
                             <th width="150" style="color: #294D61;">Description</th>
                         </tr>
                         <% results4.forEach(product => { %>
-                            <tr align="center">
+                            <tr align="center" data-product-id="<%= product.id %>">
                                 <td><img class="object-cover" src="/assets/empresas_img/<%= product.main_img %>" alt=""></td>
                                 <td><%= product.product_name %></td>
                                 <td><%= product.product_reference %></td>
@@ -180,7 +180,7 @@
                                 <td><%= product.price.toFixed(2) %> <%= product.price_symbol %></td>
                                 <td><%= product.promotion_price.toFixed(2) %> <%= product.price_symbol %></td>
                                 <td><%= product.discount_percentage %>%</td>
-                                <td><button class="tableBtnEditPromo">Edit</button></td>
+                                <td><button class="tableBtnEditPromo" data-product-id="<%= product.id %>" data-product-name="<%= product.product_name %>">Edit</button></td>
                             </tr>
                         <% }); %>
                     </table>
@@ -261,7 +261,7 @@
                             </div>
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Add Product</button>
+                            <button type="submit" class="addProductBtn">Add Product</button>
                         </div>
                     </form>
 
@@ -283,7 +283,7 @@
                         </div>
 
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Delete Product</button>
+                            <button type="submit" class="addProductBtn">Delete Product</button>
                         </div>
                     </form>
                 </div>
@@ -309,7 +309,7 @@
                             </div>
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Add Promotion</button>
+                            <button type="submit" class="addProductBtn">Add Promotion</button>
                         </div>
                     </form>
 
@@ -331,7 +331,7 @@
                             </div>
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Remove Promotion</button>
+                            <button type="submit" class="addProductBtn">Remove Promotion</button>
                         </div>
                     </form>
 
@@ -341,7 +341,8 @@
 
                     <h3>Edit Products from Inventoy</h3>
 
-                    <form id="editProductForm" action="/editProduct" method="POST">
+                    <form id="editProductForm" action="/editProduct" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" id="product_id" name="productid">
                         <div class="input-group2" style="display: block;">    
                             <div class="input-field-addProduct"> 
                                 <label for="field_to_edit"><span class="material-icons-outlined">note_add</span>What field do you want to edit?</label>
@@ -380,22 +381,22 @@
                             
                             <div id="edit_main_img" class="input-field-addProduct hidden">
                                 <label for="main_img"><span class="material-icons-outlined">collections</span>Main Image:</label>
-                                <input class="input-field" type="file" name="main_img" name="main_img" id="main_img"  required>
+                                <input class="input-field" type="file" name="main_img" id="main_img"  required>
                             </div>
 
                             <div id="edit_img_2" class="input-field-addProduct hidden">
                                 <label for="img_2"><span class="material-icons-outlined">add_photo_alternate</span>Second Image:</label>
-                                <input class="input-field" type="file" name="img_2" name="img_2" id="img_2"  required>
+                                <input class="input-field" type="file" name="img_2" id="img_2"  required>
                             </div>
 
                             <div id="edit_img_3" class="input-field-addProduct hidden">
                                 <label for="img_3"><span class="material-icons-outlined">add_photo_alternate</span>Third Image:</label>
-                                <input class="input-field" type="file" name="img_3" name="img_3" id="img_3" required>
+                                <input class="input-field" type="file" name="img_3" id="img_3" required>
                             </div>
 
                             <div id="edit_img_4" class="input-field-addProduct hidden">
                                 <label for="img_4"><span class="material-icons-outlined">add_photo_alternate</span>Fourth Image:</label>
-                                <input class="input-field" type="file" name="img_4" name="img_4" id="img_4" required>
+                                <input class="input-field" type="file" name="img_4" id="img_4" required>
                             </div>
 
                             <div id="edit_product_description" class="input-field-addProduct hidden">
@@ -405,7 +406,7 @@
                             
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Edit Product</button>
+                            <button type="submit" class="addProductBtn">Edit Product</button>
                         </div>
                     </form>
 
@@ -415,15 +416,16 @@
 
                     <h3>Edit Promotion Price</h3>
 
-                    <form action="#">
-                        <div class="input-group2">    
+                    <form id="editPromotionPriceForm" action="/editPromotionPrice" method="POST">
+                        <input type="hidden" id="product_id_promo" name="productId">
+                        <div class="input-group2" style="display: block;">    
                             <div id="promotion_price" class="input-field-addProduct">
                                 <label for="promotion_price"><span class="material-icons-outlined">monetization_on</span>Promotion Price:</label>
-                                <input class="input-field" type="number" id="promotion_price" name="promotion_price" placeholder="Price" min="0" step="0.5" required>
+                                <input class="input-field" type="number" id="promotion_price" name="promotion_price" placeholder="Price" min="0" step="0.01" required>
                             </div>                           
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Edit Product</button>
+                            <button type="submit" class="editPromotionPriceBtn">Edit Product</button>
                         </div>
                     </form>
 
@@ -602,14 +604,14 @@
                                 <textarea id="msg_content" name="msg_content" placeholder="Text" required></textarea>
                             </div>
                             <div class="btn-field-addProduct">
-                                <button type="submit" id="addProductBtn">Send</button>
+                                <button type="submit" class="addProductBtn">Send</button>
                             </div>
                         </div>
                     </form>
                 </div>
 
                 <% results11.forEach(message => { %>
-                    <div class="card-content-messages">
+                    <div class="card-content-messages <%= message.is_read ? 'read-message' : '' %>">
                         <div class="message-h5">
                             <h5>From: <%= message.sender %></h5>
                             <h5>Title: <%= message.title %></h5>
@@ -621,7 +623,7 @@
                 <div id="messageCard" class="card-content" style="display: none;">
                     <div class="deleteMessage">
                         <span id="closeMessageIcon" class="material-icons-outlined" style="padding: 10px;">close</span>
-                        <span class="material-icons-outlined" style="padding: 10px;">delete</span>
+                        <!-- <span class="material-icons-outlined" style="padding: 10px;">delete</span> -->
                         <span id="replyMessageIcon" class="material-icons-outlined" style="padding: 10px;">reply</span>
                     </div>
                     <div class="message-h4">
@@ -632,12 +634,12 @@
                     <p></p>
 
                     <form id="replyMessageForm" action="/replyMessage" method="POST" style="display: none; padding-top: 5px;">
-                        <input type="hidden" id="replyRecipientId" name="replyRecipientId">
-                        <input type="hidden" id="replyOriginalTitle" name="replyOriginalTitle">
                         <div class="input-field-addProduct">
                             <label for="replyMsg"><span class="material-icons-outlined">description</span>Reply to:</label>
                             <textarea id="replyMsg" name="replyMsg" placeholder="Text" required></textarea>
                         </div>
+                        <input type="hidden" id="replyRecipientId" name="replyRecipientId">
+                        <input type="hidden" id="replyOriginalTitle" name="replyOriginalTitle">
                         <div class="table-buttons-div">
                             <button type="submit" class="tableBtn">Send</button>
                         </div>
@@ -723,7 +725,7 @@
                             <input class="input-field" type="file" name="main_img" name="main_img" id="main_img"  required>
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Alter Image</button>
+                            <button type="submit" class="addProductBtn">Alter Image</button>
                         </div>
                     </form>
                 </div>
@@ -739,7 +741,7 @@
                             <input class="input-field" type="tel" name="contact" id="contact" required>
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Alter Contact</button>
+                            <button type="submit" class="addProductBtn">Alter Contact</button>
                         </div>
                     </form>
                 </div>
@@ -755,7 +757,7 @@
                             <input class="input-field" type="text" name="name" id="name" required>
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Alter Name</button>
+                            <button type="submit" class="addProductBtn">Alter Name</button>
                         </div>
                     </form>
                 </div>
@@ -776,7 +778,7 @@
                             </select>
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Alter Adress</button>
+                            <button type="submit" class="addProductBtn">Alter Adress</button>
                         </div>
                     </form>
                 </div>
@@ -792,7 +794,7 @@
                             <input class="input-field" type="email" name="email" id="email" required>
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Alter Email</button>
+                            <button type="submit" class="addProductBtn">Alter Email</button>
                         </div>
                     </form>
                 </div>
@@ -808,7 +810,7 @@
                             <textarea id="description" name="description" placeholder="Description" required></textarea>
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Alter Description</button>
+                            <button type="submit" class="addProductBtn">Alter Description</button>
                         </div>
                     </form>
                 </div>
@@ -828,7 +830,7 @@
                             <input class="input-field" type="password" name="password" id="password" required>
                         </div>
                         <div class="btn-field-addProduct">
-                            <button type="submit" id="addProductBtn">Alter Password</button>
+                            <button type="submit" class="addProductBtn">Alter Password</button>
                         </div>
                     </form>
                 </div>
