@@ -1,1 +1,1 @@
-const hashedPassword = await bcrypt.hash(new_password, 10);
+remove-from-cart

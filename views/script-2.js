@@ -28,3 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function openFAQQuestion(id) {
+    var element = document.getElementById(id);
+    if (element) {
+        element.checked = true; // marca a checkbox para abrir a resposta
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' }); // rolar até a questão
+    }
+}

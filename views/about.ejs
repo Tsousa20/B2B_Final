@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ecommerce Website</title>
-    <link rel="stylesheet" href="style-about.css">
+    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,9 +29,12 @@
         </aside>
 
         <header>
-           
-
-            <!-- header-top -->
+            <div class="header-top mobile-hide">
+                <div class="container">
+                    <div class="wrapper flexitem">   
+                    </div>
+                </div>
+            </div>
             <div class="header-nav">
                 <div class="container">
                     <div class="wrapper flexitem">
@@ -43,82 +46,7 @@
                                     <li><a href="/">Home</a></li>
                                     <li><a href="/about">About</a></li>
 
-                                    <li class="has-child">
-                                        <a href="#">Vendors
-                                            <div class="icon-small"><i class="ri-arrow-down-s-line"></i></div>
-                                        </a>
-                                        <div class="mega">
-                                            <div class="container">
-                                                <div class="wrapper">
-                                                    <div class="flexcol">
-                                                        <div class="row">
-                                                            <h4>Manufacturers</h4>
-                                                            <ul>
-                                                                <li><a href="#">Dresses</a></li>
-                                                                <li><a href="#">Tops & Tees</a></li>
-                                                                <li><a href="#">Jackets & Coats</a></li>
-                                                                <li><a href="#">Pants & Capris</a></li>
-                                                                <li><a href="#">Sweaters</a></li>
-                                                                <li><a href="#">Costumes</a></li>
-                                                                <li><a href="#">Hoodies & Sweatshirts</a></li>
-                                                                <li><a href="#">Pijamas & Robes</a></li>
-                                                                <li><a href="#">Shorts</a></li>
-                                                                <li><a href="#">Swimwear</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flexcol">
-                                                        <div class="row">
-                                                            <h4>Distributors</h4>
-                                                            <ul>
-                                                                <li><a href="#">Acessories</a></li>
-                                                                <li><a href="#">Bags & Purses</a></li>
-                                                                <li><a href="#">Necklaces</a></li>
-                                                                <li><a href="#">Rings</a></li>
-                                                                <li><a href="#">Earrings</a></li>
-                                                                <li><a href="#">Bracelets</a></li>
-                                                                <li><a href="#">Body Jewelry</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flexcol">
-                                                        <div class="row">
-                                                            <h4>Wholesalers</h4>
-                                                            <ul>
-                                                                <li><a href="#">Bath Accessories</a></li>
-                                                                <li><a href="#">Makeup & Cosmetics</a></li>
-                                                                <li><a href="#">Skin Care</a></li>
-                                                                <li><a href="#">Hair Care</a></li>
-                                                                <li><a href="#">Essential Oils</a></li>
-                                                                <li><a href="#">Fragances</a></li>
-                                                                <li><a href="#">Soaps & Bath Bombs</a></li>
-                                                                <li><a href="#">Face Masks & Coverings</a></li>
-                                                                <li><a href="#">Spa Kits & Gifts</a></li>
-
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="flexcol products">
-                                                        <div class="row">
-                                                            <div class="media">
-                                                                <div class="thumbnail object-cover">
-                                                                    <a href="#">
-                                                                        <img src="assets/products/apparel4.jpg" alt="">
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="text-content">
-                                                                <h4>Most wanted!</h4>
-                                                                <a href="#" class="primary-button">Order Now</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-
+                                   
                                     <li class="has-child">
                                         <a href="#">Categories
                                             <div class="icon-small"><i class="ri-arrow-down-s-line"></i></div>
@@ -128,69 +56,35 @@
                                                 <div class="wrapper">
                                                     <div class="flexcol">
                                                         <div class="row">
-                                                            <h4>Woman's Clothing</h4>
+                                                            <h4>Departments</h4>
                                                             <ul>
-                                                                <li><a href="#">Dresses</a></li>
-                                                                <li><a href="#">Tops & Tees</a></li>
-                                                                <li><a href="#">Jackets & Coats</a></li>
-                                                                <li><a href="#">Pants & Capris</a></li>
-                                                                <li><a href="#">Sweaters</a></li>
-                                                                <li><a href="#">Costumes</a></li>
-                                                                <li><a href="#">Hoodies & Sweatshirts</a></li>
-                                                                <li><a href="#">Pijamas & Robes</a></li>
-                                                                <li><a href="#">Shorts</a></li>
-                                                                <li><a href="#">Swimwear</a></li>
+                                                                <% results1.forEach(result => { %>
+                                                                    <li><a href="/page-category/<%= result.id %>"><%= result.name_depart%></a></li>
+                                                                <% }); %>
+                                                                
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="flexcol">
                                                         <div class="row">
-                                                            <h4>Jewelry</h4>
+                                                            <h4>Sub-Departments</h4>
                                                             <ul>
-                                                                <li><a href="#">Acessories</a></li>
-                                                                <li><a href="#">Bags & Purses</a></li>
-                                                                <li><a href="#">Necklaces</a></li>
-                                                                <li><a href="#">Rings</a></li>
-                                                                <li><a href="#">Earrings</a></li>
-                                                                <li><a href="#">Bracelets</a></li>
-                                                                <li><a href="#">Body Jewelry</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flexcol">
-                                                        <div class="row">
-                                                            <h4>Beauty</h4>
-                                                            <ul>
-                                                                <li><a href="#">Bath Accessories</a></li>
-                                                                <li><a href="#">Makeup & Cosmetics</a></li>
-                                                                <li><a href="#">Skin Care</a></li>
-                                                                <li><a href="#">Hair Care</a></li>
-                                                                <li><a href="#">Essential Oils</a></li>
-                                                                <li><a href="#">Fragances</a></li>
-                                                                <li><a href="#">Soaps & Bath Bombs</a></li>
-                                                                <li><a href="#">Face Masks & Coverings</a></li>
-                                                                <li><a href="#">Spa Kits & Gifts</a></li>
-
+                                                                <% results10.forEach(result => { %>
+                                                                    <li><a href="/page-sub_category/<%= result.id %>"><%= result.name_sub_depart%></a></li>
+                                                                <% }); %>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="flexcol">
                                                         <div class="row">
                                                             <h4>Top Brands</h4>
-                                                            <ul class="women-brands">
-                                                                <li><a href="#">Nike</a></li>
-                                                                <li><a href="#">Louis Vuitton</a></li>
-                                                                <li><a href="#">Hermes</a></li>
-                                                                <li><a href="#">Gucci</a></li>
-                                                                <li><a href="#">Zalando</a></li>
-                                                                <li><a href="#">Tiffany & Co</a></li>
-                                                                <li><a href="#">Zara</a></li>
-                                                                <li><a href="#">H&M</a></li>
-                                                                <li><a href="#">Cartier</a></li>
-                                                                <li><a href="#">Chanel</a></li>
-                                                                <li><a href="#">Hurley</a></li>
+                                                            <ul class="row">
+                                                                <% results2.forEach(result => { %>
+                                                                    <li><a href="#"><%= result.company_name%></a></li>
+                                                                <% }); %>
+                                                                
                                                             </ul>
-                                                            <a href="#" class="view-all">View all brands<i class="ri-arrow-right-line"></i></a>
+                                                            <a href="#" class="view-all">View all companies<i class="ri-arrow-right-line"></i></a>
                                                         </div>
                                                     </div>
                                                     <div class="flexcol products">
@@ -198,13 +92,13 @@
                                                             <div class="media">
                                                                 <div class="thumbnail object-cover">
                                                                     <a href="#">
-                                                                        <img src="assets/products/apparel4.jpg" alt="">
+                                                                        <img src="assets/menu/menu_homeinterior.jpg" alt="">
                                                                     </a>
                                                                 </div>
                                                             </div>
                                                             <div class="text-content">
-                                                                <h4>Most wanted!</h4>
-                                                                <a href="#" class="primary-button">Order Now</a>
+                                                                <h4>B2B Solutions!</h4>
+                                                                <a href="#" class="primary-button">Check Now</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -218,15 +112,76 @@
                         </div>
                         <div class="right">
                             <ul class="flexitem second-links">
-                                <li class="mobile-hide"><a href="#">
-                                    <li>My account </li>
-                                    <div class="icon-large"><i class="ri-user-line"></i></div>
+                                <li class="mobile-hide"><a href="#" id="showModalIcon">
+                                    <div class="icon-large">
+                                        <% if (isAuthenticated) { %>
+                                            <a href="/dashboard"><i class="ri-user-line"></i></a>
+                                            <div class="fly-item"><span class="item-number">I</span></div>
+                                        <% } else{ %>
+                                            <i class="ri-user-line"></i>
+                                        <%}%>
+                                    </div>
                                 </a></li>
+
+                                <% if (isAuthenticated) { %>
+                                <li class="iscart">
+                                    <a href="#">
+                                        <div class="icon-large">
+                                            <i class="ri-shopping-cart-line"></i>
+                                            <div class="fly-item"><span class="item-number"><%= cartItems.length %></span></div>
+                                        </div>
+                                        
+                                        <div class="icon-text">
+                                            <div class="mini-text">Total</div>
+                                            <div class="cart-total"><%= cartItems.reduce((acc, item) => acc + ((item.price * item.min_order)*item.quantity), 0).toFixed(2) %> €</div>
+                                        </div>
+                                    </a>
+
+                                    <div class="mini-cart">
+                                        <div class="content">
+                                            <div class="cart-head">
+                                                <%= cartItems.length %> items in cart
+                                            </div>
+                                            <div class="cart-body">
+                                                <ul class="products mini">
+                                                    <% cartItems.forEach(item => { %>
+                                                    <li class="item">
+                                                        <div class="thumbnail object-cover">
+                                                            <a href="#"><img src="/assets/empresas_img/<%= item.main_img %>" alt=""></a>
+                                                        </div>
+                                                        <div class="item-content">
+                                                            <p><a href="#"><%= item.product_name %></a></p>
+                                                            <span class="price">
+                                                                <span><%= item.price.toFixed(2) %> €</span>
+                                                                <span class="fly-item"><span><%= cartItems.reduce((acc, item) => acc + (item.quantity * item.min_order), 0) %> x</span>
+                                                            </span>
+                                                        </div>
+                                                        <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
+                                                    </li>
+                                                    <% }) %>
+                                                </ul>
+                                            </div>
+                                            <div class="cart-footer">
+                                                <div class="subtotal">
+                                                    <p>Subtotal</p>
+                                                    <p><strong><%= cartItems.reduce((acc, item) => acc + ((item.price * item.min_order)*item.quantity), 0).toFixed(2) %> €</strong></p>
+                                                </div>
+                                                <% if (cartItems.length > 0) { %>
+                                                    <div class="actions">
+                                                        <a href="/cart" class="primary-button">View Cart</a>
+                                                    </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <% } %>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+        </header>
         <!-- Fim do header-top -->
          
         <main>
@@ -355,6 +310,30 @@
                     </div>
                 </div>
             </section>
+            <!-- Privacy & Security -->
+            <section id="privacy-security" class="privacy-security">
+                <div class="container">
+                    <div class="section-title-privacy-security">
+                        <h2>Privacy & Security</h2>
+                    </div>
+                    <div class="grid-privacy-security">
+                        <div class="card protection"> <!-- Classe .connection aplicada aqui -->
+                            <span class="icon-card">
+                                <i class="ri-shield-user-line"></i>
+                            </span>
+                            <h4>Protection</h4>
+                            <p>All sessions are individually protected to ensure the security and privacy of each user. We use advanced security protocols to protect your information throughout the entire browsing experience. With each login, a new security token is generated, ensuring that every session is unique and secure.</p>
+                        </div>
+                        <div class="card encryption"> <!-- Classe .visual aplicada aqui -->
+                            <span class="icon-card">
+                                <i class="ri-git-repository-private-line"></i>
+                            </span>
+                            <h4>Encryption</h4>
+                            <p>Passwords are encrypted using sophisticated hash algorithms, making them nearly impossible to decipher. We use cutting-edge encryption technologies to ensure your passwords are always secure. </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <!-- Our Values -->
             <section id="our-values" class="our-values">
                 <div class="container">
@@ -385,32 +364,95 @@
                         </div>
                     </div>
                 </div>
-            </section>      
+            </section>
+            <!-- Shipping Methods -->
+            <section id="shipping" class="shipping">
+                <div class="container">
+                    <div class="section-title-shipping">
+                        <h2>Shipping Methods</h2>
+                    </div>
+                    <div class="grid-shipping">
+                        <div class="card standard">
+                            <span class="icon-card">
+                                <i class="ri-suitcase-line"></i>
+                            </span>
+                            <h4>Standard</h4>
+                            <p style="margin-bottom: 20px;"><b>INTERNATIONAL</b><br>Delevery Price - 50€<br>Estimated Delivery Time - 10 days</p>
+                            <p><b>NATIONAL</b><br>Delevery Price - 20€<br>Estimated Delivery Time - 5 days</p>
+                        </div>
+                        <div class="card express">
+                            <span class="icon-card">
+                                <i class="ri-vip-crown-line"></i>
+                            </span>
+                            <h4>Express</h4>
+                            <p style="margin-bottom: 20px;"><b>INTERNATIONAL</b><br>Delevery Price - 75€<br>Estimated Delivery Time - 7 days</p>
+                            <p><b>NATIONAL</b><br>Delevery Price - 35€<br>Estimated Delivery Time - 3 days</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Faq -->
+            <section class="faq" id="faq">
+                <h1>Frequently Asked Questions</h1>
+                <div class="faq-item">
+                    <input type="checkbox" id="q1">
+                    <label for="q1" class="faq-question">What is D11 Store?</label>
+                    <div class="faq-answer">
+                        <p>It is a platform that focuses on the sale of products between companies.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <input type="checkbox" id="q2">
+                    <label for="q2" class="faq-question">How does D11 Store work?</label>
+                    <div class="faq-answer">
+                        <p>D11 Store facilitates the sale of products between companies and the creation of the newest ones.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <input type="checkbox" id="q3">
+                    <label for="q3" class="faq-question">How do I make my authentication in D11 Store?</label>
+                    <div class="faq-answer">
+                        <p>To authenticate, just go to the top of the page and click on 'My Account' in the upper right corner.</p>
+                        <img src="assets/faq/my_account.jpg" alt="my_account">
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <input type="checkbox" id="q4">
+                    <label for="q4" class="faq-question">Can I see how my sales went?</label>
+                    <div class="faq-answer">
+                        <p>Yes, you can. After creating your account, you can access your dashboard and the rest of your profile.</p>
+                        <img src="assets/faq/dashboard.jpg" alt="dashboard">
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <input type="checkbox" id="q5">
+                    <label for="q5" class="faq-question">How can I get a refund?</label>
+                    <div class="faq-answer">
+                        <p>For a refund please contact us directly trough email, or our phone number.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <input type="checkbox" id="q6">
+                    <label for="q6" class="faq-question">What types of paymenth is accepted?</label>
+                    <div class="faq-answer">
+                        <p>We accept any type of card, including Visa/Master Card/American Express/Apple Pay/Paypal/Google Pay etc...</p>
+                    </div>
+                </div>
+            </section>
+            <section id="cantact-us" class="contact-us">
+                <div class="container">
+                    <div class="section-title-contact-us">
+                        <h1>Contact us:</h2>
+                        <h2><i class="ri-mail-fill"></i>: d11.b2b.store@gmail.com</h2>
+                        <h2><i class="ri-phone-fill"></i>: 211555333</h2>
+                    </div>
+                </div>
+            </section>    
         </main>
         <!-- Fim do main -->
 
         <!-- Footer -->
         <footer>
-            <!-- newsletter -->
-            <div class="newsletter">
-                <div class="container">
-                    <div class="wrapper">
-                        <div class="box">
-                            <div class="content">
-                                <h3>Join Our Newsletter</h3>
-                                <p>Get an E-mail about our latest online platform and <strong>special offers</strong></p>
-                            </div>
-                            <form action="" class="search">
-                                <span class="icon-large"><i class="ri-mai-line"></i></span>
-                                <input type="email" placeholder="Your email address" required>
-                                <button type="submit">Sign up</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Fim da newsletter -->
-
             <!-- widgets -->
             <div class="widgets">
                 <div class="container">
@@ -420,11 +462,10 @@
                                 <div class="item mini-links">
                                     <h4>Help & Support</h4>
                                     <ul class="flexcol">
-                                        <li><a href="#">Help</a></li>
-                                        <li><a href="#">FAQ</a></li>
-                                        <li><a href="#">Shipping Rates</a></li>
-                                        <li><a href="#">Assistant</a></li>
-                                        <li><a href="#">Contact us</a></li>
+                                        <li><a href="#faq">Help</a></li>
+                                        <li><a href="#faq">FAQ</a></li>
+                                        <li><a href="#shipping">Shipping Methods</a></li>
+                                        <li><a href="#contact-us">Contact us</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -433,10 +474,8 @@
                                     <h4>User Account</h4>
                                     <ul class="flexcol">
                                         <li><a href="#">Login/Signin</a></li>
-                                        <li><a href="#">Account Management</a></li>
-                                        <li><a href="#">Order History</a></li>
-                                        <li><a href="#">Privacy and Security</a></li>
-                                        <li><a href="#">Logout</a></li>
+                                        <li><a href="#faq" onclick="openFAQQuestion('q4')">Account Management</a></li>
+                                        <li><a href="#privacy-security">Privacy and Security</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -444,11 +483,9 @@
                                 <div class="item mini-links">
                                     <h4>Payment Info</h4>
                                     <ul class="flexcol">
-                                        <li><a href="#">Business Card</a></li>
-                                        <li><a href="#">Payment Method</a></li>
-                                        <li><a href="#">Credit Cards</a></li>   
-                                        <li><a href="#">Transactions History</a></li>                                     
-                                        <li><a href="#">Refund</a></li>
+                                        <li><a href="#faq" onclick="openFAQQuestion('q6')">Payment Method</a></li>
+                                        <li><a href="#faq" onclick="openFAQQuestion('q6')">Credit Cards</a></li>                                  
+                                        <li><a href="#faq" onclick="openFAQQuestion('q5')">Refund</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -564,6 +601,6 @@
         <div class="overlay"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="script.js"></script>
+    <script src="script-2.js"></script>
 </body>
 </html>

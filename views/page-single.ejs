@@ -76,21 +76,6 @@
                                                     </div>
                                                     <div class="flexcol">
                                                         <div class="row">
-                                                            <h4>Services</h4>
-                                                            <ul>
-                                                                <li><a href="#">Clothing Production</a></li>
-                                                                <li><a href="#">Network Optimization</a></li>
-                                                                <li><a href="#">3D Priting</a></li>
-                                                                <li><a href="#">Interior Design</a></li>
-                                                                <li><a href="#">Crops Optimization</a></li>
-                                                                <li><a href="#">Pet Grooming</a></li>
-                                                                <li><a href="#">Sport Management Software</a></li>
-                                                                <li><a href="#">Transportation</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flexcol">
-                                                        <div class="row">
                                                             <h4>Top Brands</h4>
                                                             <ul class="row">
                                                                 <% results2.forEach(result => { %>
@@ -112,7 +97,7 @@
                                                             </div>
                                                             <div class="text-content">
                                                                 <h4>B2B Solutions!</h4>
-                                                                <a href="#" class="primary-button">Check Now</a>
+                                                                <a href="/" class="primary-button">Check Now</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -129,10 +114,12 @@
                             <ul class="flexitem second-links">
                                 <li class="mobile-hide"><a href="#" id="showModalIcon">
                                     <div class="icon-large">
-                                        <i class="ri-user-line"></i>
                                         <% if (isAuthenticated) { %>
+                                            <a href="/dashboard"><i class="ri-user-line"></i></a>
                                             <div class="fly-item"><span class="item-number">I</span></div>
-                                        <% } %>
+                                        <% } else{ %>
+                                            <i class="ri-user-line"></i>
+                                        <%}%>
                                     </div>
                                 </a></li>
 
@@ -188,6 +175,9 @@
                                         </div>
                                     </div>
                                 </li>
+                                <div class="icon-large" style="margin-left: 15px; cursor: pointer;">
+                                    <i class="ri-logout-box-r-line"></i>
+                                </div>
                                 <% } %>
                             </ul>
                         </div>
@@ -334,7 +324,7 @@
                                                     <% } else { %>
                                                         <span class="noavailable">Out of Stock</span>
                                                     <% } %>
-                                                    <span class="sku mini-text">SKU-881</span>
+                                                    <span class="sku mini-text"><%= productDetails.product_reference %></span>
                                                 </div>
                                                 <span class="sku mini-text">Min. Order: <%= productDetails.min_order %> un</span>
 
@@ -397,7 +387,7 @@
                                                         <li class="has-child">
                                                             <a href="#0" class="icon-small">Information</a>
                                                             <ul class="content">
-                                                                <li><span>Reference</span> <span>SKU-881</span></li>
+                                                                <li><span>Reference</span> <span><%= productDetails.product_reference %></span></li>
                                                                 <li><span>Brand</span> <span><%= productDetails.company_name %></span></li>
                                                                 <li><span>Category</span> <span><%= productDetails.name_sub_depart %></span></li>
                                                             </ul>
@@ -540,8 +530,9 @@
                                             </div>
                                             <div class="hoverable">
                                                 <ul>
-                                                    <li class="active"><a href="#"><i class="ri-heart-line"></i></a></li>
-                                                    <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
+                                                    <% if (isAuthenticated) { %>
+                                                        <li><a href="" class="like-icon" data-product-id="<%= result.id %>"><i class="ri-heart-line"></i></a></li>
+                                                    <% } %>
                                                 </ul>
                                             </div>
                                             <% if (result.is_promotion) { %>
@@ -693,26 +684,6 @@
 
         <!-- Footer -->
         <footer>
-            <!-- newsletter -->
-            <div class="newsletter">
-                <div class="container">
-                    <div class="wrapper">
-                        <div class="box">
-                            <div class="content">
-                                <h3>Join Our Newsletter</h3>
-                                <p>Get an E-mail about our latest online platform and <strong>special offers</strong></p>
-                            </div>
-                            <form action="" class="search">
-                                <span class="icon-large"><i class="ri-mai-line"></i></span>
-                                <input type="email" placeholder="Your email address" required>
-                                <button type="submit">Sign up</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Fim da newsletter -->
-
             <!-- widgets -->
             <div class="widgets">
                 <div class="container">
@@ -720,32 +691,22 @@
                         <div class="flexwrap">
                             <div class="row">
                                 <div class="item mini-links">
-                                    <h4>Help & Contact</h4>
+                                    <h4>Help & Support</h4>
                                     <ul class="flexcol">
-                                        <li><a href="#">Your Account</a></li>
-                                        <li><a href="#">Your Orders</a></li>
-                                        <li><a href="#">Shipping Rates</a></li>
-                                        <li><a href="#">Returns</a></li>
-                                        <li><a href="#">Assistant</a></li>
-                                        <li><a href="#">Help</a></li>
-                                        <li><a href="#">Contact us</a></li>
+                                        <li><a href="/about#faq">Help</a></li>
+                                        <li><a href="/about#faq">FAQ</a></li>
+                                        <li><a href="/about#shipping">Shipping Methods</a></li>
+                                        <li><a href="/about#contact-us">Contact us</a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="item mini-links">
-                                    <h4>Product Categories</h4>
+                                    <h4>User Account</h4>
                                     <ul class="flexcol">
-                                        <li><a href="#">Beauty</a></li>
-                                        <li><a href="#">Eletronic</a></li>
-                                        <li><a href="#">Women's Fashion</a></li>
-                                        <li><a href="#">Men's Fashion</a></li>
-                                        <li><a href="#">Girl's Fashion</a></li>
-                                        <li><a href="#">Boy's Fashion</a></li>
-                                        <li><a href="#">Health & Household</a></li>
-                                        <li><a href="#">Home & Kitchen</a></li>
-                                        <li><a href="#">Pet Supplies</a></li>
-                                        <li><a href="#">Sports</a></li>
+                                        <li><a href="#">Login/Signin</a></li>
+                                        <li><a href="/about#faq" onclick="openFAQQuestion('q4')">Account Management</a></li>
+                                        <li><a href="/about#privacy-security">Privacy and Security</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -753,23 +714,21 @@
                                 <div class="item mini-links">
                                     <h4>Payment Info</h4>
                                     <ul class="flexcol">
-                                        <li><a href="#">Business Card</a></li>
-                                        <li><a href="#">Shop with Points</a></li>
-                                        <li><a href="#">Reload You Balance</a></li>
-                                        <li><a href="#">Paypal</a></li>
+                                        <li><a href="/about#faq" onclick="openFAQQuestion('q6')">Payment Method</a></li>
+                                        <li><a href="/about#faq" onclick="openFAQQuestion('q6')">Credit Cards</a></li>                                  
+                                        <li><a href="/about#faq" onclick="openFAQQuestion('q5')">Refund</a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="item mini-links">
-                                    <h4>About Us</h4>
+                                    <h4>D11 Store</h4>
                                     <ul class="flexcol">
-                                        <li><a href="#">Company Info</a></li>
-                                        <li><a href="#">News</a></li>
-                                        <li><a href="#">Investors</a></li>
-                                        <li><a href="#">Careers</a></li>
-                                        <li><a href="#">Policies</a></li>
-                                        <li><a href="#">Customer reviews</a></li>
+                                        <li><a href="/about#about-us">About Us</a></li>
+                                        <li><a href="/about#our-leadership">Our Leaders</a></li>
+                                        <li><a href="/about#clients-and-partners">Clients and Partners</a></li>
+                                        <li><a href="/about#join-us">Join Us</a></li>
+                                        <li><a href="/about#our-values">Our Values</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -779,6 +738,7 @@
             </div>
             <!-- Fim dos widgets -->
 
+            
             <!-- footer info -->
             <div class="footer-info">
                 <div class="container">
@@ -950,6 +910,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.3.1/index.js"></script>
     <script src="/script.js"></script>
+    <script src="/script-2.js"></script>
     <script>
         // Model de login e create account
         document.addEventListener('DOMContentLoaded', function() {

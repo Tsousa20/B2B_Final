@@ -1995,7 +1995,35 @@ app.get('/top-products', async (req, res) => {
 
 //************ about routes ***********
 app.get('/about', async (req, res) => {
-    res.render('about');
+    try {
+        // Primeira Query
+        const query1 = 'SELECT * FROM departments';
+        const results1 = await executeQuery(query1);
+
+        // Segunda Query
+        const query2 = 'SELECT company_name FROM companies ORDER BY RAND() LIMIT 9';
+        const results2 = await executeQuery(query2);
+
+        // Decima Query -> vai buscar os sub-departamentos para o nav superior
+        const query10 = 'SELECT * FROM sub_departments ORDER BY RAND() LIMIT 9';
+        const results10 = await executeQuery(query10);
+
+        // Cart Query -> Vai buscar os itens do carrinho do cliente
+        if (req.session.user) {
+            const userId = req.session.user.id;
+    
+            const cartQuery = 'SELECT c.product_id, c.quantity, p.product_name, p.price, p.main_img, p.min_order FROM carts c JOIN products p ON c.product_id = p.id WHERE c.company_id = ?';
+            const cartItems = await executeQuery(cartQuery, [userId]);
+    
+            res.render('about', { isAuthenticated:true, results1, results2, results10, cartItems });
+        } else {
+            res.render('about', { isAuthenticated:false, results1, results2, results10 });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao processar as queries.');
+    }
+    
 })
 
 function executeQuery(query, params = []) {

@@ -2607,7 +2607,485 @@ form p a {
 }
 
 
+/* PAGE ABOUT -------
+* a. About us
+*--------------------------*/
+.about-us {
+    padding-bottom: 40px; /* Corrigido */
+}
 
+.about-content {
+    margin-top: 40px;
+    margin: 0 auto; /* Centralizando horizontalmente */
+}
+
+.about-content p {
+    margin-bottom: 20px;
+}
+
+.how-it-started {
+    align-items: center; /* Alinhando verticalmente */
+    text-align: center; /* Alinhando texto centralmente */
+    margin: 0 auto; /* Centralizando horizontalmente */
+    width: 100%; /* Usar 100% da largura do contêiner pai */
+    max-width: 500px; /* Limitar a largura máxima a 500px */
+    padding: 0 20px; /* Adicionar um pouco de preenchimento para espaços laterais */
+}
+
+.how-it-started h3 {
+    font-size: 36px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.our-leadership {
+    padding: 60px 0;
+    text-align: center;
+}
+
+.section-title-our-leadership h2 {
+    font-size: 36px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    text-align: left;
+}
+
+.larger-text {
+    font-size: 48px; /* Tamanho maior para "Our" */
+    font-weight: bold; /* Opcional: tornar o texto em negrito */
+}
+
+.smaller-text {
+    font-size: 36px; /* Tamanho menor para "Leadership" */
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+}
+
+.leadership-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    align-items: start;
+    margin-top: 10px;
+}
+
+.leadership-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.leadership-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.leadership-card .info {
+    padding: 20px;
+    text-align: left;
+}
+
+.leadership-card .info h4 {
+    font-size: 18px;
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.leadership-card .info p {
+    margin: 5px 0 15px;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.leadership-card .info a {
+    display: inline-block;
+    color: #0073b1;
+    font-size: 20px;
+}
+
+.leadership-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.section-title-join-us {
+    padding: 32px;
+}
+
+.section-title-join-us h2,
+.section-title-join-us h3 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    text-align: left;
+}
+
+.join-us-1 {
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 0.5; /* Melhorar a legibilidade */
+}
+
+.join-us-2 {
+    font-size: 48px;
+    font-weight: 700; /* Garantir que a fonte seja mais pesada */
+    line-height: 0.5; /* Melhorar a legibilidade */
+}
+
+.join-us-3 {
+    font-size: 16px;
+    font-weight: 400; /* Ajustar o peso da fonte */
+    margin-top: 10px; /* Adicionar margem superior para espaçamento */
+    line-height: 1.5; /* Melhorar a legibilidade */
+}
+
+.join-us-button {
+    display: inline-block;
+    padding: 12px 24px;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    background-color: var(--secondary-dark-color); /* Cor de fundo azul */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.join-us-button:hover {
+    background-color: var(--secondary-color); /* Cor de fundo ao passar o mouse */
+    transform: scale(1.05); /* Pequeno zoom ao passar o mouse */
+}
+
+.team-grid {
+    display: flex;
+    justify-content: space-between;
+    margin: 32px 0; /* Espaçamento entre a seção anterior e esta */
+}
+
+.team-grid .container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Espaço entre os itens do grid */
+}
+
+.grid-item {
+    flex: 1;
+    border-radius: 10px; /* Cantos arredondados para as imagens */
+    overflow: hidden; /* Garantir que as imagens respeitem o border-radius */
+}
+
+.grid-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.clients-and-partners{
+    font-size: 24px;
+    display: flex;
+    flex-direction: column; /* Alterando para coluna para alinhar verticalmente */
+    align-items: center; /* Alinhando verticalmente */
+    text-align: center; /* Alinhando texto centralmente */
+    margin: 0 auto; /* Centralizando horizontalmente */
+    margin-top: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.about-us-titles {
+    color: var(--light-bg-color);
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.full-width-title {
+    width: 100vw; /* Full viewport width */
+    height: 104px; /* Height of 104 pixels */
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background-color: var(--secondary-dark-color); /* Apply the background color */
+}
+
+.section-title {
+    padding: 1.5em 0;
+    margin-bottom: 2em;
+    width: 100%; /* Full width of the container */
+    box-sizing: border-box; /* Include padding in the width */
+    text-align: center; /* Center the text */
+}
+
+/* PAGE ABOUT -------
+ * b. Security and Protection + Our Values + Shipping
+ *--------------------------------------------------*/
+
+ .section-title-our-values h2,
+ .section-title-privacy-security h2,
+ .section-title-shipping h2 {
+    margin-top: 80px;
+    font-size: 36px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    text-align: center;
+ }
+
+ .our-values,
+ .privacy-security,
+ .shipping {
+    margin-bottom: 100px;
+}
+
+.light {
+    --background-color: #FAFAFA;
+    --text-color: #52525B;
+}
+
+.grid-our-values,
+.grid-privacy-security,
+.grid-shipping {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsivo com minmax */
+    gap: 40px; /* Espaçamento entre os cards */
+    padding: 0 40px; /* Espaçamento interno esquerda/direita responsivo */
+    justify-content: center;
+    align-items: start;
+    margin-top: 40px; /* Espaçamento superior entre a .grid e o título */
+}
+
+.card {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; /* Altura flexível */
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.icon-card {
+    display: inline-block;
+    font-size: 36px; /* Tamanho dos ícones ajustado */
+}
+
+.connection {
+    background-color: rgba(28, 132, 218, 0.2);
+}
+
+.connection i {
+    color: rgb(28, 132, 218);
+}
+
+.connection:hover {
+    box-shadow: 0 20px 40px rgb(28, 132, 218, 0.2);
+}
+
+.visual {
+    background-color: rgba(34, 209, 22, 0.2); /* Exemplo de cor para visual */
+}
+
+.visual i {
+    color: rgba(34, 209, 22, 1);
+}
+
+.visual:hover {
+    box-shadow: 0 20px 40px rgba(34, 209, 22, 0.2);
+}
+
+.management {
+    background-color: rgba(96, 14, 202, 0.2); /* Exemplo de cor para management */
+}
+
+.management i {
+    color: rgba(96, 14, 202, 1);
+}
+
+.management:hover {
+    box-shadow: 0 20px 40px rgba(96, 14, 202, 0.2);
+}
+
+.protection {
+    background-color: rgba(255, 61, 61, 0.2); /* Exemplo de cor para visual */
+}
+
+.protection i {
+    color: rgb(255, 61, 61);
+}
+
+.protection:hover {
+    box-shadow: 0 20px 40px rgba(255, 61, 61, 0.2);
+}
+
+.encryption {
+    background-color: rgba(0, 0, 0, 0.1); /* Exemplo de cor para visual */
+}
+
+.encryption i {
+    color: rgb(0, 0, 0);
+}
+
+.encryption:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1)  ;
+}
+
+.standard{
+    background-color: rgba(255, 255, 255, 0.2); /* Exemplo de cor para visual */
+}
+
+.standard i {
+    color: rgb(255, 255, 255,);
+}
+
+.standard:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.express {
+    background-color: rgba(251, 255, 0, 0.2); /* Exemplo de cor para visual */
+}
+
+.express i {
+    color: rgb(216, 219, 0);
+}
+
+.express:hover {
+    box-shadow: 0 20px 40px rgba(251, 255, 0, 0.2)  ;
+}
+
+.card h4 {
+    margin: 12px 0;
+    font-size: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* PAGE ABOUT -------
+ * c. FAQ
+ *--------------------------*/
+
+ .faq {
+    max-width: 800px;
+    margin: 50px auto;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.faq h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 36px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    text-align: center;
+}
+
+.faq-item {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.faq-item label{
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-question {
+    display: block;
+    padding: 15px;
+    font-size: 1.2em;
+    cursor: pointer;
+    position: relative;
+}
+
+.faq-question::after {
+    content: '\002B';
+    font-size: 1.2em;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0 15px;
+}
+
+.faq-answer p {
+    margin: 15px 0;
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+input[type="checkbox"]:checked + .faq-question + .faq-answer {
+    max-height: 1000px; /* Valor alto suficiente para acomodar a resposta completa */
+}
+
+input[type="checkbox"]:checked + .faq-question::after {
+    content: '\2212'; /* Minus sign */
+}
+
+/*  PAGE ABOUT -------
+ * d. Contact Us
+ *--------------------------*/
+.section-title-contact-us h2,
+.section-title-contact-us h1 {
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    text-align: left;
+}
+.section-title-contact-us h1 {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.section-title-contact-us h2 {
+    padding: 5px;
+    font-size: 16px;
+    font-weight: 500;
+}
 
 
 
