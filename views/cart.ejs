@@ -196,9 +196,10 @@
                         </div>
                         <div class="right">
                             <div class="search-box">
-                                <form action="" class="search">
+                                <form id="searchForm" class="search" action="/search" method="GET">
                                     <span class="icon-large"><i class="ri-search-line"></i></span>
-                                    <input type="search" placeholder="Search for products">
+                                    <input id="searchInput" type="search" name="term" placeholder="Search for products">
+                                    <div id="searchResults" class="search-results"></div>
                                     <button type="submit">Search</button>
                                 </form>
                             </div>
@@ -527,6 +528,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.3.1/index.js"></script>
     <script src="script.js"></script>
+    <script src="script-2.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

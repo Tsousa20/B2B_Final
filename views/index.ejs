@@ -261,7 +261,7 @@
                                 <div class="swiper-slide">
                                     <div class="item">
                                         <div class="image object-cover">
-                                            <img src="assets/slider/slider1.jpg" alt="">
+                                            <img src="assets/slider/slider1-1.webp" alt="">
                                         </div>
                                         <div class="text-content flexcol">
                                             <h4>Quick Fashion</h4>
@@ -842,11 +842,11 @@
         <div class="search-bottom desktop-hide">
             <div class="container">
                 <div class="wrapper">
-
-                    <form action="" class="search">
+                    <form id="searchFormMobile" class="search" action="/search" method="GET">
                         <a href="#" class="t-close search-close flexcenter"><i class="ri-close-line"></i></a>
                         <span class="icon-large"><i class="ri-search-line"></i></span>
-                        <input type="search" placeholder="Your email address" required>
+                        <input id="searchInputMobile" type="search" name="term" placeholder="Search for products">
+                        <div id="searchResultsMobile" class="search-results"></div>
                         <button type="submit">Search</button>
                     </form>
                 </div>
