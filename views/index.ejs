@@ -177,7 +177,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <div class="icon-large" style="margin-left: 15px; cursor: pointer;">
+                                <div class="icon-large" style="margin-left: 15px; cursor: pointer;" id="logout-icon">
                                     <i class="ri-logout-box-r-line"></i>
                                 </div>
                                 <% } %>
@@ -224,9 +224,10 @@
                         </div>
                         <div class="right">
                             <div class="search-box">
-                                <form action="" class="search">
+                                <form id="searchForm" class="search" action="/search" method="GET">
                                     <span class="icon-large"><i class="ri-search-line"></i></span>
-                                    <input type="search" placeholder="Search for products">
+                                    <input id="searchInput" type="search" name="term" placeholder="Search for products">
+                                    <div id="searchResults" class="search-results"></div>
                                     <button type="submit">Search</button>
                                 </form>
                             </div>
@@ -273,7 +274,7 @@
                                 <div class="swiper-slide">
                                     <div class="item">
                                         <div class="image object-cover">
-                                            <img src="assets/slider/slider2.jpg" alt="">
+                                            <img src="assets/slider/Interior.webp" alt="">
                                         </div>
                                         <div class="text-content flexcol">
                                             <h4>Quick Offer</h4>
@@ -401,7 +402,7 @@
                                             <div class="mini-text">
                                                 <p>Min. Order: <%= productBig.min_order %> un</p>
                                                 <p>Free Shipping</p>
-                                                <p class="brand-info">By: <%= productBig.company_name %></p>
+                                                <p class="brand-info main-links"><a href="/page-company/<%= productBig.company_id %>">By: <%= productBig.company_name %></a></p>
                                             </div>
 
                                             <div class="stock mini-text">
@@ -456,8 +457,12 @@
                                                 </div>
                                                 <div class="mini-text">
                                                     <p>Min. Order: <%= product.min_order %> un</p>
-                                                    <p>Ready to Ship</p>
-                                                    <p class="brand-info">By: <%= product.company_name %></p>
+                                                    <% if (product.stock > product.min_order) { %>
+                                                        <p>Ready to Ship</p>
+                                                    <% } else { %>
+                                                        <p>Out of Stock</p>
+                                                    <% } %>
+                                                    <p class="brand-info main-links"><a href="/page-company/<%= product.company_id %>">By: <%= product.company_name %></a></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -507,7 +512,7 @@
                                                     <% } else { %>
                                                         <p>Out of Stock</p>
                                                     <% } %>
-                                                    <p class="brand-info">By: <%= product.company_name %></p>
+                                                    <p class="brand-info main-links"><a href="/page-company/<%= product.company_id %>">By: <%= product.company_name %></a></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -526,7 +531,7 @@
                     <div class="wrapper">
                         <div class="column">
                             <div class="sectop flexitem">
-                                <h2><span class="circle"></span><span>Featured Services</span></h2>
+                                <h2><span class="circle"></span><span>Featured Products</span></h2>
                                 <div class="second-links">
                                     <a href="#" class="view-all">View all<i class="ri-arrow-right-line"></i></a>
                                 </div>
@@ -568,7 +573,7 @@
                                             </div>
 
                                             <div class="mini-text">
-                                                <p>By: <%= product.company_name %></p>
+                                                <p class="main-links"><a href="/page-company/<%= product.company_id %>">By: <%= product.company_name %></a></p>
                                             </div>
                                             
                                             <div class="footer">
@@ -783,24 +788,28 @@
                     <nav>
                         <ul class="flexitem">
                             <li>
-                                <a href="#">
+                                <a href="/">
                                     <i class="ri-bar-chart-line"></i>
                                     <span>Trending</span>
                                 </a>
                             </li>
 
                             <li>
-                                <a href="#">
-                                    <i class="ri-user-6-line"></i>
-                                    <span>Account</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#">
-                                    <i class="ri-heart-line"></i>
-                                    <span>Wishlist</span>
-                                </a>
+                                <% if (isAuthenticated) { %>
+                                    
+                                    <a href="/dashboard">
+                                        <i class="ri-user-6-line"></i>
+                                        <span>Account</span>
+                                        <div class="fly-item" style="bottom: 5px;">
+                                            <span class="item-number">I</span>
+                                        </div>
+                                    </a>
+                                <% } else{ %>
+                                    <a href="#" id="showModalIconMobile">
+                                        <i class="ri-user-6-line"></i>
+                                        <span>Account</span>
+                                    </a>
+                                <%}%>
                             </li>
 
                             <li>
@@ -810,15 +819,18 @@
                                 </a>
                             </li>
 
-                            <li>
-                                <a href="#0">
-                                    <i class="ri-shopping-cart-line"></i>
-                                    <span>Cart</span>
-                                    <div class="fly-item">
-                                        <span class="item-number">0</span>
-                                    </div>
-                                </a>
-                            </li>
+                            <% if (isAuthenticated) { %>
+                                <li>
+                                    <a href="/cart">
+                                        <i class="ri-shopping-cart-line"></i>
+                                        <span>Cart</span>
+                                        <div class="fly-item">
+                                            <span class="item-number"><%= cartItems.length %></span>
+                                        </div>
+                                    </a>
+                                </li>
+                            <%}%>
+
                         </ul>
                     </nav>
                 </div>
@@ -933,6 +945,7 @@
             const modal = document.getElementById('modal');
             const closeIcons = document.querySelectorAll('.modalclose');
             const showModalIcon = document.getElementById('showModalIcon');
+            const showModalIconMobile = document.getElementById('showModalIconMobile');
 
             console.log(loginBox, createAccountBox, showCreateAccount, showLogin);
 
@@ -960,6 +973,23 @@
                     }
                 })
             });
+
+            showModalIconMobile.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                fetch('/check-session')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isAuthenticated) {
+                        alert('Você já tem sessão iniciada.');
+                    } else {
+                        resetForms();
+                        modal.style.display = 'block';
+                    }
+                })
+            });
+
+            
 
             // Mostrar formulário de criação de conta ao clicar no link
             showCreateAccount.addEventListener('click', function(e) {
@@ -1044,6 +1074,30 @@
                     alert('Erro ao tentar fazer login. Por favor, tente novamente.');
                 });
             });
+        });
+
+        document.getElementById('logout-icon').addEventListener('click', () => {
+            if (confirm('Are you sure you want to log out?')) {
+                fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Logout successful!');
+                        window.location.href = '/';
+                    } else {
+                        alert('Error logging out. Please try again later.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao fazer logout:', error);
+                    alert('Error logging out. Please try again later.');
+                });
+            }
         });
 
     </script>

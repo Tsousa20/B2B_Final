@@ -175,6 +175,9 @@
                                         </div>
                                     </div>
                                 </li>
+                                <div class="icon-large" style="margin-left: 15px; cursor: pointer;" id="logout-icon">
+                                    <i class="ri-logout-box-r-line"></i>
+                                </div>
                                 <% } %>
                             </ul>
                         </div>
@@ -541,24 +544,28 @@
                     <nav>
                         <ul class="flexitem">
                             <li>
-                                <a href="#">
+                                <a href="/">
                                     <i class="ri-bar-chart-line"></i>
                                     <span>Trending</span>
                                 </a>
                             </li>
 
                             <li>
-                                <a href="#">
-                                    <i class="ri-user-6-line"></i>
-                                    <span>Account</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#">
-                                    <i class="ri-heart-line"></i>
-                                    <span>Wishlist</span>
-                                </a>
+                                <% if (isAuthenticated) { %>
+                                    
+                                    <a href="/dashboard">
+                                        <i class="ri-user-6-line"></i>
+                                        <span>Account</span>
+                                        <div class="fly-item" style="bottom: 5px;">
+                                            <span class="item-number">I</span>
+                                        </div>
+                                    </a>
+                                <% } else{ %>
+                                    <a href="#" id="showModalIconMobile">
+                                        <i class="ri-user-6-line"></i>
+                                        <span>Account</span>
+                                    </a>
+                                <%}%>
                             </li>
 
                             <li>
@@ -568,15 +575,18 @@
                                 </a>
                             </li>
 
-                            <li>
-                                <a href="#0">
-                                    <i class="ri-shopping-cart-line"></i>
-                                    <span>Cart</span>
-                                    <div class="fly-item">
-                                        <span class="item-number">0</span>
-                                    </div>
-                                </a>
-                            </li>
+                            <% if (isAuthenticated) { %>
+                                <li>
+                                    <a href="/cart">
+                                        <i class="ri-shopping-cart-line"></i>
+                                        <span>Cart</span>
+                                        <div class="fly-item">
+                                            <span class="item-number"><%= cartItems.length %></span>
+                                        </div>
+                                    </a>
+                                </li>
+                            <%}%>
+
                         </ul>
                     </nav>
                 </div>
@@ -598,9 +608,246 @@
             </div>
         </div>
         <!-- Fim do search bottom -->
+        <div id="modal" class="modal">
+            
+            <div class="box-login">
+                <h1 id="loginTitle">Log In</h1>
+                <form id="loginForm" action="/login" method="POST">
+                    <div class="input-group-login">
+                        <div class="input-field-login">
+                            <i class="ri-user-fill"></i>
+                            <input class="input-login" type="email" id="loginEmail" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-lock-fill"></i>
+                            <input class="input-login" type="password" id="loginPassword" name="password" placeholder="Password" required>
+                        </div>
+                        <p>Don't have an account? <a href="#" class="show-create-account">Click Here!</a></p>
+                    </div>
+                    <div class="btn-field-login">
+                        <button type="submit" id="loginbtn">Log In</button>
+                    </div>
+                </form>
+                <a href="#" class="t-close modalclose flexcenter">
+                    <i class="ri-close-line"></i>
+                </a>
+            </div>
+
+            <div class="box-createAccount" style="display: none;">
+                <h1 id="createAccountTitle">Create Account</h1>
+                <form id="createAccountForm" action="/create-account" method="POST" enctype="multipart/form-data">
+                    <div class="input-group2">
+                        <div class="input-field-login">
+                            <i class="ri-shield-user-fill"></i>
+                            <input class="input-login" type="text" id="company_name" name="company_name" placeholder="Company Name" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-user-search-fill"></i>
+                            <input class="input-login" type="text" id="nif" name="nif" placeholder="NIF" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-mail-fill"></i>
+                            <input class="input-login" type="email" id="createEmail" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-lock-fill"></i>
+                            <input class="input-login" type="password" id="createPassword" name="password" placeholder="Password" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-phone-fill"></i>
+                            <input class="input-login" type="tel" id="contact" name="contact" placeholder="Contact" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-home-4-fill"></i>
+                            <input class="input-login" type="text" id="adress" name="address" placeholder="Adress" required>
+                        </div>
+                        <div class="input-field-login">
+                            <i class="ri-image-fill"></i>
+                            <input class="input-login" type="file" name="main_img" name="main_img" id="main_img" placeholder="Image" required>
+                        </div>
+                        <div class="input-field-login full-width">
+                            <i class="ri-file-text-fill"></i>
+                            <textarea id="company_description" name="company_description" placeholder="Description" required></textarea>
+                        </div>
+                    </div>
+                    <p style="margin-top: 50px;">Already have an account? <a href="#" class="show-login">Click Here!</a></p>
+                    <div class="btn-field-login">
+                        <button type="submit" id="createbtn">Create Account</button>
+                    </div>
+                </form>
+                <a href="#" class="t-close modalclose flexcenter">
+                    <i class="ri-close-line"></i>
+                </a>
+            </div>
+        </div>
+
         <div class="overlay"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="script-2.js"></script>
+    <script>
+        // Model de login e create account
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBox = document.querySelector('.box-login');
+            const createAccountBox = document.querySelector('.box-createAccount');
+            const showCreateAccount = document.querySelector('.show-create-account');
+            const showLogin = document.querySelector('.show-login');
+            const modal = document.getElementById('modal');
+            const closeIcons = document.querySelectorAll('.modalclose');
+            const showModalIcon = document.getElementById('showModalIcon');
+            const showModalIconMobile = document.getElementById('showModalIconMobile');
+
+            console.log(loginBox, createAccountBox, showCreateAccount, showLogin);
+
+            // Inicialmente, exibe apenas o loginBox e oculta o createAccountBox
+            createAccountBox.style.display = 'none';
+
+            // Função para resetar os formulários ao estado inicial
+            function resetForms() {
+                loginBox.style.display = 'block';
+                createAccountBox.style.display = 'none';
+            };
+
+            // Mostrar o modal ao clicar no ícone
+            showModalIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                fetch('/check-session')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isAuthenticated) {
+                        alert('Você já tem sessão iniciada.');
+                    } else {
+                        resetForms();
+                        modal.style.display = 'block';
+                    }
+                })
+            });
+
+            showModalIconMobile.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                fetch('/check-session')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isAuthenticated) {
+                        alert('Você já tem sessão iniciada.');
+                    } else {
+                        resetForms();
+                        modal.style.display = 'block';
+                    }
+                })
+            });
+
+            // Mostrar formulário de criação de conta ao clicar no link
+            showCreateAccount.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginBox.style.display = 'none';
+                createAccountBox.style.display = 'block';
+            });
+
+            // Mostrar formulário de login ao clicar no link
+            showLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginBox.style.display = 'block';
+                createAccountBox.style.display = 'none';
+            });
+
+            // Fechar o modal ao clicar no ícone de fechar
+            closeIcons.forEach(function(icon) {
+                icon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    modal.style.display = 'none';
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const createAccountForm = document.getElementById('createAccountForm');
+
+            createAccountForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevenir o comportamento padrão do formulário
+
+                const formData = new FormData(createAccountForm);
+
+                fetch('/create-account', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message); // Mostrar a mensagem de sucesso
+                        window.location.reload(); // Recarregar a página
+                    } else {
+                        alert(data.message); // Mostrar a mensagem de erro, se houver
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao criar a conta. Por favor, tente novamente.');
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevenir o comportamento padrão do formulário
+
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+
+                
+                console.log(`Email: ${email}, Password: ${password}`);
+
+                fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email, password: password })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload(); // Recarregar a página após o login bem-sucedido
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao tentar fazer login. Por favor, tente novamente.');
+                });
+            });
+        });
+
+        document.getElementById('logout-icon').addEventListener('click', () => {
+            if (confirm('Are you sure you want to log out?')) {
+                fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Logout successful!');
+                        window.location.href = '/';
+                    } else {
+                        alert('Error logging out. Please try again later.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao fazer logout:', error);
+                    alert('Error logging out. Please try again later.');
+                });
+            }
+        });
+
+    </script>
 </body>
 </html>

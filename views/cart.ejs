@@ -365,26 +365,6 @@
 
         <!-- Footer -->
         <footer>
-            <!-- newsletter -->
-            <div class="newsletter">
-                <div class="container">
-                    <div class="wrapper">
-                        <div class="box">
-                            <div class="content">
-                                <h3>Join Our Newsletter</h3>
-                                <p>Get an E-mail about our latest online platform and <strong>special offers</strong></p>
-                            </div>
-                            <form action="" class="search">
-                                <span class="icon-large"><i class="ri-mai-line"></i></span>
-                                <input type="email" placeholder="Your email address" required>
-                                <button type="submit">Sign up</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Fim da newsletter -->
-
             <!-- widgets -->
             <div class="widgets">
                 <div class="container">
@@ -392,32 +372,22 @@
                         <div class="flexwrap">
                             <div class="row">
                                 <div class="item mini-links">
-                                    <h4>Help & Contact</h4>
+                                    <h4>Help & Support</h4>
                                     <ul class="flexcol">
-                                        <li><a href="#">Your Account</a></li>
-                                        <li><a href="#">Your Orders</a></li>
-                                        <li><a href="#">Shipping Rates</a></li>
-                                        <li><a href="#">Returns</a></li>
-                                        <li><a href="#">Assistant</a></li>
-                                        <li><a href="#">Help</a></li>
-                                        <li><a href="#">Contact us</a></li>
+                                        <li><a href="/about#faq">Help</a></li>
+                                        <li><a href="/about#faq">FAQ</a></li>
+                                        <li><a href="/about#shipping">Shipping Methods</a></li>
+                                        <li><a href="/about#contact-us">Contact us</a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="item mini-links">
-                                    <h4>Product Categories</h4>
+                                    <h4>User Account</h4>
                                     <ul class="flexcol">
-                                        <li><a href="#">Beauty</a></li>
-                                        <li><a href="#">Eletronic</a></li>
-                                        <li><a href="#">Women's Fashion</a></li>
-                                        <li><a href="#">Men's Fashion</a></li>
-                                        <li><a href="#">Girl's Fashion</a></li>
-                                        <li><a href="#">Boy's Fashion</a></li>
-                                        <li><a href="#">Health & Household</a></li>
-                                        <li><a href="#">Home & Kitchen</a></li>
-                                        <li><a href="#">Pet Supplies</a></li>
-                                        <li><a href="#">Sports</a></li>
+                                        <li><a href="#">Login/Signin</a></li>
+                                        <li><a href="/about#faq" onclick="openFAQQuestion('q4')">Account Management</a></li>
+                                        <li><a href="/about#privacy-security">Privacy and Security</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -425,23 +395,21 @@
                                 <div class="item mini-links">
                                     <h4>Payment Info</h4>
                                     <ul class="flexcol">
-                                        <li><a href="#">Business Card</a></li>
-                                        <li><a href="#">Shop with Points</a></li>
-                                        <li><a href="#">Reload You Balance</a></li>
-                                        <li><a href="#">Paypal</a></li>
+                                        <li><a href="/about#faq" onclick="openFAQQuestion('q6')">Payment Method</a></li>
+                                        <li><a href="/about#faq" onclick="openFAQQuestion('q6')">Credit Cards</a></li>                                  
+                                        <li><a href="/about#faq" onclick="openFAQQuestion('q5')">Refund</a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="item mini-links">
-                                    <h4>About Us</h4>
+                                    <h4>D11 Store</h4>
                                     <ul class="flexcol">
-                                        <li><a href="#">Company Info</a></li>
-                                        <li><a href="#">News</a></li>
-                                        <li><a href="#">Investors</a></li>
-                                        <li><a href="#">Careers</a></li>
-                                        <li><a href="#">Policies</a></li>
-                                        <li><a href="#">Customer reviews</a></li>
+                                        <li><a href="/about#about-us">About Us</a></li>
+                                        <li><a href="/about#our-leadership">Our Leaders</a></li>
+                                        <li><a href="/about#clients-and-partners">Clients and Partners</a></li>
+                                        <li><a href="/about#join-us">Join Us</a></li>
+                                        <li><a href="/about#our-values">Our Values</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -451,6 +419,7 @@
             </div>
             <!-- Fim dos widgets -->
 
+            
             <!-- footer info -->
             <div class="footer-info">
                 <div class="container">
@@ -484,24 +453,28 @@
                     <nav>
                         <ul class="flexitem">
                             <li>
-                                <a href="#">
+                                <a href="/">
                                     <i class="ri-bar-chart-line"></i>
                                     <span>Trending</span>
                                 </a>
                             </li>
 
                             <li>
-                                <a href="#">
-                                    <i class="ri-user-6-line"></i>
-                                    <span>Account</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#">
-                                    <i class="ri-heart-line"></i>
-                                    <span>Wishlist</span>
-                                </a>
+                                <% if (isAuthenticated) { %>
+                                    
+                                    <a href="/dashboard">
+                                        <i class="ri-user-6-line"></i>
+                                        <span>Account</span>
+                                        <div class="fly-item" style="bottom: 5px;">
+                                            <span class="item-number">I</span>
+                                        </div>
+                                    </a>
+                                <% } else{ %>
+                                    <a href="#" id="showModalIconMobile">
+                                        <i class="ri-user-6-line"></i>
+                                        <span>Account</span>
+                                    </a>
+                                <%}%>
                             </li>
 
                             <li>
@@ -511,15 +484,18 @@
                                 </a>
                             </li>
 
-                            <li>
-                                <a href="#0" class="cart-trigger">
-                                    <i class="ri-shopping-cart-line"></i>
-                                    <span>Cart</span>
-                                    <div class="fly-item">
-                                        <span class="item-number">0</span>
-                                    </div>
-                                </a>
-                            </li>
+                            <% if (isAuthenticated) { %>
+                                <li>
+                                    <a href="/cart">
+                                        <i class="ri-shopping-cart-line"></i>
+                                        <span>Cart</span>
+                                        <div class="fly-item">
+                                            <span class="item-number"><%= cartItems.length %></span>
+                                        </div>
+                                    </a>
+                                </li>
+                            <%}%>
+
                         </ul>
                     </nav>
                 </div>
