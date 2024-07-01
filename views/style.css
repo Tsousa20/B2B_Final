@@ -869,6 +869,12 @@ form.search button:hover{
     transition-delay: .1s;
 }
 
+.like-icon{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 .products .discount{
     top: auto;
     right: 0;
@@ -3361,7 +3367,7 @@ input[type="checkbox"]:checked + .faq-question::after {
     /*showing the first sub-menu na navbar lateral*/
 
     .dpt-menu .healthbeauty ul{
-        background-image: url(assets/menu/menu_beauty.jpg);
+        background-image: url(assets/menu/HealthandBeauty.png);
     }
     
     .dpt-menu .eletronicstechonology ul{
@@ -3373,7 +3379,7 @@ input[type="checkbox"]:checked + .faq-question::after {
     }
 
     .dpt-menu .foodbeverages ul{
-        background-image: url(assets/menu/menu_food_resized.jpg);
+        background-image: url(assets/menu/Food_Beverage.png);
     }
 
 
@@ -3382,19 +3388,19 @@ input[type="checkbox"]:checked + .faq-question::after {
     }
 
     .dpt-menu .agriculture ul{
-        background-image: url(assets/menu/menu_agro_resized.jpg);
+        background-image: url(assets/menu/Agriculture.png);
     }
 
     .dpt-menu .petsupplies ul{
-        background-image: url(assets/menu/menu_pet_resized.webp);
+        background-image: url(assets/menu/PetSupplies.png);
     }
 
     .dpt-menu .sports ul{
-        background-image: url(assets/menu/menu_sports_resized.jpg);
+        background-image: url(assets/menu/sports.png);
     }
 
     .dpt-menu .shippingpackaging ul{
-        background-image: url(assets/menu/menu_shipping_resized.webp);
+        background-image: url(assets/menu/Shipping_300x510.png);
     }
 
 

@@ -158,7 +158,7 @@
                                                                 <span class="fly-item"><span><%= cartItems.reduce((acc, item) => acc + (item.quantity * item.min_order), 0) %> x</span>
                                                             </span>
                                                         </div>
-                                                        <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                                                        <a href="" class="item-remove" data-product-id="<%= item.product_id %>"><i class="ri-close-line"></i></a>
                                                     </li>
                                                     <% }) %>
                                                 </ul>
@@ -248,11 +248,11 @@
                                 <div class="swiper-slide">
                                     <div class="item">
                                         <div class="image object-cover">
-                                            <img src="assets/slider/slider0.jpg" alt="">
+                                            <img src="assets/slider/slider1-1.webp" alt="">
                                         </div>
                                         <div class="text-content flexcol">
-                                            <h4>Shoes Fashion</h4>
-                                            <h2><span>Come and Get it</span><br><span>Brand New Shoes</span></h2>
+                                            <h4>Quick Fashion</h4>
+                                            <h2><span>Fit Your Company Wardrobe</span><br><span>With Sustainable Items</span></h2>
                                             <a href="#" class="primary-button">Shop Now</a>
                                         </div>   
                                     </div>
@@ -261,15 +261,17 @@
                                 <div class="swiper-slide">
                                     <div class="item">
                                         <div class="image object-cover">
-                                            <img src="assets/slider/slider1-1.webp" alt="">
+                                            <img src="assets/slider/close-up-electronic-components.png" alt="">
                                         </div>
                                         <div class="text-content flexcol">
-                                            <h4>Quick Fashion</h4>
-                                            <h2><span>Fit Your Wardrobe</span><br><span>With Luxury Items</span></h2>
+                                            <h4>Shop Eletronics</h4>
+                                            <h2><span>Come and Get it</span><br><span>Brand New Components</span></h2>
                                             <a href="#" class="primary-button">Shop Now</a>
                                         </div>   
                                     </div>
                                 </div>
+
+                                
 
                                 <div class="swiper-slide">
                                     <div class="item">
@@ -278,7 +280,7 @@
                                         </div>
                                         <div class="text-content flexcol">
                                             <h4>Quick Offer</h4>
-                                            <h2><span>Wooden Minimal Sofa</span><br><span>Extra 50% Off</span></h2>
+                                            <h2><span>Your Office Interior</span><br><span>Find Out</span></h2>
                                             <a href="#" class="primary-button">Shop Now</a>
                                         </div>   
                                     </div>
@@ -310,19 +312,7 @@
                     <div class="wrapper flexitem">
                         <div class="item">
                             <a href="#">
-                                <img src="assets/brands/zara.png" alt="">
-                            </a>
-                        </div>
-
-                        <div class="item">
-                            <a href="#">
-                                <img src="assets/brands/samsung.png" alt="">
-                            </a>
-                        </div>
-
-                        <div class="item">
-                            <a href="#">
-                                <img src="assets/brands/oppo.png" alt="">
+                                <img src="assets/brands/agro.png" alt="">
                             </a>
                         </div>
 
@@ -340,7 +330,19 @@
 
                         <div class="item">
                             <a href="#">
-                                <img src="assets/brands/dng.png" alt="">
+                                <img src="assets/brands/zara.png" alt="">
+                            </a>
+                        </div>
+
+                        <div class="item">
+                            <a href="#">
+                                <img src="assets/brands/oppo.png" alt="">
+                            </a>
+                        </div>
+
+                        <div class="item">
+                            <a href="#">
+                                <img src="assets/brands/samsung.png" alt="">
                             </a>
                         </div>
                     </div>
@@ -373,13 +375,13 @@
                                                     <img src="/assets/empresas_img/<%= productBig.main_img %>" alt="">
                                                 </a>
                                             </div>
-                                            <div class="hoverable">
-                                                <ul>
-                                                    <% if (isAuthenticated) { %>
-                                                        <li><a href="" class="like-icon" data-product-id="<%= productBig.id %>"><i class="ri-heart-line"></i></a></li>
-                                                    <% } %>
-                                                </ul>
-                                            </div>
+                                            <% if (isAuthenticated) { %>
+                                                <div class="hoverable">
+                                       
+                                                    <li><a href="" class="like-icon" data-product-id="<%= productBig.id %>"><i class="ri-heart-line"></i></a></li>
+                                      
+                                                </div>
+                                            <% } %>
                                             <div class="discount circle flexcenter"><span><%= productBig.discount_percentage %>%</span></div>
                                         </div>
                                         <div class="content">
@@ -936,6 +938,40 @@
     <script src="script.js"></script>
     <script src="script-2.js"></script>
     <script>
+        // Remover artigos do icon de carrinho
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.item-remove').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    event.preventDefault();
+
+                    const productId = button.getAttribute('data-product-id');
+
+                    try {
+                        const response = await fetch('/remove-from-cart', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ productId })
+                        });
+
+                        const result = await response.json();
+                        if (result.success) {
+                            // Remover o item do DOM
+                            window.location.reload();
+                            
+                            // Mostrar mensagem de confirmação
+                            alert('Product removed from cart.');
+                        } else {
+                            alert('Erro ao remover o produto do carrinho.');
+                        }
+                    } catch (error) {
+                        console.error('Erro:', error);
+                        alert('Erro ao remover o produto do carrinho.');
+                    }
+                });
+            });
+        });
         // Model de login e create account
         document.addEventListener('DOMContentLoaded', function() {
             const loginBox = document.querySelector('.box-login');

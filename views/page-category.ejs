@@ -156,7 +156,7 @@
                                                                 <span class="fly-item"><span><%= cartItems.reduce((acc, item) => acc + (item.quantity * item.min_order), 0) %> x</span>
                                                             </span>
                                                         </div>
-                                                        <a href="#" class="item-remove"><i class="ri-close-line"></i></a>
+                                                        <a href="" class="item-remove" data-product-id="<%= item.product_id %>"><i class="ri-close-line"></i></a>
                                                     </li>
                                                     <% }) %>
                                                 </ul>
@@ -795,6 +795,40 @@
     <script src="/script.js"></script>
     <script src="/script-2.js"></script>
     <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.item-remove').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    event.preventDefault();
+
+                    const productId = button.getAttribute('data-product-id');
+
+                    try {
+                        const response = await fetch('/remove-from-cart', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ productId })
+                        });
+
+                        const result = await response.json();
+                        if (result.success) {
+                            // Remover o item do DOM
+                            window.location.reload();
+                            
+                            // Mostrar mensagem de confirmação
+                            alert('Product removed from cart.');
+                        } else {
+                            alert('Erro ao remover o produto do carrinho.');
+                        }
+                    } catch (error) {
+                        console.error('Erro:', error);
+                        alert('Erro ao remover o produto do carrinho.');
+                    }
+                });
+            });
+        });
 
         // Model de login e create account
         document.addEventListener('DOMContentLoaded', function() {
